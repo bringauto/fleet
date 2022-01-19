@@ -1,0 +1,151 @@
+/**
+ * Detailed description can be found at Industrial Portal Protocol
+ * document located at our Google Disk
+ * https://drive.google.com/drive/folders/1ZE9VRs86QtP6GqTJBl6vRJLmkh1lTEc5
+ */
+
+syntax = "proto3";
+
+package IndustrialPortal;
+
+import "CarStateProtocol.proto";
+option go_package = "../internal/pkg/ba_proto;ba_proto";
+option csharp_namespace = "Google.Protobuf.ba_proto";
+
+/**
+ * Special message which contains other IndustrialPortal messages
+ * Every message of this type can contain only one of the IndustrialPortal messages
+ * From Server to Client only.
+ */
+message MessageIndustrialPortal {
+    oneof Type {
+        ConnectResponse connectReponse = 1;
+        StatusResponse statusResponse = 2;
+        Command command = 3;
+    }
+}
+
+/**
+ * Special message which contains other Daemon messages
+ * Every message of this type can contain only one of the Daemon messages
+ * From Client to Server only.
+ */
+message MessageDaemon {
+    oneof Type {
+        Connect connect = 1;
+        Status status = 2;
+        CommandResponse commandResponse = 3;
+    }
+}
+
+
+/**
+ * Connect message information
+ * First message in new communication.
+ */
+message Connect {
+    /*
+     * Company name
+     */
+    string company = 1;
+
+    /*
+     * Car name
+     */
+    string name = 2;
+
+    /*
+     * sessionId of the car
+     * - generated before sending first message
+     * - stays same in each session
+     * - is for check if server communicates with the same car
+     */
+    string sessionId = 3;
+}
+
+/**
+ * ConnectResponse information
+ * Response only to Connect message
+ */
+message ConnectResponse {
+    enum Type {
+        OK = 0;
+
+        /**
+         * If some car is already logged in under same company and name
+         */
+        ALREADY_LOGGED = 1;
+    }
+    Type type = 1;
+    string sessionId = 2;
+}
+
+/**
+ * Car Status information with error type
+ */
+message Status {
+    /**
+     * Server error information
+     * If the car fins out that the server is down,
+     * it starts to save stops that car finnished.
+     * When the server is back again,
+     * it sends ServerError::Type SERVER_ERROR
+     * with finished stops, so the server can mark them as done
+     */
+    message ServerError {
+        enum Type {
+            OK = 0;
+            SERVER_ERROR = 1;
+        }
+        Type type = 1;
+
+        /**
+         * All stops, which were finished, when the server has been down
+         */
+        repeated CarStateProtocol.Stop stops = 2;
+    }
+    /**
+     * CarStatus information
+     * - full description is in the CarStateProtocol.proto
+     */
+    CarStateProtocol.CarStatus carStatus = 1;
+    ServerError server = 2;
+    string sessionId = 3;
+}
+
+/**
+ * StatusResponse information
+ * Response only to Status message
+ */
+message StatusResponse {
+    enum Type {
+        OK = 0;
+    }
+    Type type = 1;
+    string sessionId = 2;
+}
+
+/**
+ * Command message information
+ * - contains command for a car
+ */
+message Command {
+    /**
+     * CarCommand information
+     * - full description is in CarStateProtocol.proto
+     */
+    CarStateProtocol.CarCommand carCommand = 1;
+    string sessionId = 2;
+}
+
+/**
+ * CommandResponse information
+ * Response only to Command message
+ */
+message CommandResponse {
+    enum Type {
+        OK = 0;
+    }
+    Type type = 1;
+    string sessionId = 2;
+}

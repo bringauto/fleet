@@ -1,0 +1,168 @@
+/**
+ * Detailed description can be found at Car State Prorocol
+ * document located at our Google Disk
+ * https://drive.google.com/drive/folders/1ZE9VRs86QtP6GqTJBl6vRJLmkh1lTEc5
+ *
+ */
+
+syntax = "proto3";
+
+package CarStateProtocol;
+option go_package = "../internal/pkg/ba_proto;ba_proto";
+option csharp_namespace = "Google.Protobuf.ba_proto";
+
+/**
+ * Car status information.
+ * From Client to Server only
+ */
+message CarStatus {
+
+  message Telemetry {
+    /**
+     * vehicle speed in [m/s]
+     * - positive value implies Forward car moving,
+     * - negative value implies Backward car moving,
+     * - zero value implies that the car stays at a place.
+     */
+    double speed = 1;
+
+    /**
+     * Fuel of the car in percents.
+     * - 0.0 means empty battery or tank,
+     * - 1.0 means full battery or tank.
+     * Interpolation between 0.0 and 1.0 must be linear!
+     */
+    double fuel = 2;
+
+    /**
+     * Car position in the global map (WGS84)
+     */
+    Position position = 3;
+  }
+
+  message Position {
+    /**
+     * WGS84 latitude,
+     */
+    double latitude = 1;
+
+    /**
+     * WGS84 longitude
+     */
+    double longitude = 2;
+
+    /**
+     * altitude in [m]
+     */
+    double altitude = 3;
+  }
+
+  /**
+   * State of the car according to The Autonomy system.
+   * Change of the State is only possible as described - no side effects allowed!
+   */
+  enum State {
+    /**
+     * Car is in IDLE mode. Waiting for CarCommand message receive.
+     * This state assume that the CarStatus::telemetry::speed is zero!
+     */
+    IDLE = 0;
+
+    /**
+     * Car is driving (to the target stop).
+     */
+    DRIVE = 1;
+
+    /**
+     * Car is in the specified stop. It does not imply that the car is IDLE.
+     * This state assume that the CarStatus::telemetry::speed is zero!
+     */
+    IN_STOP = 2;
+
+    /**
+     * There is an Obstacle which will cause collision if not removed.
+     * The transition from this state to another is defined by The Autonomy implementation.
+     */
+    OBSTACLE = 3;
+
+    /**
+     * Car is in an error state.
+     * State reflects that the car is in critical condition and needs an assistance.
+     * The transition from this state to another is defined by The Autonomy implementation.
+     */
+    ERROR = 4;
+  }
+
+  /**
+   * Telemetry
+   */
+  Telemetry telemetry = 1;
+
+  /**
+   * State of the Car.
+   * If not set Car is in the IDLE state!
+   * OPTIONAL
+   */
+  State state = 2;
+
+  /**
+   * Name of the stop as specified in CarCommand::stops.
+   * OPTIONAL
+   */
+  Stop stop = 3;
+}
+
+
+
+/**
+ * Car commands received from BringAuto cloud
+ * From BAD to Client only.
+ */
+message CarCommand {
+
+    /**
+     * Action which car must take.
+     * Received action has an immediate effect to the state of the car (CarStatus::state)
+     * @see CarStatus::State
+     */
+    enum Action {
+      /**
+       * No action performed. Used as a default value.
+       * Does not interact with CarCommand::stops logic.
+       */
+      NO_ACTION = 0;
+
+      /**
+       * Stop The car!
+       * Independent on content of CarCommands::stops
+       */
+      STOP = 1;
+
+      /**
+       * Start the car!
+       * If there are stops in CarCommands::stops the car shall start driving to the next stop.
+       */
+      START = 2;
+    }
+
+  /**
+   * List of stops where the car shall go. Car goes from one stop to another by the order specified by the list.
+   * OPTIONAL
+   */
+  repeated Stop stops = 1;
+
+  Action action = 2;
+
+}
+
+/**
+ * Stop on the route.
+ */
+message Stop {
+
+  /**
+   * The name of the stop where to go.
+   */
+  string to = 1;
+
+}

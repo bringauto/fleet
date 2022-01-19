@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto", "Artin.BringAuto\Artin.BringAuto.csproj", "{73C1C8A1-8F0C-496B-9BDE-B6DC4907F2F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.DAL", "Artin.BringAuto.DAL\Artin.BringAuto.DAL.csproj", "{6E45EEC9-DE58-4487-9405-23D3AF33B4AC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.Mappings", "Artin.BringAuto.Mappings\Artin.BringAuto.Mappings.csproj", "{52351014-85A7-428B-ACD6-6902B6BAD6CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.Shared", "Artin.BringAuto.Shared\Artin.BringAuto.Shared.csproj", "{B89138C1-FE78-479B-B719-A9136BB95E62}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{1F178736-B570-471E-A999-4408D7DDFC76}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\.gitlab-ci.yml = ..\.gitlab-ci.yml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.MQTTClient", "Artin.BringAuto.MQTTClient\Artin.BringAuto.MQTTClient.csproj", "{D7D99A57-D51F-4961-B528-03E1E97D3167}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.MQTT.Api", "Artin.BringAuto.MQTT\Artin.BringAuto.MQTT.Api.csproj", "{0A1F2D30-7270-42D2-8D53-DFC226F46621}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73C1C8A1-8F0C-496B-9BDE-B6DC4907F2F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73C1C8A1-8F0C-496B-9BDE-B6DC4907F2F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73C1C8A1-8F0C-496B-9BDE-B6DC4907F2F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73C1C8A1-8F0C-496B-9BDE-B6DC4907F2F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E45EEC9-DE58-4487-9405-23D3AF33B4AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E45EEC9-DE58-4487-9405-23D3AF33B4AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E45EEC9-DE58-4487-9405-23D3AF33B4AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E45EEC9-DE58-4487-9405-23D3AF33B4AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52351014-85A7-428B-ACD6-6902B6BAD6CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52351014-85A7-428B-ACD6-6902B6BAD6CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52351014-85A7-428B-ACD6-6902B6BAD6CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52351014-85A7-428B-ACD6-6902B6BAD6CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89138C1-FE78-479B-B719-A9136BB95E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89138C1-FE78-479B-B719-A9136BB95E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89138C1-FE78-479B-B719-A9136BB95E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89138C1-FE78-479B-B719-A9136BB95E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7D99A57-D51F-4961-B528-03E1E97D3167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7D99A57-D51F-4961-B528-03E1E97D3167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7D99A57-D51F-4961-B528-03E1E97D3167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7D99A57-D51F-4961-B528-03E1E97D3167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A1F2D30-7270-42D2-8D53-DFC226F46621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A1F2D30-7270-42D2-8D53-DFC226F46621}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A1F2D30-7270-42D2-8D53-DFC226F46621}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A1F2D30-7270-42D2-8D53-DFC226F46621}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8E6F126D-5E25-4262-B90D-BB80121E7AB1}
+	EndGlobalSection
+EndGlobal
