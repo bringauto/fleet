@@ -5,10 +5,10 @@ Car has following attributes
 
 - `name: string`. Name of the car which will be shown in the GUI
 - `companyName: string`. Name of the company to which the Car belongs to
-- `underTest: bool`. If se to true we say that the car is in the test mode. If false the car is in normal mode.
+- `underTest: bool`. If set to true we say that the car is in the test mode. If false the car is in normal mode.
 - `routeId: int!`. Id of the Route entity. Each car can have assigned a Route
-- `carAdminPhone: string`. Phone to which the notofication about station deprature will be delivered
-- `callTwiml: string`. Twilio ML for station deperture notification
+- `carAdminPhone: string`. Phone to which the notification about station departure will be delivered
+- `callTwiml: string`. Twilio ML for station departure notification
 - `fuel: float!`. Battery level in percents. Standard values lies in [0, 1]
 
 Warning: not all attributes can be changed by GraphQL API.

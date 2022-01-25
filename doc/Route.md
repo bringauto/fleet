@@ -9,16 +9,16 @@ Station is a place where the car stops and waits for load/unload.
 
 Properties
 
-- `color: string`. String which represents color in format #FFFFFF
+- `color: string`. String which represents color in hex format #FFFFFF
 - `name: string`. Name of the route
 - `stops: [RouteStop]`
 - `RouteStop`:
   - `latitude: float`
   - `longitude: float`
-  - `order: int`. The route is constructed by sort of stops by `order` from the smallest to the largest
+  - `order: int`. The route is constructed by sorting stops by `order` from the smallest to the largest
   - `station: StationInfo`
   - `StationInfo`:
-  	- `id: int`. Id of the [Station] entity. other fields like `name` and `conactPhone` are taken from [Station] entity repersented by id
+  	- `id: int`. Id of the [Station] entity. other fields like `name` and `contactPhone` are taken from [Station] entity represented by id
 	- `name: string`. Id
 	- `contactPhone: string`. [Station] contact phone for Twilio notification
 
