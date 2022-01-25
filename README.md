@@ -46,7 +46,15 @@ simulate/test/develop each part of BringAuto Industrial Portal.
 If you found a bug or have an idea for a nice improvement please
 create an issue in the [GitHub Issue tracker].
 
-If you need help please consider to use [GitHub Discussion]
+If you need help please consider the use of [GitHub Discussion]
+
+## Roadmap
+
+- Robustness encryption of data stream
+- Robustness specification of [BringAuto Autonomy Host Protocol]
+- Multi-tenant support
+- Analysis of captured data
+- Complete Integration Workflow and Tools for platform providers
 
 [Etna]: https://github.com/bringauto/etna
 [Run Test Environment]: ./doc/RunTestEnvironment.md
