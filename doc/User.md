@@ -1,7 +1,7 @@
 
 # User
 
-standard user which interacs with application.
+Standard user which interacts with application.
 
 Each user is identified by `userName` and `email`.
 

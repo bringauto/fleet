@@ -3,11 +3,11 @@
 
 BringAuto Industrial Portal is a system that connects autonomous platforms with the end-user!
 
-Users can add orders, monitor the state of the platform, receive notifications about order fulfil, ... - has a complete overview about the platform.
+Users can add orders, monitor the state of the autinomous fleet, receive notifications about order fulfil, ... - has a complete overview about all platforms in the fleet.
 
 Main features
 
-- Simple end-user interface for autonomous platform control,
+- Simple end-user interface for managing fleet of autonomous vehicles,
 - Datastream for autonomous platform provider for further data processing (platform statistics)
 
 ![industrial portal](./doc/gif/Main_IndustrialPortal.gif)
@@ -17,21 +17,21 @@ Main features
 End-user
 
 - add order to the autonomous platform
-- receive notification about order complete
+- receive notifications
 - check stats of the platform like remaining battery, completed orders,
-- check approximately
+- monitor position of the platform
 
 Platform provider
 
 - consistent data stream
-- workflows for industrial portal deployment (how to create a map)
-- simple and general high customizable communication protocol between Autonomy system and the Industrial Platform
+- workflows for industrial portal deployment
+- simple and general highly customizable communication protocol between Autonomy system and the Autonomous Platform
 - virtual environment for testing and development - [Etna]
 
 ## Deploy Test Environment
 
 You can deploy test instance of Industrial Portal
-to Docker by our Virtual Environment [Etna] by [Run Test Environment].
+to Docker using our Virtual Environment called [Etna], check all steps in [Run Test Environment].
 
 ## How to connect your Autonomous Platform
 
@@ -40,6 +40,10 @@ to connect to the Industrial Portal.
 
 For the development and test purposes the [Etna] system can be used to
 simulate/test/develop each part of BringAuto Industrial Portal.
+
+## Documentation
+
+Detailed documentation can be found in [doc/] directory located in the repository root.
 
 ## Create a feature/bug report
 
@@ -61,4 +65,4 @@ If you need help please consider the use of [GitHub Discussion]
 [GitHub Issue tracker]: https://github.com/bringauto/industrial-portal/issues
 [GitHub Discussion]: https://github.com/bringauto/industrial-portal/discussions
 [BringAuto Autonomy Host Protocol]: https://drive.google.com/drive/folders/1ZE9VRs86QtP6GqTJBl6vRJLmkh1lTEc5
-
+[doc/]: ./doc

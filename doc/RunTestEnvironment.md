@@ -28,3 +28,6 @@ Prerequisites
 - `cd industrial-portal-init`
 - `pip3 install -r requirements.txt`
 - `python3 main.py`
+
+## Connect to industrial portal
+- Log into industrial portal on https://127.0.0.1:8011 using default account and password (Admin, Admin1)
