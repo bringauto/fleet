@@ -8,7 +8,7 @@ Industrial Portal is divided into two main parts
 
 Frontend is standard user interface written in vue.js.
 
-Backend stores and process data from an autonomous platform and serve
+Backend stores and process data from an autonomous platform and serves these
 data to FE in simple form ([GraphQL] API)
 
 Main entities served by BE to FE:
