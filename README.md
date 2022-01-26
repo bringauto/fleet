@@ -3,7 +3,7 @@
 
 BringAuto Industrial Portal is a system that connects autonomous platforms with the end-user!
 
-Users can add orders, monitor the state of the fleet, receive notifications about order fulfil, ... - has a complete overview about the platform.
+Users can add orders, monitor the state of the autinomous fleet, receive notifications about order fulfil, ... - has a complete overview about all platforms in the fleet.
 
 Main features
 
@@ -41,6 +41,10 @@ to connect to the Industrial Portal.
 For the development and test purposes the [Etna] system can be used to
 simulate/test/develop each part of BringAuto Industrial Portal.
 
+## Documentation
+
+Detailed documentation can be found in [doc/] directory located in the repository root.
+
 ## Create a feature/bug report
 
 If you found a bug or have an idea for a nice improvement please
@@ -53,4 +57,4 @@ If you need help please consider to use [GitHub Discussion]
 [GitHub Issue tracker]: https://github.com/bringauto/industrial-portal/issues
 [GitHub Discussion]: https://github.com/bringauto/industrial-portal/discussions
 [BringAuto Autonomy Host Protocol]: https://drive.google.com/drive/folders/1ZE9VRs86QtP6GqTJBl6vRJLmkh1lTEc5
-
+[doc/]: ./doc
