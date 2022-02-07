@@ -3,7 +3,7 @@
 
 BringAuto Industrial Portal is a system that connects autonomous platforms with the end-user!
 
-Users can add orders, monitor the state of the autinomous fleet, receive notifications about order fulfil, ... - has a complete overview about all platforms in the fleet.
+Users can add orders, monitor the state of the autonomous fleet, receive notifications about order fulfil, ... - has a complete overview about all platforms in the fleet.
 
 Main features
 
