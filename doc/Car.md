@@ -15,7 +15,7 @@ Warning: not all attributes can be changed by GraphQL API.
 
 ## Car - normal mode
 
-Normal mode in which tha car sends notification and users with User role can add orders.
+Normal mode in which the car sends notification and users with User role can add orders.
 
 ## Car - test mode
 

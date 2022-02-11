@@ -28,7 +28,7 @@ Platform provider
 - simple and general highly customizable communication protocol between Autonomy system and the Autonomous Platform
 - virtual environment for testing and development - [Etna]
 
-## Deploy Test Environment
+## How to try it - deploy Test Environment
 
 You can deploy test instance of Industrial Portal
 to Docker using our Virtual Environment called [Etna], check all steps in [Run Test Environment].
