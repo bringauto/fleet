@@ -216,8 +216,8 @@ const translations = {
       addRoute: "Create route",
       cars: "Cars",
       addCar: "Create car",
-      createCar: "Vytvořit auto",
-      editCar: "Vytvořit auto",
+      createCar: "Create car",
+      editCar: "Edit car",
       somethingWrong: "Something went wrong",
     },
     stations: {
