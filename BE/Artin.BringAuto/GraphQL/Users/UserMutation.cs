@@ -1,9 +1,11 @@
-﻿using Artin.BringAuto.DAL.Models;
+﻿using Artin.BringAuto.DAL;
+using Artin.BringAuto.DAL.Models;
 using Artin.BringAuto.Shared;
 using Artin.BringAuto.Shared.Users;
 using AutoMapper;
 using HotChocolate.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +19,15 @@ namespace Artin.BringAuto.GraphQL.Users
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMapper mapper;
+        private readonly BringAutoDbContext dbContext;
 
-        public UserMutation(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public UserMutation(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IMapper mapper,
+            BringAutoDbContext dbContext)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.mapper = mapper;
+            this.dbContext = dbContext;
         }
 
         [Authorize(Roles = new[] { RoleNames.Admin })]
@@ -32,12 +37,29 @@ namespace Artin.BringAuto.GraphQL.Users
             var result = await userManager.CreateAsync(appUser, user.Password);
             if (result.Succeeded)
             {
+
+                if (!await dbContext.Tenants.AnyAsync(x => x.Id == user.Tenant))
+                {
+                    await userManager.DeleteAsync(appUser);
+                    return IdentityResult.Failed(new IdentityError() { Code = "Unknown tenant", Description = "Specified tenant doesn't exist" });
+                }
+
+                dbContext.Add(new UserTenancy()
+                {
+                    UserId = appUser.Id,
+                    TenantId = user.Tenant
+                });
+
+                await dbContext.SaveChangesAsync();
+
                 var identityResult = await userManager.AddToRolesAsync(appUser, user.Roles);
                 if (!identityResult.Succeeded)
                 {
                     await userManager.DeleteAsync(appUser);
                     return identityResult;
                 }
+
+
             }
             return result;
         }

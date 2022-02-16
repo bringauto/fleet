@@ -126,6 +126,7 @@ namespace Artin.BringAuto
                      descriptor.AddField<MapMutation>();
                  })
                  .AddType<CarExtension>()
+                 .AddType<UserExtension>()
                  );
 
 
@@ -164,6 +165,7 @@ namespace Artin.BringAuto
             services.AddScoped<IUpdateCarByMQTTService, UpdateCarByMQTTService>();
             services.AddScoped<ITwillioCaller, TwillioCaller>();
             services.AddScoped<IIsInStationProcess, IsInStationProcess>();
+            services.AddScoped<ICurrentTenant, CurrentTenant>();
             services.Configure<TwillioConfig>(Configuration.GetSection(nameof(TwillioConfig)));
 
             services.AddCors(opt => opt.AddPolicy("AllowAll",
@@ -189,8 +191,9 @@ namespace Artin.BringAuto
                 ctx.Database.Migrate(); //Auto migrate database. 
 
                 scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>().SeedRolesAsync().GetAwaiter().GetResult();
+                
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                userManager.SeedUsersAsync().GetAwaiter().GetResult();
+                userManager.SeedUsersAsync(scope.ServiceProvider.GetRequiredService<BringAutoDbContext>()).GetAwaiter().GetResult();
 
                 try
                 { ctx.SaveChanges(); }

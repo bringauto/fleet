@@ -12,5 +12,7 @@ namespace Artin.BringAuto.Shared.Users
         public string Password { get; set; }
 
         public List<String> Roles { get; set; }
+
+        public int Tenant { get; set; }
     }
 }

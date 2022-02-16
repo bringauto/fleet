@@ -4,14 +4,16 @@ using Artin.BringAuto.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Artin.BringAuto.DAL.Migrations
 {
     [DbContext(typeof(BringAutoDbContext))]
-    partial class BringAutoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220216055927_TenancyData")]
+    partial class TenancyData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -403,28 +405,6 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.ToTable("Tenants");
                 });
 
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.UserTenancy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTenancy");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -680,23 +660,6 @@ namespace Artin.BringAuto.DAL.Migrations
                         .HasForeignKey("TenantId");
 
                     b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.UserTenancy", b =>
-                {
-                    b.HasOne("Artin.BringAuto.DAL.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Artin.BringAuto.DAL.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Tenant");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

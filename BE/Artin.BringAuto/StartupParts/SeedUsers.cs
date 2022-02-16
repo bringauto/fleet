@@ -1,4 +1,5 @@
-﻿using Artin.BringAuto.DAL.Models;
+﻿using Artin.BringAuto.DAL;
+using Artin.BringAuto.DAL.Models;
 using Artin.BringAuto.Shared;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,25 +12,41 @@ namespace Artin.BringAuto.StartupParts
 {
     public static class SeedUsers
     {
-        public static async Task SeedUsersAsync(this UserManager<ApplicationUser> userManager)
+        public static async Task SeedUsersAsync(this UserManager<ApplicationUser> userManager, BringAutoDbContext context)
         {
-            await CheckCreateUserAsync(userManager, RoleNames.Admin, RoleNames.Admin);
-            await CheckCreateUserAsync(userManager, RoleNames.User, RoleNames.User);
-            await CheckCreateUserAsync(userManager, RoleNames.Privileged, RoleNames.Privileged);
-            await CheckCreateUserAsync(userManager, RoleNames.Driver, RoleNames.Driver);
+            await CheckCreateUserAsync(context, userManager, RoleNames.Admin, RoleNames.Admin, RoleNames.Admin + "1", "BringAuto");
+            await CheckCreateUserAsync(context, userManager, RoleNames.User, RoleNames.User, RoleNames.User + "1", "BringAuto");
+            await CheckCreateUserAsync(context, userManager, RoleNames.Privileged, RoleNames.Privileged, RoleNames.Privileged + "1", "BringAuto");
+            await CheckCreateUserAsync(context, userManager, RoleNames.Driver, RoleNames.Driver, RoleNames.Driver + "1", "BringAuto");
 
-            await CheckCreateUserAsync(userManager, "BorsodChem", RoleNames.User, "bringauto");
-            await CheckCreateUserAsync(userManager, "BorsodChemAdmin", RoleNames.Privileged, "bringautopilot");
-            await CheckCreateUserAsync(userManager, "BringAuto", RoleNames.Driver, "bringautothebest");
+            await CheckCreateUserAsync(context, userManager, "BorsodChem", RoleNames.User, "bringauto", "BorsodChem");
+            await CheckCreateUserAsync(context, userManager, "BorsodChemAdmin", RoleNames.Privileged, "bringautopilot", "BorsodChem");
+            await CheckCreateUserAsync(context, userManager, "BringAuto", RoleNames.Driver, "bringautothebest", "BorsodChem");
         }
 
 
 
-        private static async Task CheckCreateUserAsync(UserManager<ApplicationUser> userManager, string user, string role, string pass = null)
+        private static async Task CheckCreateUserAsync(BringAutoDbContext context, UserManager<ApplicationUser> userManager, string user, string role, string pass, string tenant)
         {
             var exist = await userManager.FindByNameAsync(user);
             if (exist is null)
-                await userManager.CreateUserAsync(user, role, pass ?? user + "1");
+                await userManager.CreateUserAsync(user, role, pass);
+
+            exist = await userManager.FindByNameAsync(user);
+
+            var tenantEntry = context.Tenants.FirstOrDefault(x => x.Name == tenant);
+            if (tenantEntry is null)
+                tenantEntry = new Tenant() { Name = tenant };
+
+            var tenantAssign = new UserTenancy()
+            {
+                UserId = exist.Id,
+                Tenant = tenantEntry,
+            };
+
+            context.Add(tenantAssign);
+            await context.SaveChangesAsync();
+
         }
 
         public static async Task CreateUserAsync(this UserManager<ApplicationUser> userManager, string username, string role, string pass)

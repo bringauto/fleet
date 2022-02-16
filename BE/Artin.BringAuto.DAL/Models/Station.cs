@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Artin.BringAuto.DAL.Models
 {
-    public class Station : IId<int>
+    public class Station : IId<int>, ITenancy
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,5 +16,9 @@ namespace Artin.BringAuto.DAL.Models
 
         [Phone]
         public string ContactPhone { get; set; }
+
+        [ForeignKey(nameof(Tenant))]
+        public int? TenantId { get; set; }
+        public Tenant Tenant { get; set; }
     }
 }

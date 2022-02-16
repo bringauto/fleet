@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Artin.BringAuto.DAL.Models
 {
-    public class Map : IId<int>
+    public class Map : IId<int>, ITenancy
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,6 +23,10 @@ namespace Artin.BringAuto.DAL.Models
         public Double MaxLongitude { get; set; }
         public Double MinLatitude { get; set; }
         public Double MaxLatitude { get; set; }
+
+        [ForeignKey(nameof(Tenant))]
+        public int? TenantId { get; set; }
+        public Tenant Tenant { get; set; }
 
     }
 }
