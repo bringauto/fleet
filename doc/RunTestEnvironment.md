@@ -1,5 +1,5 @@
 
-# Industrial Portal Test deploy
+# BringAuto Fleet Test deploy
 
 Prerequisites
 
@@ -13,21 +13,21 @@ Prerequisites
 
 - `git clone https://github.com/bringauto/etna.git`
 - `cd etna`
-- `docker-compose --profile=without-industrial-portal up`
+- `docker-compose --profile=without-ba-fleet up`
 
-## Build Industrial Portal App
+## Build BringAuto Fleet App
 
-- `git clone https://github.com/bringauto/industrial-portal.git`
+- `git clone https://github.com/bringauto/fleet.git`
 - `cd industrial-portal`
 - `docker-compose build`
 - `docker-compose up`
 
 ## Initialize Test Database
 
-- `git clone https://github.com/bringauto/industrial-portal-init.git`
-- `cd industrial-portal-init`
+- `git clone https://github.com/bringauto/fleet-init.git`
+- `cd fleet-init`
 - `pip3 install -r requirements.txt`
 - `python3 main.py`
 
-## Connect to industrial portal
+## Connect to BringAuto Fleet
 - Log into industrial portal on https://127.0.0.1:8011 using default account and password (Admin, Admin1)
