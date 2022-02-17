@@ -1,4 +1,5 @@
-﻿using Artin.BringAuto.DAL.Models;
+﻿using Artin.BringAuto.DAL;
+using Artin.BringAuto.DAL.Models;
 using Artin.BringAuto.Shared;
 using Artin.BringAuto.Shared.Users;
 using AutoMapper;
@@ -23,14 +24,17 @@ namespace Artin.BringAuto.GraphQL.Users
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly BringAutoDbContext dbContext;
         private readonly IMapper mapper;
 
         public UserQuery(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            BringAutoDbContext dbContext,
             IMapper mapper)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.dbContext = dbContext;
             this.mapper = mapper;
         }
 
@@ -55,7 +59,7 @@ namespace Artin.BringAuto.GraphQL.Users
         [Authorize(Roles = new[] { RoleNames.Admin })]
         public async Task<List<User>> GetAll()
         {
-            return await userManager.Users.ProjectTo<User>(mapper.ConfigurationProvider).ToListAsync();
+            return await dbContext.UserTenancy.Select(x=>x.User).ProjectTo<User>(mapper.ConfigurationProvider).ToListAsync();
         }
 
         public async Task<bool> GetLogout()

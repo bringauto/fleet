@@ -12,7 +12,7 @@ namespace Artin.BringAuto.Services
     {
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public const string HeaderName = "Tenant";
+        public const string HeaderName = "tenant";
 
         public CurrentTenant(IHttpContextAccessor httpContextAccessor)
         {

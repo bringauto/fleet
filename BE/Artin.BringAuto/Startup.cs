@@ -8,6 +8,7 @@ using Artin.BringAuto.GraphQL.Routes;
 using Artin.BringAuto.GraphQL.Stations;
 using Artin.BringAuto.GraphQL.Users;
 using Artin.BringAuto.Helpers;
+using Artin.BringAuto.Middlewares;
 using Artin.BringAuto.MQTTClient;
 using Artin.BringAuto.Providers;
 using Artin.BringAuto.Services;
@@ -224,6 +225,8 @@ namespace Artin.BringAuto
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<TenantMiddleware>();
 
             app.UseGraphQL("/graphql");
             app.UseSpaStaticFiles();

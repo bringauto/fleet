@@ -14,7 +14,9 @@ namespace Artin.BringAuto.Mappings
         public UserMap()
         {
             CreateMap<Artin.BringAuto.DAL.Models.ApplicationUser, User>().ReverseMap();
-            CreateMap<NewUser, ApplicationUser>();
+            CreateMap<UpdateUser, ApplicationUser>();
+            CreateMap<NewUser, ApplicationUser>()
+                .IncludeBase<UpdateUser, ApplicationUser>();
                 
         }
     }

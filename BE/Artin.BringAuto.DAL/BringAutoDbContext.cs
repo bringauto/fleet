@@ -32,12 +32,14 @@ namespace Artin.BringAuto.DAL
 
             builder.Entity<LocationHistory>().HasIndex(x => x.Time);
             builder.Entity<LocationHistory>().HasIndex(x => new { x.Latitude, x.Longitude, x.Time });
+            builder.Entity<Tenant>().HasIndex(x => x.Name).IsUnique();
 
             TenantFilter<Car>(builder);
             TenantFilter<Map>(builder);
             TenantFilter<Route>(builder);
             TenantFilter<RouteStop>(builder);
             TenantFilter<Station>(builder);
+            builder.Entity<UserTenancy>().HasQueryFilter(x => tenantId.HasValue && tenantId == x.TenantId);
 
             base.OnModelCreating(builder);
         }
