@@ -2,6 +2,7 @@
 using Artin.BringAuto.DAL.Models;
 using Artin.BringAuto.Shared;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,17 +35,21 @@ namespace Artin.BringAuto.StartupParts
 
             exist = await userManager.FindByNameAsync(user);
 
-            var tenantEntry = context.Tenants.FirstOrDefault(x => x.Name == tenant);
+            var tenantEntry = await context.Tenants.FirstOrDefaultAsync(x => x.Name == tenant);
             if (tenantEntry is null)
                 tenantEntry = new Tenant() { Name = tenant };
 
-            var tenantAssign = new UserTenancy()
+            var tenantAssign = await context.UserTenancy.FirstOrDefaultAsync(x => x.Tenant.Name == tenant && x.UserId == exist.Id);
+            if (tenantAssign is null)
             {
-                UserId = exist.Id,
-                Tenant = tenantEntry,
-            };
+                tenantAssign = new UserTenancy()
+                {
+                    UserId = exist.Id,
+                    Tenant = tenantEntry,
+                };
 
-            context.Add(tenantAssign);
+                context.Add(tenantAssign);
+            }
             await context.SaveChangesAsync();
 
         }

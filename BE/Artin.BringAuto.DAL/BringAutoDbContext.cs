@@ -39,7 +39,7 @@ namespace Artin.BringAuto.DAL
             TenantFilter<Route>(builder);
             TenantFilter<RouteStop>(builder);
             TenantFilter<Station>(builder);
-            builder.Entity<UserTenancy>().HasQueryFilter(x => tenantId.HasValue && tenantId == x.TenantId);
+            builder.Entity<UserTenancy>().HasQueryFilter(x => !tenantId.HasValue || tenantId == x.TenantId);
 
             base.OnModelCreating(builder);
         }

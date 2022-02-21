@@ -1,6 +1,7 @@
 ﻿using Artin.BringAuto.DAL;
 using Artin.BringAuto.DAL.Models;
 using Artin.BringAuto.Shared;
+using Artin.BringAuto.Shared.Tenants;
 using Artin.BringAuto.Shared.Users;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -25,16 +26,19 @@ namespace Artin.BringAuto.GraphQL.Users
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly BringAutoDbContext dbContext;
+        private readonly ITenantRepository tenantRepository;
         private readonly IMapper mapper;
 
         public UserQuery(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             BringAutoDbContext dbContext,
+            ITenantRepository tenantRepository,
             IMapper mapper)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.dbContext = dbContext;
+            this.tenantRepository = tenantRepository;
             this.mapper = mapper;
         }
 
@@ -69,7 +73,7 @@ namespace Artin.BringAuto.GraphQL.Users
         }
 
         [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.Driver, RoleNames.Privileged, RoleNames.User })]
-        public async Task<User> GetMe(Login login, [Service] IHttpContextAccessor httpContextAccessor)
+        public async Task<User> GetMe([Service] IHttpContextAccessor httpContextAccessor)
         {
             var userDal = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
 

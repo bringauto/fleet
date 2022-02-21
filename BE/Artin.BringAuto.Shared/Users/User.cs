@@ -14,6 +14,5 @@ namespace Artin.BringAuto.Shared.Users
 
         public IEnumerable<String> Roles { get; set; }
 
-        public IEnumerable<Tenant> Tenants{ get; set; }
     }
 }
