@@ -23,11 +23,15 @@ namespace Artin.BringAuto.GraphQL.Users
         private readonly ICurrentUserId currentUser;
         private readonly BringAutoDbContext dbContext;
         private readonly ICurrentTenant currentTenant;
+        private readonly ICurrentRoles currentRoles;
 
-        public UserMutation(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IMapper mapper,
-            ICurrentUserId currentUser,
-            BringAutoDbContext dbContext,
-            ICurrentTenant currentTenant)
+        public UserMutation(RoleManager<IdentityRole> roleManager,
+                            UserManager<ApplicationUser> userManager,
+                            IMapper mapper,
+                            ICurrentUserId currentUser,
+                            BringAutoDbContext dbContext,
+                            ICurrentTenant currentTenant,
+                            ICurrentRoles currentRoles)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -35,14 +39,18 @@ namespace Artin.BringAuto.GraphQL.Users
             this.currentUser = currentUser;
             this.dbContext = dbContext;
             this.currentTenant = currentTenant;
+            this.currentRoles = currentRoles;
         }
 
-        [Authorize(Roles = new[] { RoleNames.Admin })]
+        [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.SuperAdmin })]
         public async Task<IdentityResult> Add(NewUser user)
         {
 
             if (user.Roles?.Any() != true && string.IsNullOrEmpty(user.NewTenantName))
                 return IdentityResult.Failed(new IdentityError() { Code = "Unkown role", Description = "New tenant name od roles has to be defined" });
+
+            if (!String.IsNullOrWhiteSpace(user.NewTenantName) && !currentRoles.Roles.Contains(RoleNames.SuperAdmin))
+                return IdentityResult.Failed(new IdentityError() { Code = "Forbidden", Description = "Only Super admin can add new tenant" });
 
             var appUser = mapper.Map<ApplicationUser>(user);
 
@@ -136,7 +144,7 @@ namespace Artin.BringAuto.GraphQL.Users
             return tenant.Id;
         }
 
-        [Authorize(Roles = new[] { RoleNames.Admin })]
+        [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.SuperAdmin })]
         public async Task<IdentityResult> Update(UpdateUser user)
         {
             var appUser = await userManager.FindByNameAsync(user.UserName);
@@ -151,7 +159,7 @@ namespace Artin.BringAuto.GraphQL.Users
             return result;
         }
 
-        [Authorize(Roles = new[] { RoleNames.Admin })]
+        [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.SuperAdmin })]
         public async Task<IdentityResult> Delete(NewUser user)
         {
             var appUser = await userManager.FindByNameAsync(user.UserName);
