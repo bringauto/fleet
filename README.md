@@ -1,7 +1,7 @@
 
-# Industrial Portal
+# BringAuto Fleet Management
 
-BringAuto Industrial Portal is a system that connects autonomous platforms with the end-user!
+BringAuto Fleet is a system that connects autonomous platforms with the end-user!
 
 Users can add orders, monitor the state of the autonomous fleet, receive notifications about order fulfil, ... - has a complete overview about all platforms in the fleet.
 
@@ -10,7 +10,7 @@ Main features
 - Simple end-user interface for managing fleet of autonomous vehicles,
 - Datastream for autonomous platform provider for further data processing (platform statistics)
 
-![industrial portal](./doc/gif/Main_IndustrialPortal.gif)
+![BringAuto Fleet Management](./doc/gif/Main_IndustrialPortal.gif)
 
 ## Functionality
 
@@ -24,22 +24,22 @@ End-user
 Platform provider
 
 - consistent data stream
-- workflows for industrial portal deployment
-- simple and general highly customizable communication protocol between Autonomy system and the Autonomous Platform
+- workflows for fleet deployment
+- simple and general highly customizable communication protocol between the Autonomy system and the Autonomous Platform
 - virtual environment for testing and development - [Etna]
 
 ## How to try it - deploy Test Environment
 
-You can deploy test instance of Industrial Portal
+You can deploy test instance of BringAuto Fleet
 to Docker using our Virtual Environment called [Etna], check all steps in [Run Test Environment].
 
 ## How to connect your Autonomous Platform
 
 Third party Autonomous platform must comply [BringAuto Autonomy Host Protocol]
-to connect to the Industrial Portal.
+to connect to the Fleet Management.
 
 For the development and test purposes the [Etna] system can be used to
-simulate/test/develop each part of BringAuto Industrial Portal.
+simulate/test/develop each part of BringAuto Fleet Management.
 
 ## Documentation
 
