@@ -13,7 +13,7 @@ Prerequisites
 
 - `git clone https://github.com/bringauto/etna.git`
 - `cd etna`
-- `docker-compose --profile=without-ba-fleet up`
+- `docker-compose --profile=without-fleet up`
 
 ## Build BringAuto Fleet App
 
