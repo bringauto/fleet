@@ -1,8 +1,8 @@
 ﻿version: '3.0'
 
 services:
-  industrialPortal:
-    image: bring-auto-industrial-portal
+  BringAutoFleet:
+    image: bringauto-fleet
     restart: always
     environment:
       ASPNETCORE_ENVIRONMENT: BringAutoTest

@@ -1,5 +1,5 @@
 
-# BringAuto Fleet Management
+# BringAuto Fleet
 
 BringAuto Fleet is a system that connects autonomous platforms with the end-user!
 
@@ -10,7 +10,7 @@ Main features
 - Simple end-user interface for managing fleet of autonomous vehicles,
 - Datastream for autonomous platform provider for further data processing (platform statistics)
 
-![BringAuto Fleet Management](./doc/gif/Main_IndustrialPortal.gif)
+![BringAuto Fleet](./doc/gif/Main_Fleet.gif)
 
 ## Functionality
 
@@ -24,8 +24,8 @@ End-user
 Platform provider
 
 - consistent data stream
-- workflows for fleet deployment
-- simple and general highly customizable communication protocol between the Autonomy system and the Autonomous Platform
+- workflows for a Fleet deployment
+- simple and general highly customizable communication protocol between Autonomy system and the Autonomous Platform
 - virtual environment for testing and development - [Etna]
 
 ## How to try it - deploy Test Environment
@@ -36,10 +36,10 @@ to Docker using our Virtual Environment called [Etna], check all steps in [Run T
 ## How to connect your Autonomous Platform
 
 Third party Autonomous platform must comply [BringAuto Autonomy Host Protocol]
-to connect to the Fleet Management.
+to connect to the BringAuto Fleet.
 
 For the development and test purposes the [Etna] system can be used to
-simulate/test/develop each part of BringAuto Fleet Management.
+simulate/test/develop each part of BringAuto Fleet.
 
 ## Documentation
 
@@ -62,7 +62,7 @@ If you need help please consider the use of [GitHub Discussion]
 
 [Etna]: https://github.com/bringauto/etna
 [Run Test Environment]: ./doc/RunTestEnvironment.md
-[GitHub Issue tracker]: https://github.com/bringauto/industrial-portal/issues
-[GitHub Discussion]: https://github.com/bringauto/industrial-portal/discussions
+[GitHub Issue tracker]: https://github.com/bringauto/fleet/issues
+[GitHub Discussion]: https://github.com/bringauto/fleet/discussions
 [BringAuto Autonomy Host Protocol]: https://drive.google.com/drive/folders/1ZE9VRs86QtP6GqTJBl6vRJLmkh1lTEc5
 [doc/]: ./doc

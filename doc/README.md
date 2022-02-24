@@ -1,7 +1,7 @@
 
-# Industrial Portal Entities and logic
+# BringAuto Fleet Entities and logic
 
-Industrial Portal is divided into two main parts
+Fleet is divided into two main parts
 
 - Frontend (FE)
 - Backend (BE)

@@ -4,7 +4,7 @@
 - Entry Point HTTPS: https://<our_ip_domain>/graphql
 - Entry Point HTTP: http://<our_ip_domain>/graphql
 
-Industrial Portal has a GraphQL API mainly used to access entities like
+BringAuto Fleet has a GraphQL API mainly used to access entities like
 
 - [Car]
 - [Route]
