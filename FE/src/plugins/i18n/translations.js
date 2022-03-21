@@ -1,7 +1,7 @@
 const translations = {
   cs: {
     general: {
-      appName: "Industrial Portal",
+      appName: "BringAuto Fleet",
       order: "Objednat",
       showOrders: "Zobrazit objednávky",
       orders: "Objednávky",
@@ -168,7 +168,7 @@ const translations = {
   // English
   en: {
     general: {
-      appName: "Industrial Portal",
+      appName: "BringAuto Fleet",
       order: "Order",
       showOrders: "View orders",
       orders: "Orders",

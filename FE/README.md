@@ -1,18 +1,22 @@
-# vue-template-notum
+# BringAuto Fleet Front-End
 
 ## Project setup
+Environment variablest to setup:
+    APP_VUE_GRAPHQL_URL 
+    APP_VUE_SENTRY_URL 
+
 ```
-yarn install
+npm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+npm run serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn build
+npm run build
 ```
 
 ### Run your unit tests
@@ -22,7 +26,7 @@ yarn test:unit
 
 ### Lints and fixes files
 ```
-yarn lint
+npm run lint
 ```
 
 ### Customize configuration
