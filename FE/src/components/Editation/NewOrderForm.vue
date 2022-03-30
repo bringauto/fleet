@@ -116,10 +116,12 @@ export default {
   async mounted() {
     await this.initForm();
   },
+
   methods: {
     async initForm() {
       this.stations = await stationApi.getStations();
       const cars = await carApi.getCarsWithoutHistory();
+
       this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
       this.priorities = getPrioEnumAccordingToRole(this.$store.state.user.roles);
       if (this.editig) {

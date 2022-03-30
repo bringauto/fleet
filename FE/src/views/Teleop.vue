@@ -82,6 +82,7 @@ export default {
         });
       }
     },
+
     async updateSelectedOrder(obj) {
       const dto = {
         car: obj.car.id,
@@ -115,6 +116,7 @@ export default {
         id: obj.car.id,
         name: obj.car.name,
         status: obj.status,
+        underTest: obj.underTest ?? false,
       };
       try {
         await carApi.updateCar(dto);
