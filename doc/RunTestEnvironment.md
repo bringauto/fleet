@@ -18,7 +18,7 @@ Prerequisites
 ## Build BringAuto Fleet App
 
 - `git clone https://github.com/bringauto/fleet.git`
-- `cd industrial-portal`
+- `cd fleet`
 - `docker-compose build`
 - `docker-compose up`
 
