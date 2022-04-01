@@ -130,8 +130,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.car.updateFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
       await this.getAllCars();
     },
