@@ -162,8 +162,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.createFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
     async updateOrder() {
@@ -188,8 +188,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.updateFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
   },

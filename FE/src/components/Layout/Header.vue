@@ -82,8 +82,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.user.logoutFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
     handleChangeLang(val) {

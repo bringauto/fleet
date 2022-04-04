@@ -106,8 +106,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.updateFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
     async updateSelectedCar(obj) {
