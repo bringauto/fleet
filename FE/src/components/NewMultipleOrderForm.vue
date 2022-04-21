@@ -106,16 +106,23 @@ export default {
     },
     carId: {
       handler(val) {
+        console.log("val", val);
         if (val) {
           const { routeId } = this.cars.find((car) => car.id === val);
+          console.log("Route id:", routeId);
           if (routeId) {
             const selectedRoute = this.routes.find((route) => route.id === routeId);
+            console.log("selected route:", selectedRoute);
             this.mappedStations = selectedRoute.stops.reduce((acc, stop) => {
+              console.log("mapped stations:", this.mappedStations);
               if (stop.station) {
                 acc.push({ ...stop.station, checked: true });
+                console.log("acc:", acc);
               }
               return acc;
             }, []);
+          } else if (routeId === null) {
+            this.mappedStations = this.stations;
           }
         } else {
           this.mappedStations = this.stations;
