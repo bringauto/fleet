@@ -154,7 +154,7 @@ namespace Artin.BringAuto.GraphQL.Users
             {
                 var roles = await userManager.GetRolesAsync(appUser);
                 await userManager.RemoveFromRolesAsync(appUser, roles.Where(x => !user.Roles.Contains(x)));
-                return await userManager.AddToRolesAsync(appUser, user.Roles);
+                return await userManager.AddToRolesAsync(appUser, user.Roles.Where(r=> !roles.Contains(r)));
             }
             return result;
         }

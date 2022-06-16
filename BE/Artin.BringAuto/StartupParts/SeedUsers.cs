@@ -72,6 +72,7 @@ namespace Artin.BringAuto.StartupParts
         {
             await CheckCreateRoleAsync(roleManager, RoleNames.Driver);
             await CheckCreateRoleAsync(roleManager, RoleNames.Admin);
+            await CheckCreateRoleAsync(roleManager, RoleNames.SuperAdmin);
             await CheckCreateRoleAsync(roleManager, RoleNames.User);
             await CheckCreateRoleAsync(roleManager, RoleNames.Privileged);
         }
