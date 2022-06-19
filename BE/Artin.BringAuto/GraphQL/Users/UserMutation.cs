@@ -57,14 +57,7 @@ namespace Artin.BringAuto.GraphQL.Users
             var result = await userManager.CreateAsync(appUser, user.Password);
             if (result.Succeeded)
             {
-
                 var tenantId = currentTenant.GetTenantId();
-                if (!tenantId.HasValue)
-                {
-                    await userManager.DeleteAsync(appUser);
-                    return IdentityResult.Failed(new IdentityError() { Code = "Unknown tenant", Description = "Specified tenant doesn't exist" });
-                }
-
                 if (!String.IsNullOrWhiteSpace(user.NewTenantName))
                 {
                     try
@@ -79,8 +72,13 @@ namespace Artin.BringAuto.GraphQL.Users
                     user.Roles ??= new List<string>();
                     user.Roles.Add(RoleNames.Admin);
                 }
-
-
+                tenantId = currentTenant.GetTenantId();
+                if (!tenantId.HasValue)
+                {
+                        await userManager.DeleteAsync(appUser);
+                        return IdentityResult.Failed(new IdentityError() { Code = "Unknown tenant", Description = "Specified tenant doesn't exist" });
+                }
+             
                 dbContext.Add(new UserTenancy()
                 {
                     UserId = appUser.Id,
