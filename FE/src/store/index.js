@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { apolloClient } from "../plugins/apollo";
-import { ActionNames, MutationNames, GetterNames } from "./enums/vuexEnums";
+import { ActionNames, GetterNames, MutationNames } from "./enums/vuexEnums";
 import { GET_ME } from "../code/graphql/queries";
 import { RoleEnum } from "../code/enums/roleEnums";
 
@@ -37,7 +37,7 @@ export default new Vuex.Store({
     [ActionNames.GetMe]: async ({ commit }) => {
       try {
         const { data } = await apolloClient.query({ query: GET_ME });
-
+        console.log(data);
         commit(MutationNames.SetMe, data && data.UserQuery.me);
       } catch (error) {
         console.error(error);
