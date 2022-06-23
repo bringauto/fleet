@@ -12,7 +12,7 @@ FROM node:16 AS build-env-FE
 WORKDIR /app
 
 COPY ./FE ./
-RUN npm install -g npm@8.12.2 -g eslint@8.13.0
+RUN npm install
 RUN npm run lint
 RUN npm run build
 

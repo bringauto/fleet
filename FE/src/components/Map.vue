@@ -195,7 +195,7 @@ export class tenantsId {}
   }
 
   .car-icon {
-    background: url("/img/activeMarker.svg") no-repeat;
+    background: url("../../public/img/activeMarker.svg") no-repeat;
     background-size: cover;
     background-position: center !important;
     line-height: 45px;
@@ -206,7 +206,7 @@ export class tenantsId {}
     transition: transform 0.2s ease;
 
     &.disabled {
-      background: url("/img/defaultMarker.svg") no-repeat;
+      background: url("../../public/img/defaultMarker.svg") no-repeat;
       background-size: cover;
       background-position: center !important;
     }
