@@ -3,13 +3,13 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <ValidationProvider v-slot="{ errors }" rules="required" :name="$t('general.name')">
+          <ValidationProvider v-slot="{ errors }" :name="$t('general.name')" rules="required">
             <v-text-field
-              :label="$t('general.name')"
-              required
-              hide-details
-              :value="route.name"
               :error-messages="errors"
+              :label="$t('general.name')"
+              :value="route.name"
+              hide-details
+              required
               @input="$emit('update:route', { ...route, name: $event })"
             />
           </ValidationProvider>
@@ -17,11 +17,11 @@
         <v-col cols="12" md="6">
           <v-text-field
             v-model="color"
-            :value="route.color"
             :background-color="color"
-            outlined
-            hide-details
+            :value="route.color"
             append-icon="mdi-invert-colors"
+            hide-details
+            outlined
             @click:append="hover = !hover"
           />
         </v-col>
@@ -40,44 +40,35 @@
               </v-col>
             </v-col>
             <v-col cols="12" md="6">
-              <v-card max-height="370" class="overflow-y-auto overflow-x-hidden">
+              <v-card class="overflow-y-auto overflow-x-hidden" max-height="370">
                 <v-row v-for="(stop, index) in route.stops" :key="index" align="center">
                   <v-col
-                    cols="12"
-                    md="12"
-                    class="d-flex align-center"
                     :color="color"
+                    class="d-flex align-center"
+                    cols="12"
                     data-test="index"
+                    md="12"
                   >
                     <v-select
                       :items="stations"
                       :label="$t('settings.stations')"
                       :value="stop.station && stop.station.id ? stop.station.id : undefined"
-                      return-object
-                      hide-details
                       clearable
+                      hide-details
                       item-text="name"
                       item-value="id"
+                      return-object
                       solo
-                      @click:clear="handleRemovePointStation(index, getStation($event))"
                       @input="handleChangeStationVal(index, getStation($event))"
+                      @click:clear="handleRemovePointStation(index, getStation($event))"
                     />
-                    <!--                    <v-btn
-                      small
-                      :icon="!$vuetify.breakpoint.mobile"
-                      :block="$vuetify.breakpoint.mobile"
-                      color="error"
-                      @click="handleRemovePointStation(index)"
-                    >
-                      <v-icon id="deleteIcon" ref="deleteIcon"> mdi-delete </v-icon>
-                    </v-btn>-->
                   </v-col>
                 </v-row>
                 <v-row align="center" justify="center">
                   <v-col cols="12" md="2">
                     <v-btn
-                      :icon="!$vuetify.breakpoint.mobile"
                       :block="$vuetify.breakpoint.mobile"
+                      :icon="!$vuetify.breakpoint.mobile"
                       color="success"
                       @click="handleAddPointStation()"
                     >
@@ -90,15 +81,15 @@
           </v-row>
         </v-col>
         <v-col v-if="!isHidden" cols="12" md="12">
-          <v-card max-height="200" class="overflow-y-auto">
+          <v-card class="overflow-y-auto" max-height="200">
             <v-responsive :aspect-ratio="16 / 9">
               <v-card-text>
                 <v-row v-for="(stop, index) in route.stops" :key="index" align="center">
                   <v-col cols="12" md="11">
                     <v-text-field
                       :label="$t('stations.position')"
-                      hide-details
                       :value="positionValue(stop)"
+                      hide-details
                       @input="handleChangeStopVal(index, getLatLong($event))"
                     >
                       <template v-slot:append>
@@ -112,10 +103,10 @@
                     </v-text-field>
                   </v-col>
                   <v-btn
-                    small
-                    :icon="!$vuetify.breakpoint.mobile"
                     :block="$vuetify.breakpoint.mobile"
+                    :icon="!$vuetify.breakpoint.mobile"
                     color="error"
+                    small
                     @click="handleRemovePoint(index)"
                   >
                     <v-icon small> mdi-delete</v-icon>
@@ -124,8 +115,8 @@
                 <v-row align="center" justify="center">
                   <v-col cols="12" md="2">
                     <v-btn
-                      :icon="!$vuetify.breakpoint.mobile"
                       :block="$vuetify.breakpoint.mobile"
+                      :icon="!$vuetify.breakpoint.mobile"
                       color="success"
                       @click="handleAddPoint()"
                     >
@@ -218,17 +209,6 @@ export default {
       this.nextId += 1;
       this.$emit("update:route", { ...this.route, stops });
     },
-    /* handleAddPointStation() {
-      const { station } = this.stations;
-      station.push({
-        longitude: 0,
-        latitude: 0,
-        name: this.station.name,
-        stationId: { id: this.nextId },
-      });
-      this.nextId += 1;
-      this.$emit("update:route", { ...this.route, station });
-    }, */
   },
 };
 </script>
