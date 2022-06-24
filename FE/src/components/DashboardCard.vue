@@ -12,7 +12,7 @@
         {{ $t("general.orders") }}
       </v-btn>
       <v-row justify="center" align="center" class="px-3">
-        <p class="text-h4 mb-0 mr-3 dash-card__lenght" @click="showOrder = !showOrder">
+        <p class="text-h4 mb-0 mr-3 dash-card__length" @click="showOrder = !showOrder">
           {{ car.orders.nodes.length }}
         </p>
         <v-btn icon color="primary" :disabled="car.underTest" @click="handleNewOrder">
@@ -128,7 +128,7 @@ export default {
     };
   },
   computed: {
-    carStete() {
+    carState() {
       return (state) => {
         const { trans } = this.getCarState(state);
         return trans;
@@ -173,8 +173,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.deleteFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
   },

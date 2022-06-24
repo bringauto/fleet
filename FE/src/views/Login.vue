@@ -125,8 +125,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.user.loginFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
   },
@@ -134,7 +134,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/assets/styles/variables.scss";
+@import "../assets/styles/variables.scss";
 
 .login {
   background: $white !important;

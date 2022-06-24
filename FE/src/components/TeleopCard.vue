@@ -189,8 +189,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.deleteFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
     handleNewOrder() {

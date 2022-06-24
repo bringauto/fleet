@@ -82,6 +82,7 @@ export default {
         });
       }
     },
+
     async updateSelectedOrder(obj) {
       const dto = {
         car: obj.car.id,
@@ -105,8 +106,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.updateFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
     async updateSelectedCar(obj) {
@@ -115,6 +116,7 @@ export default {
         id: obj.car.id,
         name: obj.car.name,
         status: obj.status,
+        underTest: obj.underTest ?? false,
       };
       try {
         await carApi.updateCar(dto);
@@ -128,8 +130,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.car.updateFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
       await this.getAllCars();
     },

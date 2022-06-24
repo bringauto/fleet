@@ -169,8 +169,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.createMultipleFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
   },
