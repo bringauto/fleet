@@ -58,7 +58,7 @@ const translations = {
       longitude: "Zeměpisná délka",
       position: "Zeměpisná poloha",
     },
-    statuses: {
+    satuses: {
       waiting: "Čekání",
       acceptionOrder: "Příjmání objednávky",
       driving: "V jízdě",
@@ -225,7 +225,7 @@ const translations = {
       longitude: "Longitude",
       position: "Geographical location",
     },
-    statuses: {
+    satuses: {
       waiting: "Waiting",
       acceptionOrder: "Accepting an order",
       driving: "In ride",
@@ -280,7 +280,7 @@ const translations = {
         deleteFailed: "Order could not be deleted.",
         update: "Order successfully modified.",
         updateFailed: "Order could not be modified.",
-        createMultiple: "Orders successfully created",
+        createMultiple: "Orders successfully created.",
         createMultipleFailed: "Orders creation failed.",
       },
       car: {
