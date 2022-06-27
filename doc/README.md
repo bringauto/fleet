@@ -30,10 +30,10 @@ Entities can be accessed by [GraphQL] API.
 Platform data are streamed to the BE and served by [GraphQL] API to
 FE application.
 
-Autonomous platform must comply with [BringAuto Autonomy Host Protocol] to connect to the Industrial Portal.
+Autonomous platform must comply with [BringAuto Autonomy Host Protocol] to connect to the Fleet.
 
 For development purposes you can use [BringAuto Etna] to
-simulate real deployment of your platform or any part of Industrial Portal
+simulate real deployment of your platform or any part of Fleet
 (read data, react on events etc.) and test [BringAuto Autonomy Host Protocol]
 
 
