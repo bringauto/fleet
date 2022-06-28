@@ -30,4 +30,4 @@ Prerequisites
 - `python3 main.py`
 
 ## Connect to BringAuto Fleet
-- Log into industrial portal on http://127.0.0.1:8011 using default account and password (Admin, Admin1)
+- Log into Fleet on http://127.0.0.1:8011 using default account and password (Admin, Admin1)

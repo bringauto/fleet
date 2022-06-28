@@ -280,6 +280,8 @@ const translations = {
         deleteFailed: "Order could not be deleted.",
         update: "Order successfully modified.",
         updateFailed: "Order could not be modified.",
+        createMultiple: "Orders successfully created.",
+        createMultipleFailed: "Orders creation failed.",
       },
       car: {
         create: "Car successfully created.",
