@@ -70,6 +70,14 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
+    },
+    "overrides": {
+      "eslint-loader": {
+        "eslint": "$eslint"
+      },
+      "eslint-plugin-vue": {
+        "eslint": "$eslint"
+      }
     }
   }
 }
