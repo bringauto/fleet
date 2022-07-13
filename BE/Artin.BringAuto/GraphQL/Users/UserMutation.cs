@@ -57,30 +57,28 @@ namespace Artin.BringAuto.GraphQL.Users
             var result = await userManager.CreateAsync(appUser, user.Password);
             if (result.Succeeded)
             {
-
                 var tenantId = currentTenant.GetTenantId();
                 if (!tenantId.HasValue)
                 {
-                    await userManager.DeleteAsync(appUser);
-                    return IdentityResult.Failed(new IdentityError() { Code = "Unknown tenant", Description = "Specified tenant doesn't exist" });
-                }
-
-                if (!String.IsNullOrWhiteSpace(user.NewTenantName))
-                {
-                    try
+                    if (!String.IsNullOrWhiteSpace(user.NewTenantName))
                     {
-                        tenantId = await CreateNewTenant(user.NewTenantName);
-                    }
-                    catch (Exception ex)
-                    {
+                        try
+                        {
+                            tenantId = await CreateNewTenant(user.NewTenantName);
+                        }
+                        catch (Exception ex)
+                        {
+                            await userManager.DeleteAsync(appUser);
+                            return IdentityResult.Failed(new IdentityError() { Code = "Tenant already exists", Description = ex.Message });
+                        }
+                        user.Roles ??= new List<string>();
+                        user.Roles.Add(RoleNames.Admin);
+                    } else {
                         await userManager.DeleteAsync(appUser);
-                        return IdentityResult.Failed(new IdentityError() { Code = "Tenant already exists", Description = ex.Message });
+                        return IdentityResult.Failed(new IdentityError() { Code = "Unknown tenant", Description = "Specified tenant doesn't exist" });
                     }
-                    user.Roles ??= new List<string>();
-                    user.Roles.Add(RoleNames.Admin);
-                }
-
-
+                }  
+             
                 dbContext.Add(new UserTenancy()
                 {
                     UserId = appUser.Id,
