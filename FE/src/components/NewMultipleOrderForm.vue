@@ -1,21 +1,21 @@
 <template>
   <v-col cols="12" md="8">
-    <ValidationObserver v-slot="{ handleSubmit }" ref="form">
+    <ValidationObserver ref="form" v-slot="{ handleSubmit }">
       <form novalidate @submit.prevent="handleSubmit(onSubmit)">
         <ValidationProvider
           v-slot="{ errors }"
-          vid="carId"
-          rules="required"
           :name="$t('newOrder.car')"
+          rules="required"
+          vid="carId"
         >
           <v-select
             v-model="carId"
-            :label="$t('newOrder.car')"
+            :error-messages="errors"
             :items="cars"
+            :label="$t('newOrder.car')"
             item-text="name"
             item-value="id"
             required
-            :error-messages="errors"
           ></v-select>
         </ValidationProvider>
         <div v-if="carId" class="mb-5">
@@ -23,26 +23,26 @@
           <div v-for="(station, index) in mappedStations" :key="index" class="draggable-item">
             <v-checkbox
               v-model="station.checked"
+              :false-value="false"
               :label="station.name"
               :true-value="true"
-              :false-value="false"
               hide-details
             />
           </div>
         </div>
-        <ValidationProvider v-slot="{ errors }" vid="selectedPrio" :name="$t('newOrder.priority')">
+        <ValidationProvider v-slot="{ errors }" :name="$t('newOrder.priority')" vid="selectedPrio">
           <v-select
             v-model="selectedPrio"
-            :label="$t('newOrder.priority')"
+            :error-messages="errors"
             :items="priorities"
+            :label="$t('newOrder.priority')"
             item-text="trans"
             item-value="priority"
             required
-            :error-messages="errors"
           ></v-select>
         </ValidationProvider>
         <div class="mt-5">
-          <v-btn large color="success" class="mr-4" type="submit">
+          <v-btn class="mr-4" color="success" large type="submit">
             {{ $t("login.submit") }}
           </v-btn>
         </div>
@@ -53,9 +53,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { ValidationProvider, ValidationObserver } from "vee-validate";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { formatArrive } from "../code/helpers/timeHelpers";
-import { carApi, stationApi, routeApi, orderApi } from "../code/api";
+import { carApi, orderApi, routeApi, stationApi } from "../code/api";
 import { getPrioEnumAccordingToRole } from "../code/enums/prioEnum";
 import allRoutes from "../code/enums/routesEnum";
 import { GetterNames } from "../store/enums/vuexEnums";
@@ -108,6 +108,7 @@ export default {
       handler(val) {
         if (val) {
           const { routeId } = this.cars.find((car) => car.id === val);
+
           if (routeId) {
             const selectedRoute = this.routes.find((route) => route.id === routeId);
             this.mappedStations = selectedRoute.stops.reduce((acc, stop) => {
@@ -182,6 +183,7 @@ export default {
   &-item {
     padding: 5px 0px;
   }
+
   &-ghost {
     cursor: grabbing;
     color: rgba(0, 0, 0, 0.5);
