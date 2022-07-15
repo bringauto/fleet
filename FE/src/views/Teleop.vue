@@ -3,8 +3,8 @@
     <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickSation" />
     <v-fade-transition>
       <CarCard
-        class="dashboard__card"
         :car="selectedCar"
+        class="dashboard__card"
         @set-car-status="updateSelectedCar"
         @set-order-status="updateSelectedOrder"
         @get-cars="getAllCars()"

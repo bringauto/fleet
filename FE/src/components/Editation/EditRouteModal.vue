@@ -70,7 +70,7 @@
                       :block="$vuetify.breakpoint.mobile"
                       :icon="!$vuetify.breakpoint.mobile"
                       color="success"
-                      @click="handleAddPointStation()"
+                      @click="handleAddPoint()"
                     >
                       <v-icon> mdi-plus-circle-outline</v-icon>
                     </v-btn>
