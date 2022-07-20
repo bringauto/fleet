@@ -109,9 +109,11 @@
                 </v-row>
               </template>
             </v-row>
+            <!--
             <v-row justify="center">
               <v-btn color="success" text @click="handleNewOrder">{{ $t("orders.new") }}</v-btn>
             </v-row>
+            -->
           </v-card-text>
 
           <v-divider></v-divider>

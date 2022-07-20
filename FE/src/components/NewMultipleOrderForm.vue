@@ -39,6 +39,7 @@
             />
           </div>
         </div>
+        <!--
         <ValidationProvider v-slot="{ errors }" :name="$t('newOrder.priority')" vid="selectedPrio">
           <v-select
             v-model="selectedPrio"
@@ -50,6 +51,7 @@
             required
           ></v-select>
         </ValidationProvider>
+        -->
         <div class="mt-5">
           <v-btn class="mr-4" color="success" large type="submit">
             {{ $t("login.submit") }}
@@ -110,7 +112,6 @@ export default {
       return [];
     },
   },
-
   watch: {
     cars: {
       handler(val) {
@@ -153,6 +154,7 @@ export default {
       dto.arrive = formatArrive(this.arrive);
       return dto;
     },
+
     async onSubmit() {
       try {
         const { mappedStations } = this;

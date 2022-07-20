@@ -32,6 +32,7 @@
       <template v-for="(order, key) in car.orders.nodes.slice(0, 3)">
         <p :key="order.id" class="text-caption mb-0">{{ key + 1 }}. {{ orderListing(order) }}</p>
       </template>
+
       <p v-if="car.orders.nodes.length > 3" class="text-caption mb-0">...</p>
       <v-dialog v-model="showOrder" width="1000">
         <v-card>
