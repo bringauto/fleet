@@ -2,16 +2,12 @@
   <div class="teleop-card">
     <template v-if="car">
       <p class="text-center text-h6 mb-0">{{ car.name }}</p>
-      <!-- info about battery
       <div class="d-flex justify-center align-center text-caption mb-1">
-
         <span v-if="car.fuel" class="mr-2">
           <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel }}%
         </span>
-
         <span>{{ getLastUpdate(car) }}</span>
       </div>
-      -->
       <v-btn
         block
         class="text--center mb-2"
@@ -38,6 +34,7 @@
         <p :key="order.id" class="text-caption mb-0">{{ key + 1 }}. {{ orderListing(order) }}</p>
       </template>
       <p v-if="car.orders.nodes.length > 3" class="text-caption mb-0">...</p>
+      <!-- select box for car status
       <v-select
         :items="CarStateFormated"
         :label="$t('general.status')"
@@ -50,7 +47,7 @@
         outlined
         @input="$emit('set-car-status', { status: $event, car: car })"
       />
-
+      -->
       <v-dialog v-model="showOrder" width="800">
         <v-card>
           <v-card-title class="headline primary white--text">
