@@ -77,7 +77,6 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
-
   data() {
     return {
       stations: [],
@@ -154,7 +153,6 @@ export default {
       dto.arrive = formatArrive(this.arrive);
       return dto;
     },
-
     async onSubmit() {
       try {
         const { mappedStations } = this;
