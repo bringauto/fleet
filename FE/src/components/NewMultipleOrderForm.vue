@@ -18,13 +18,14 @@
             required
           ></v-select>
           <v-select
-            v-model="routeId"
             :items="routes"
             :label="$t('settings.route')"
+            :value="routeId"
             clearable
             hide-details
             item-text="name"
             item-value="id"
+            @input="mappStations"
           />
         </ValidationProvider>
         <div v-if="carId" class="mb-5">
@@ -88,6 +89,7 @@ export default {
       selectedPrio: null,
       carId: null,
       routes: [],
+      mappedStations: [],
       routeId: null,
       CarStateFormated,
     };
@@ -97,19 +99,6 @@ export default {
       roles: GetterNames.GetRoles,
       isAdmin: GetterNames.isAdmin,
     }),
-    mappedStations() {
-      const { routeId } = this;
-      if (routeId) {
-        const selectedRoute = this.routes.find((route) => route.id === routeId);
-        return selectedRoute.stops.reduce((acc, stop) => {
-          if (stop.station) {
-            acc.push({ ...stop.station, checked: true });
-          }
-          return acc;
-        }, []);
-      }
-      return [];
-    },
   },
   watch: {
     cars: {
@@ -152,6 +141,21 @@ export default {
       };
       dto.arrive = formatArrive(this.arrive);
       return dto;
+    },
+    mappStations(id) {
+      this.routeId = id;
+      console.log(id);
+      if (id) {
+        const selectedRoute = this.routes.find((route) => route.id === id);
+        this.mappedStations = selectedRoute.stops.reduce((acc, stop) => {
+          if (stop.station) {
+            acc.push({ ...stop.station, checked: true });
+          }
+          return acc;
+        }, []);
+      } else {
+        this.mappedStations = [];
+      }
     },
     async onSubmit() {
       try {
