@@ -57,17 +57,15 @@
             @input="$emit('update:car', { ...car, status: $event })"
           />
         </v-col>
-        <!-- checkbox of testing a car
         <v-col cols="12" md="6">
           <v-checkbox
-            :input-value="car.underTest"
             :false-value="false"
-            :true-value="true"
+            :input-value="car.underTest"
             :label="$t('cars.underTest')"
+            :true-value="true"
             @change="$emit('update:car', { ...car, underTest: $event })"
           />
         </v-col>
-        -->
       </v-row>
     </v-container>
   </v-form>
