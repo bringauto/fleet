@@ -3,12 +3,12 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <ValidationProvider v-slot="{ errors }" rules="required" :name="$t('general.name')">
+          <ValidationProvider v-slot="{ errors }" :name="$t('general.name')" rules="required">
             <v-text-field
-              :label="$t('general.name')"
-              required
-              :value="car.name"
               :error-messages="errors"
+              :label="$t('general.name')"
+              :value="car.name"
+              required
               @input="$emit('update:car', { ...car, name: $event })"
             />
           </ValidationProvider>
@@ -39,8 +39,8 @@
             :items="routes"
             :label="$t('settings.route')"
             :value="car.routeId"
-            hide-details
             clearable
+            hide-details
             item-text="name"
             item-value="id"
             @input="$emit('update:car', { ...car, routeId: $event })"
@@ -48,15 +48,16 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-select
-            :value="car.status"
             :items="CarStateFormated"
+            :label="$t('general.status')"
+            :value="car.status"
+            hide-details
             item-text="trans"
             item-value="status"
-            :label="$t('general.status')"
-            hide-details
             @input="$emit('update:car', { ...car, status: $event })"
           />
         </v-col>
+        <!-- checkbox of testing a car
         <v-col cols="12" md="6">
           <v-checkbox
             :input-value="car.underTest"
@@ -66,6 +67,7 @@
             @change="$emit('update:car', { ...car, underTest: $event })"
           />
         </v-col>
+        -->
       </v-row>
     </v-container>
   </v-form>
