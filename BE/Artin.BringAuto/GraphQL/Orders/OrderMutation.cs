@@ -31,7 +31,7 @@ namespace Artin.BringAuto.GraphQL.Orders
             this.twillioCaller = twillioCaller;
         }
 
-        [Authorize(Roles = new[] { RoleNames.Privileged, RoleNames.User, RoleNames.Admin })]
+        [Authorize(Roles = new[] { RoleNames.Privileged, RoleNames.User, RoleNames.Admin, RoleNames.Driver })]
         public async Task<Order> AddOrder(NewOrder order)
         {
             try
