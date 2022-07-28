@@ -42,7 +42,7 @@
           :icon="stationIcon"
           :lat-lng="[station.latitude, station.longitude]"
           :z-index-offset="2"
-          @click="$emit('station-clicked', station)"
+          @click="isAdmin ? $emit('station-clicked', station) : ''"
         >
           <l-tooltip>{{ station.name }}</l-tooltip>
         </l-marker>
@@ -63,11 +63,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { isAfter, subMinutes } from "date-fns";
 import { icon, latLng } from "leaflet";
 import { LIcon, LMap, LMarker, LPolyline, LTileLayer, LTooltip } from "vue2-leaflet";
 import { routeApi, stationApi } from "../code/api";
 import { getLastUpdate } from "../code/helpers/timeHelpers";
+import { GetterNames } from "../store/enums/vuexEnums";
+import { RoleEnum } from "../code/enums/roleEnums";
 
 export default {
   name: "Map",
@@ -116,6 +119,16 @@ export default {
     stations: [],
     routes: [],
   }),
+  computed: {
+    ...mapGetters({
+      getMe: GetterNames.GetMe,
+      roles: GetterNames.GetRoles,
+      isRole: GetterNames.isRole,
+    }),
+    isAdmin() {
+      return this.isRole(RoleEnum.Admin);
+    },
+  },
   async mounted() {
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
