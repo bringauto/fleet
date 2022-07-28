@@ -74,6 +74,8 @@
                       </v-col>
                       <v-col cols="12" sm="4">
                         <v-select
+                          :append-icon="isAdmin ? '$dropdown' : ''"
+                          :disabled="!isAdmin"
                           :items="OrderStateFormated"
                           :label="$t('general.status')"
                           :value="order.status"
@@ -133,6 +135,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { CarStateFormated, getCarState } from "../code/enums/carEnums";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { OrderStateFormated } from "../code/enums/orderEnums";
@@ -141,6 +144,8 @@ import { orderListing } from "../code/helpers/orderHelpers";
 import { getLastUpdate, getTime } from "../code/helpers/timeHelpers";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
 import allRoutes from "../code/enums/routesEnum";
+import { RoleEnum } from "../code/enums/roleEnums";
+import { GetterNames } from "../store/enums/vuexEnums";
 
 export default {
   name: "CarCard",
@@ -158,6 +163,17 @@ export default {
     allRoutes,
   }),
   computed: {
+    ...mapGetters({
+      getMe: GetterNames.GetMe,
+      roles: GetterNames.GetRoles,
+      isRole: GetterNames.isRole,
+    }),
+    isAdmin() {
+      return this.isRole(RoleEnum.Admin);
+    },
+    isDriver() {
+      return this.isRole(RoleEnum.Driver);
+    },
     sortOrders() {
       const filtered = this.car.orders.nodes;
       return filtered.sort((a, b) => {
