@@ -88,7 +88,7 @@ export default {
   },
   data: () => ({
     zoom: 15,
-    center: latLng(51.50337, -0.113511),
+    center: latLng(49.8401525, 18.2302432),
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     selectedCar: null,
     stationIcon: icon({
