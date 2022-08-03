@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
 
       <v-select
-        v-if="getMe != null"
+        v-if="getMe != null && isAdmin == true"
         :items="companies"
         class="px-3 pb-0 language"
         dark
