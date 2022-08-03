@@ -49,8 +49,8 @@ namespace Artin.BringAuto.GraphQL.Users
             if (user.Roles?.Any() != true && string.IsNullOrEmpty(user.NewTenantName))
                 return IdentityResult.Failed(new IdentityError() { Code = "Unkown role", Description = "New tenant name od roles has to be defined" });
 
-            if (!String.IsNullOrWhiteSpace(user.NewTenantName) && !currentRoles.Roles.Contains(RoleNames.SuperAdmin))
-                return IdentityResult.Failed(new IdentityError() { Code = "Forbidden", Description = "Only Super admin can add new tenant" });
+            //if (!String.IsNullOrWhiteSpace(user.NewTenantName) && !currentRoles.Roles.Contains(RoleNames.SuperAdmin))
+            //    return IdentityResult.Failed(new IdentityError() { Code = "Forbidden", Description = "Only Super admin can add new tenant" });
 
             var appUser = mapper.Map<ApplicationUser>(user);
 
