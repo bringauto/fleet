@@ -100,6 +100,7 @@ export default {
   methods: {
     ...mapMutations({
       setMe: MutationNames.SetMe,
+      setTenant: MutationNames.SetTenant,
     }),
     async onSubmit() {
       try {
@@ -112,6 +113,8 @@ export default {
         });
         if (data?.UserQuery?.login) {
           this.setMe(data && data.UserQuery.login);
+          this.setTenant(data && data.UserQuery.login.tenants.nodes[0]);
+          console.log(data.user);
           this.$router.push({ path: "/" });
           console.log(data);
         } else {

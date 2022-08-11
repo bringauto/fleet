@@ -37,9 +37,9 @@
                 :value="positionValue(stop)"
                 @input="handleChangeStopVal(index, getLatLong($event))"
               >
-                <template v-slot:append>
+                <template #append>
                   <v-tooltip top>
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                       <v-icon x-small v-on="on"> mdi-help-circle-outline </v-icon>
                     </template>
                     {{ $t("routes.order") }}: {{ stop.order }}

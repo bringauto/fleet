@@ -1,6 +1,6 @@
 <template>
   <PageWrapper>
-    <template v-slot:title>
+    <template #title>
       {{ editig ? $t("newOrder.edit") : $t("newOrder.title") }}
     </template>
 

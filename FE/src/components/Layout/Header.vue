@@ -11,6 +11,7 @@
 
       <v-select
         v-if="getMe != null"
+        v-model="selectedTenant"
         :append-icon="isAdmin ? '$dropdown' : ''"
         :disabled="!isAdmin"
         :items="companies"
@@ -22,7 +23,7 @@
         item-value="id"
         label="companies"
         outlined
-        @change="handleChangeTenant"
+        return-object
       />
       <v-select
         v-model="$i18n.locale"
@@ -60,10 +61,10 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import allRoutes from "../../code/enums/routesEnum";
 import { LOGOUT_USER } from "../../code/graphql/queries";
-import { GetterNames, MutationNames } from "../../store/enums/vuexEnums";
+import { ActionNames, GetterNames } from "../../store/enums/vuexEnums";
 import { RoleEnum } from "../../code/enums/roleEnums";
 
 export default {
@@ -78,6 +79,7 @@ export default {
       getMe: GetterNames.GetMe,
       roles: GetterNames.GetRoles,
       isRole: GetterNames.isRole,
+      getTenant: GetterNames.GetTenant,
     }),
     isAdmin() {
       return this.isRole(RoleEnum.Admin, RoleEnum.Driver);
@@ -85,11 +87,20 @@ export default {
     companies() {
       return this.getMe.tenants.nodes;
     },
+    selectedTenant: {
+      get() {
+        return this.getTenant;
+      },
+      set(val) {
+        this.setTenant(val);
+      },
+    },
   },
 
   methods: {
-    ...mapMutations({
-      setMe: MutationNames.SetMe,
+    ...mapActions({
+      setUser: ActionNames.SetUser,
+      getMe: ActionNames.GetMe,
     }),
 
     async logout() {
@@ -97,7 +108,8 @@ export default {
         await this.$apollo.query({
           query: LOGOUT_USER,
         });
-        this.setMe(null);
+
+        this.setUser(null);
         this.$router.push({ name: allRoutes.Login });
       } catch (e) {
         this.$notify({

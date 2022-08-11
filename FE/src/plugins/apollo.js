@@ -16,7 +16,7 @@ const authLink = setContext(async (_, { headers }) => {
   return {
     headers: {
       ...headers,
-      tenant: VueStore.state.user ? VueStore.state.user.tenants.nodes[0].id : "",
+      tenant: VueStore.state.selectedTenant ? VueStore.state.selectedTenant.id : "",
     },
   };
 });
