@@ -8,7 +8,6 @@
               :error-messages="errors"
               :label="$t('general.name')"
               :value="route.name"
-              hide-details
               required
               @input="$emit('update:route', { ...route, name: $event })"
             />
@@ -36,7 +35,9 @@
                 hide-mode-switch
               />
               <v-col cols="6" md="8">
-                <v-btn justify="center" @click="isHidden = !isHidden">Coordinates</v-btn>
+                <v-btn justify="center" @click="isHidden = !isHidden">
+                  {{ $t("routes.coordinates") }}
+                </v-btn>
               </v-col>
             </v-col>
             <v-col cols="12" md="6">

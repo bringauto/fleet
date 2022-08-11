@@ -148,6 +148,7 @@ const translations = {
     routes: {
       color: "Barva",
       order: "Pořadí",
+      coordinates: "Souřadnice",
     },
     tables: {
       car: "Auto",
@@ -204,9 +205,9 @@ const translations = {
       stations: "Stations",
       routes: "Routes",
       route: "Route",
-      editStation: "Station editation",
+      editStation: "Station edit",
       createStation: "Create station",
-      editRoute: "Route editation",
+      editRoute: "Route edit",
       createRoute: "Create route",
       name: "Station name",
       latitude: "Latitude",
@@ -315,6 +316,7 @@ const translations = {
     routes: {
       color: "Color",
       order: "Order",
+      coordinates: "Coordinates",
     },
     tables: {
       car: "Car",
