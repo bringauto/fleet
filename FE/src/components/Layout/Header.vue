@@ -10,7 +10,9 @@
       <v-spacer></v-spacer>
 
       <v-select
-        v-if="getMe != null && isAdmin == true"
+        v-if="getMe != null"
+        :append-icon="isAdmin ? '$dropdown' : ''"
+        :disabled="!isAdmin"
         :items="companies"
         class="px-3 pb-0 language"
         dark
