@@ -1,6 +1,6 @@
 ﻿using Artin.BringAuto.Shared.Cars;
 using Artin.BringAuto.Shared.Enums;
-using Artin.BringAuto.Shared.Stations;
+using Artin.BringAuto.Shared.Stops;
 using Artin.BringAuto.Shared.Users;
 using System;
 using System.Collections.Generic;
@@ -22,9 +22,9 @@ namespace Artin.BringAuto.Shared.Orders
         public OrderStatus Status { get; set; }
 
 
-        public Station From { get; set; }
+        public Stop From { get; set; }
 
-        public Station To { get; set; }
+        public Stop To { get; set; }
 
         public OrderStopStatus FromStationStatus { get; set; } = OrderStopStatus.InQueue;
         public OrderStopStatus ToStationStatus { get; set; } = OrderStopStatus.InQueue;

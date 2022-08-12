@@ -111,7 +111,7 @@ namespace Artin.BringAuto
                      descriptor.Name("Queries");
                      descriptor.AddField<CarQuery>();
                      descriptor.AddField<OrderQuery>();
-                     descriptor.AddField<StationQuery>();
+                     descriptor.AddField<StopQuery>();
                      descriptor.AddField<RouteQuery>();
                      descriptor.AddField<UserQuery>();
                      descriptor.AddField<MapQuery>();
@@ -121,7 +121,7 @@ namespace Artin.BringAuto
                      descriptor.Name("Mutations");
                      descriptor.AddField<CarMutation>();
                      descriptor.AddField<OrderMutation>();
-                     descriptor.AddField<StationMutation>();
+                     descriptor.AddField<StopMutation>();
                      descriptor.AddField<RouteMutation>();
                      descriptor.AddField<UserMutation>();
                      descriptor.AddField<MapMutation>();

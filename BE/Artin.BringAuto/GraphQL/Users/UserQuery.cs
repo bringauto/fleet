@@ -61,9 +61,18 @@ namespace Artin.BringAuto.GraphQL.Users
         [UseSorting]
         [UseSelection]
         [Authorize(Roles = new[] { RoleNames.Admin })]
-        public async Task<List<User>> GetAll()
+        public async Task<List<User>> GetUsers()
         {
-            return await dbContext.UserTenancy.Select(x=>x.User).ProjectTo<User>(mapper.ConfigurationProvider).ToListAsync();
+            List<User> result = new List<User>();
+            foreach (var user in await dbContext.UserTenancy.Select(x => x.User).ToListAsync())
+            {
+                var retUser = mapper.Map<User>(user);
+
+                retUser.Roles = await userManager.GetRolesAsync(user);
+
+                result.Add(retUser);
+            }
+            return result;
         }
 
         public async Task<bool> GetLogout()

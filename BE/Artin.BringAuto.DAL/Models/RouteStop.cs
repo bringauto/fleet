@@ -19,7 +19,7 @@ namespace Artin.BringAuto.DAL.Models
 
         public int? StationId { get; set; }
         [ForeignKey(nameof(StationId))]
-        public Station Station { get; set; }
+        public Stop Station { get; set; }
 
         [ForeignKey(nameof(Tenant))]
         public int? TenantId { get; set; }

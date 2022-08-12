@@ -19,4 +19,10 @@ namespace Artin.BringAuto.Shared.Users
 
         public string NewTenantName { get; set; }
     }
+
+    public class DeleteUser
+    {
+        public string UserName { get; set; }
+
+    }
 }

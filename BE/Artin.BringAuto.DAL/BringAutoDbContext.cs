@@ -38,8 +38,9 @@ namespace Artin.BringAuto.DAL
             TenantFilter<Map>(builder);
             TenantFilter<Route>(builder);
             TenantFilter<RouteStop>(builder);
-            TenantFilter<Station>(builder);
+            TenantFilter<Stop>(builder);
             builder.Entity<UserTenancy>().HasQueryFilter(x => !tenantId.HasValue || tenantId == x.TenantId);
+
 
             base.OnModelCreating(builder);
         }
@@ -54,7 +55,7 @@ namespace Artin.BringAuto.DAL
         public DbSet<Order> Orders { get; set; }
         public DbSet<Map> Maps { get; set; }
 
-        public DbSet<Station> Stations { get; set; }
+        public DbSet<Stop> Stops { get; set; }
         public DbSet<Route> Routes { get; set; }
         public DbSet<RouteStop> RouteStops { get; set; }
         public DbSet<Tenant> Tenants { get; set; }

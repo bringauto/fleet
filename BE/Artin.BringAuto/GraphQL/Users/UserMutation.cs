@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Artin.BringAuto.GraphQL.Users
@@ -154,19 +155,33 @@ namespace Artin.BringAuto.GraphQL.Users
             {
                 var roles = await userManager.GetRolesAsync(appUser);
                 await userManager.RemoveFromRolesAsync(appUser, roles.Where(x => !user.Roles.Contains(x)));
-                return await userManager.AddToRolesAsync(appUser, user.Roles.Where(r=> !roles.Contains(r)));
+                return await userManager.AddToRolesAsync(appUser, user.Roles.Where(r => !roles.Contains(r)));
             }
             return result;
         }
 
         [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.SuperAdmin })]
-        public async Task<IdentityResult> Delete(NewUser user)
+        public async Task<IdentityResult> Delete(DeleteUser user, CancellationToken cancellationToken)
         {
             var appUser = await userManager.FindByNameAsync(user.UserName);
-            var roles = await userManager.GetRolesAsync(appUser);
-            await userManager.RemoveFromRolesAsync(appUser, roles.Where(x => !user.Roles.Contains(x)));
-            var result = await userManager.DeleteAsync(appUser);
+            IdentityResult result = null;
+            var tenancy = dbContext.UserTenancy.FirstOrDefault(x => x.UserId == appUser.Id);
+            if (tenancy is not null)
+            {
+                dbContext.UserTenancy.Remove(tenancy);
+                await dbContext.SaveChangesAsync(cancellationToken);
+
+                if (!dbContext.UserTenancy.IgnoreQueryFilters().Any(x => x.UserId == appUser.Id))
+                {
+                    var roles = await userManager.GetRolesAsync(appUser);
+                    await userManager.RemoveFromRolesAsync(appUser, roles);
+                    result = await userManager.DeleteAsync(appUser);
+                }
+            }
+            else
+                result = IdentityResult.Failed(new IdentityError() { Code = "NotTenant", Description = "User is not part of tenant" });
             return result;
+
         }
 
         [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.Driver, RoleNames.Privileged, RoleNames.User })]

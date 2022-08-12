@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Artin.BringAuto.DAL.Models
 {
-    public class Station : IId<int>, ITenancy
+    public class Stop : IId<int>, ITenancy
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
