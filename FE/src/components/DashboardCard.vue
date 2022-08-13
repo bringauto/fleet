@@ -48,7 +48,7 @@
               :items-per-page="-1"
               class="box-wrapper my-2"
             >
-              <template v-slot:[`item.actions`]="{ item }">
+              <template #[`item.actions`]="{ item }">
                 <v-btn small color="primary" class="mr-2" icon @click="handleEditOrder(item)">
                   <v-icon small> mdi-pencil </v-icon>
                 </v-btn>
@@ -56,11 +56,11 @@
                   <v-icon small> mdi-delete </v-icon>
                 </v-btn>
               </template>
-              <template v-slot:[`item.arrive`]="{ item }">
+              <template #[`item.arrive`]="{ item }">
                 <span v-if="item.arrive">{{ getTime(item.arrive) }}</span>
                 <span v-else>{{ $t("newOrder.soon") }}</span>
               </template>
-              <template v-slot:[`item.priority`]="{ item }">
+              <template #[`item.priority`]="{ item }">
                 <span :class="`${getPriorityEnum(item.priority).color}--text`">
                   {{ getPriorityEnum(item.priority).trans }}
                 </span>

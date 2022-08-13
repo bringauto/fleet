@@ -10,6 +10,18 @@ module.exports = {
     "spellcheck/spell-checker": "off",
     "import/prefer-default-export": "off",
     "import/named": "off",
+    "vue/multi-word-component-names": "off",
+    "vue/no-reserved-component-names": "off",
+    "vue/no-mutating-props": "off",
+    "import/no-cycle": "off",
+  },
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+        moduleDirectory: ["node_modules", "src/"],
+      },
+    },
   },
   overrides: [
     {

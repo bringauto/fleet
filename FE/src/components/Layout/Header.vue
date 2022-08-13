@@ -1,27 +1,45 @@
 <template>
   <div>
-    <v-app-bar app color="primary" class="white--text">
+    <v-app-bar app class="white--text" color="primary">
       <v-toolbar-title>
         <router-link :to="{ path: '/' }" class="white--text text-decoration-none">
           {{ $t("general.appName") }}
         </router-link>
       </v-toolbar-title>
+
       <v-spacer></v-spacer>
+
+      <v-select
+        v-if="getMe != null"
+        v-model="selectedTenant"
+        :append-icon="isAdmin ? '$dropdown' : ''"
+        :disabled="!isAdmin"
+        :items="companies"
+        class="px-3 pb-0 language"
+        dark
+        dense
+        hide-details
+        item-text="name"
+        item-value="id"
+        label="companies"
+        outlined
+        return-object
+      />
       <v-select
         v-model="$i18n.locale"
         :items="languages"
+        class="px-5 pb-0 language"
         dark
         dense
         hide-details
         outlined
-        class="px-5 pb-0 language"
         @change="handleChangeLang"
       />
-      <v-btn v-if="isAdmin" icon small color="white" class="mr-3" :to="{ name: settings }">
-        <v-icon small color="white">mdi-cog</v-icon>
+      <v-btn v-if="isAdmin" :to="{ name: settings }" class="mr-3" color="white" icon small>
+        <v-icon color="white" small>mdi-cog</v-icon>
       </v-btn>
-      <v-btn v-if="getMe" icon small color="white" class="mr-3" @click="logout">
-        <v-icon small color="white">mdi-logout</v-icon>
+      <v-btn v-if="getMe" class="mr-3" color="white" icon small @click="logout">
+        <v-icon color="white" small>mdi-logout</v-icon>
       </v-btn>
       <!-- <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
     </v-app-bar>
@@ -43,10 +61,10 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import allRoutes from "../../code/enums/routesEnum";
 import { LOGOUT_USER } from "../../code/graphql/queries";
-import { GetterNames, MutationNames } from "../../store/enums/vuexEnums";
+import { ActionNames, GetterNames } from "../../store/enums/vuexEnums";
 import { RoleEnum } from "../../code/enums/roleEnums";
 
 export default {
@@ -61,21 +79,37 @@ export default {
       getMe: GetterNames.GetMe,
       roles: GetterNames.GetRoles,
       isRole: GetterNames.isRole,
+      getTenant: GetterNames.GetTenant,
     }),
     isAdmin() {
       return this.isRole(RoleEnum.Admin, RoleEnum.Driver);
     },
+    companies() {
+      return this.getMe.tenants.nodes;
+    },
+    selectedTenant: {
+      get() {
+        return this.getTenant;
+      },
+      set(val) {
+        this.setTenant(val);
+      },
+    },
   },
+
   methods: {
-    ...mapMutations({
-      setMe: MutationNames.SetMe,
+    ...mapActions({
+      setUser: ActionNames.SetUser,
+      getMe: ActionNames.GetMe,
     }),
+
     async logout() {
       try {
         await this.$apollo.query({
           query: LOGOUT_USER,
         });
-        this.setMe(null);
+
+        this.setUser(null);
         this.$router.push({ name: allRoutes.Login });
       } catch (e) {
         this.$notify({
@@ -86,16 +120,24 @@ export default {
         });
       }
     },
+
     handleChangeLang(val) {
       this.$i18n.lang = val;
       localStorage.setItem("language", val);
       this.$router.go();
     },
+    handleChangeTenant(val) {
+      this.multiTe = val;
+      localStorage.setItem("company", val);
+      console.log(val);
+    },
   },
 };
+
+export class tenantsId {}
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .language {
   max-width: 200px;
 }
