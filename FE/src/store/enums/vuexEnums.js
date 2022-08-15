@@ -15,4 +15,5 @@ export const GetterNames = Object.freeze({
   GetRoles: "getRoles",
   isAdmin: "isAdmin",
   isRole: "isRole",
+  isDriver: "isDriver",
 });

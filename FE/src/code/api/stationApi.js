@@ -1,10 +1,10 @@
 import { GET_STATIONS } from "../graphql/queries";
-import { CREATE_STATION, UPDATE_STATION, DELETE_STATION } from "../graphql/mutations";
+import { CREATE_STATION, DELETE_STATION, UPDATE_STATION } from "../graphql/mutations";
 import { apolloClient } from "../../plugins/apollo";
 
 export async function getStations() {
   const { data } = await apolloClient.query({ query: GET_STATIONS });
-  return data && data.StationQuery.stations.nodes;
+  return data && data.StopQuery.stop.nodes;
 }
 
 export async function createStation({ name, latitude, longitude }) {

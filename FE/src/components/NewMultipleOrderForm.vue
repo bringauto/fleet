@@ -83,6 +83,7 @@ export default {
     ...mapGetters({
       roles: GetterNames.GetRoles,
       isAdmin: GetterNames.isAdmin,
+      isDriver: GetterNames.isDriver,
     }),
   },
   watch: {
@@ -159,7 +160,9 @@ export default {
             await orderApi.addOrder(dto);
           }
         }
-        this.$router.push({ name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard });
+        this.$router.push({
+          name: this.isAdmin && this.isDriver ? allRoutes.Teleop : allRoutes.Dashboard,
+        });
         this.$notify({
           group: "global",
           title: this.$i18n.tc("notifications.order.createMultiple"),

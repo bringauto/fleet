@@ -25,6 +25,9 @@ export default new Vuex.Store({
     [GetterNames.isAdmin](state) {
       return state.user?.roles.includes(RoleEnum.Admin) ?? false;
     },
+    [GetterNames.isDriver](state) {
+      return state.user?.roles.includes(RoleEnum.Driver) ?? false;
+    },
     [GetterNames.isRole]: (state) => (roles) => {
       return state.user?.roles.some((role) => roles.includes(role)) ?? false;
     },
