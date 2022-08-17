@@ -17,7 +17,7 @@ namespace Artin.BringAuto.GraphQL.Stops
         {
             base.Configure(descriptor);
             descriptor.Field<OrderResolver>(x => x.GetStationFromOrders(default, default))
-                .Name("ordersFromThisStation")
+                .Name("ordersFromThisStop")
                 .UsePaging<ObjectType<Order>>()
                 .UseFiltering()
                 .UseSorting();

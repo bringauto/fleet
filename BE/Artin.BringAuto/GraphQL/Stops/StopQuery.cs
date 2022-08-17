@@ -22,7 +22,7 @@ namespace Artin.BringAuto.GraphQL.Stations
         [UseSelection]
         [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.Driver, RoleNames.Privileged, RoleNames.User })]
 
-        public IQueryable<Stop> GetStop()
+        public IQueryable<Stop> GetStops()
         {
             return stopRepository.Load();
         }
