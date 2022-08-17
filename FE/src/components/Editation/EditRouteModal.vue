@@ -3,13 +3,13 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <ValidationProvider v-slot="{ errors }" rules="required" :name="$t('general.name')">
+          <ValidationProvider v-slot="{ errors }" :name="$t('general.name')" rules="required">
             <v-text-field
-              :label="$t('general.name')"
-              required
-              hide-details
-              :value="route.name"
               :error-messages="errors"
+              :label="$t('general.name')"
+              :value="route.name"
+              hide-details
+              required
               @input="$emit('update:route', { ...route, name: $event })"
             />
           </ValidationProvider>
@@ -33,52 +33,52 @@
             <v-col cols="12" md="6">
               <v-text-field
                 :label="$t('stations.position')"
-                hide-details
                 :value="positionValue(stop)"
+                hide-details
                 @input="handleChangeStopVal(index, getLatLong($event))"
               >
-                <template v-slot:append>
+                <template #append>
                   <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                      <v-icon x-small v-on="on"> mdi-help-circle-outline </v-icon>
+                    <template #activator="{ on }">
+                      <v-icon x-small v-on="on"> mdi-help-circle-outline</v-icon>
                     </template>
                     {{ $t("routes.order") }}: {{ stop.order }}
                   </v-tooltip>
                 </template>
               </v-text-field>
             </v-col>
-            <v-col cols="12" md="6" class="d-flex align-center">
+            <v-col class="d-flex align-center" cols="12" md="6">
               <v-select
                 :items="stations"
                 :label="$t('settings.stations')"
                 :value="stop.station && stop.station.id ? stop.station.id : undefined"
-                return-object
-                hide-details
                 clearable
+                hide-details
                 item-text="name"
                 item-value="id"
+                return-object
                 @input="handleChangeStopVal(index, getStation($event))"
               />
               <v-btn
-                small
-                :icon="!$vuetify.breakpoint.mobile"
                 :block="$vuetify.breakpoint.mobile"
+                :icon="!$vuetify.breakpoint.mobile"
                 color="error"
+                small
                 @click="handleRemovePoint(index)"
               >
-                <v-icon small> mdi-delete </v-icon>
+                <v-icon small> mdi-delete</v-icon>
               </v-btn>
             </v-col>
           </v-row>
           <v-row align="center" justify="center">
             <v-col cols="12" md="2">
               <v-btn
-                :icon="!$vuetify.breakpoint.mobile"
                 :block="$vuetify.breakpoint.mobile"
+                :icon="!$vuetify.breakpoint.mobile"
                 color="success"
                 @click="handleAddPoint()"
               >
-                <v-icon> mdi-plus-circle-outline </v-icon>
+                <v-icon> mdi-plus-circle-outline</v-icon>
               </v-btn>
             </v-col>
           </v-row>

@@ -7,11 +7,16 @@ export const GET_ME = gql`
         email
         roles
         userName
+        tenants {
+          nodes {
+            name
+            id
+          }
+        }
       }
     }
   }
 `;
-
 // Cars
 export const GET_CARS = gql`
   query {
@@ -122,8 +127,8 @@ export const GET_CARS_ORDERS = gql`
 // Stations
 export const GET_STATIONS = gql`
   query {
-    StationQuery {
-      stations {
+    StopQuery {
+      stop {
         nodes {
           name
           id
@@ -198,6 +203,12 @@ export const LOGIN_USER = gql`
         email
         roles
         userName
+        tenants {
+          nodes {
+            name
+            id
+          }
+        }
       }
     }
   }
