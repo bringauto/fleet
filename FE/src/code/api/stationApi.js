@@ -4,7 +4,7 @@ import { apolloClient } from "../../plugins/apollo";
 
 export async function getStations() {
   const { data } = await apolloClient.query({ query: GET_STATIONS });
-  return data && data.StopQuery.stop.nodes;
+  return data?.StopQuery?.stops?.nodes ?? [];
 }
 
 export async function createStation({ name, latitude, longitude }) {

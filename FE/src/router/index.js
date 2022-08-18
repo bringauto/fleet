@@ -90,7 +90,6 @@ async function getMe() {
 router.beforeEach(async (to, from, next) => {
   // Check if user has me if not it tries to get me
   await getMe();
-
   // Go to login if not logged in if not going from login page
   if (store.getters[GetterNames.GetMe] == null) {
     const goTo = to.name !== allRoutes.Login ? { name: allRoutes.Login } : undefined;
