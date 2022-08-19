@@ -129,8 +129,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.user.loginFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
   },

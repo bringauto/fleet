@@ -49,7 +49,7 @@ export default {
   }
 
   &.error {
-    background: #ff5252;
+    background: #ff5342;
   }
 
   &.success {

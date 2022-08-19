@@ -1,48 +1,60 @@
 <template>
   <v-col cols="12" md="8">
-    <ValidationObserver ref="form" v-slot="{ handleSubmit }">
+    <ValidationObserver v-slot="{ handleSubmit }" ref="form">
       <form novalidate @submit.prevent="handleSubmit(onSubmit)">
         <ValidationProvider
           v-slot="{ errors }"
-          :name="$t('newOrder.car')"
-          rules="required"
           vid="carId"
+          rules="required"
+          :name="$t('newOrder.car')"
         >
           <v-select
             v-model="carId"
-            :error-messages="errors"
-            :items="cars"
             :label="$t('newOrder.car')"
+            :items="cars"
             item-text="name"
             item-value="id"
             required
+            :error-messages="errors"
           ></v-select>
+          <v-select
+            :items="routes"
+            :label="$t('settings.route')"
+            :value="routeId"
+            clearable
+            hide-details
+            item-text="name"
+            item-value="id"
+            @input="mappStations"
+          />
         </ValidationProvider>
         <div v-if="carId" class="mb-5">
           <span class="caption">{{ $t("newOrder.check") }}</span>
           <div v-for="(station, index) in mappedStations" :key="index" class="draggable-item">
             <v-checkbox
               v-model="station.checked"
-              :false-value="false"
               :label="station.name"
               :true-value="true"
+              :false-value="false"
               hide-details
             />
           </div>
         </div>
+        <!--
         <ValidationProvider v-slot="{ errors }" :name="$t('newOrder.priority')" vid="selectedPrio">
           <v-select
             v-model="selectedPrio"
-            :error-messages="errors"
-            :items="priorities"
             :label="$t('newOrder.priority')"
+            :items="priorities"
             item-text="trans"
             item-value="priority"
             required
+            :error-messages="errors"
           ></v-select>
         </ValidationProvider>
+        -->
         <div class="mt-5">
-          <v-btn class="mr-4" color="success" large type="submit">
+          <v-btn large color="success" class="mr-4" type="submit">
             {{ $t("login.submit") }}
           </v-btn>
         </div>
@@ -59,6 +71,7 @@ import { carApi, orderApi, routeApi, stationApi } from "../code/api";
 import { getPrioEnumAccordingToRole } from "../code/enums/prioEnum";
 import allRoutes from "../code/enums/routesEnum";
 import { GetterNames } from "../store/enums/vuexEnums";
+import { CarStateFormated } from "../code/enums/carEnums";
 
 export default {
   components: {
@@ -68,15 +81,17 @@ export default {
   data() {
     return {
       stations: [],
-      mappedStations: [],
       cars: [],
-      routes: [],
       priorities: [],
       stationFrom: undefined,
       arrive: null,
       stationTo: null,
       selectedPrio: null,
       carId: null,
+      routes: [],
+      mappedStations: [],
+      routeId: null,
+      CarStateFormated,
     };
   },
   computed: {
@@ -105,27 +120,6 @@ export default {
       deep: true,
       immediate: true,
     },
-    carId: {
-      handler(val) {
-        if (val) {
-          const { routeId } = this.cars.find((car) => car.id === val);
-
-          if (routeId) {
-            const selectedRoute = this.routes.find((route) => route.id === routeId);
-            this.mappedStations = selectedRoute.stops.reduce((acc, stop) => {
-              if (stop.station) {
-                acc.push({ ...stop.station, checked: true });
-              }
-              return acc;
-            }, []);
-          }
-        } else {
-          this.mappedStations = this.stations;
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
   },
   async mounted() {
     await this.initForm();
@@ -148,6 +142,21 @@ export default {
       };
       dto.arrive = formatArrive(this.arrive);
       return dto;
+    },
+    mappStations(id) {
+      this.routeId = id;
+      console.log(id);
+      if (id) {
+        const selectedRoute = this.routes.find((route) => route.id === id);
+        this.mappedStations = selectedRoute.stops.reduce((acc, stop) => {
+          if (stop.station) {
+            acc.push({ ...stop.station, checked: true });
+          }
+          return acc;
+        }, []);
+      } else {
+        this.mappedStations = [];
+      }
     },
     async onSubmit() {
       try {
@@ -173,8 +182,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.createMultipleFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
   },

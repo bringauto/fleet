@@ -286,8 +286,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.route.removeFiled"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
       await this.getAllRoutes();
     },
@@ -304,8 +304,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.station.removeFiled"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
       await this.getAllStations();
     },
@@ -322,8 +322,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.car.deleteFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
       await this.getAllCars();
     },
@@ -364,8 +364,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("settings.somethingWrong"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
       await this.getAllStations();
     },
@@ -386,8 +386,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("settings.somethingWrong"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
       await this.getAllRoutes();
     },

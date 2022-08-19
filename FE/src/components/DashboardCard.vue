@@ -49,8 +49,8 @@
               class="box-wrapper my-2"
             >
               <template #[`item.actions`]="{ item }">
-                <v-btn small color="primary" class="mr-2" icon @click="handleEditOrder(item)">
-                  <v-icon small> mdi-pencil </v-icon>
+                <v-btn class="mr-2" color="primary" icon small @click="handleEditOrder(item)">
+                  <v-icon small> mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn small color="error" icon @click="handleDeleteOrder(item)">
                   <v-icon small> mdi-delete </v-icon>
