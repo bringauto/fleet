@@ -3,8 +3,7 @@
 
 Prerequisites
 
-- GNU/Linux system
-- docker >= 21.10
+- docker >= 20.10
 - docker-compose >= 1.29
 - python3 >= 3.9
 - pip3
