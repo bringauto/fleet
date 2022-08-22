@@ -3,11 +3,11 @@
 
 Prerequisites
 
-- GNU/Linux system
-- docker >= 21.10
+- docker >= 20.10 (for Windows link [here](https://docs.docker.com/desktop/install/windows-install/))
 - docker-compose >= 1.29
 - python3 >= 3.9
 - pip3
+- git (for Windows link [here](https://git-scm.com/download/win) - during installation, configure line ending conversions **checkout as-is, commit as-is**)
 
 ## Run BringAuto Etna
 
