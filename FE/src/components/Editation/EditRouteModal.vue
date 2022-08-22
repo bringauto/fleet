@@ -8,7 +8,6 @@
               :error-messages="errors"
               :label="$t('general.name')"
               :value="route.name"
-              hide-details
               required
               @input="$emit('update:route', { ...route, name: $event })"
             />

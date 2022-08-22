@@ -4,26 +4,22 @@
       <p class="text-center text-h6 mb-0">{{ car.name }}</p>
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel }}%
+          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 100 }}%
         </span>
         <span>{{ getLastUpdate(car) }}</span>
       </div>
-      <v-btn small block color="primary" class="text--center" text @click="showOrder = !showOrder">
+      <v-btn block class="text--center" color="primary" small text @click="showOrder = !showOrder">
         {{ $t("general.orders") }}
       </v-btn>
-      <v-row justify="center" align="center" class="px-3">
+      <v-row align="center" class="px-3" justify="center">
         <p class="text-h4 mb-0 mr-3 dash-card__lenght" @click="showOrder = !showOrder">
           {{ car.orders.nodes.length }}
         </p>
-        <v-btn icon color="primary" :disabled="car.underTest" @click="handleNewOrder">
-          <v-icon> mdi-plus-circle-outline</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          color="primary"
-          :to="{ name: allRoutes.NewMultipleOrder }"
-          :disabled="car.underTest"
-        >
+        <!-- button for create a single order
+        <v-btn :disabled="car.underTest" color="primary" icon @click="handleNewOrder">
+           <v-icon> mdi-plus-circle-outline</v-icon>
+         </v-btn> -->
+        <v-btn :disabled="car.underTest" color="primary" icon @click="handleNewMulripleOrder">
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
       </v-row>
@@ -42,18 +38,18 @@
             </div>
             <v-data-table
               v-else
-              hide-default-footer
               :headers="headers"
               :items="getFilteredOrders"
               :items-per-page="-1"
               class="box-wrapper my-2"
+              hide-default-footer
             >
               <template #[`item.actions`]="{ item }">
                 <v-btn class="mr-2" color="primary" icon small @click="handleEditOrder(item)">
                   <v-icon small> mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn small color="error" icon @click="handleDeleteOrder(item)">
-                  <v-icon small> mdi-delete </v-icon>
+                <v-btn color="error" icon small @click="handleDeleteOrder(item)">
+                  <v-icon small> mdi-delete</v-icon>
                 </v-btn>
               </template>
               <template #[`item.arrive`]="{ item }">
@@ -67,7 +63,7 @@
               </template>
             </v-data-table>
             <v-row justify="center">
-              <v-btn color="success" text :disabled="car.underTest" @click="handleNewOrder">
+              <v-btn :disabled="car.underTest" color="success" text @click="handleNewMulripleOrder">
                 {{ $t("orders.new") }}
               </v-btn>
             </v-row>
@@ -101,7 +97,6 @@ import { getCarBatteryIcon } from "../code/helpers/carHelpers";
 export default {
   name: "DashCard",
   props: {
-    // eslint-disable-next-line vue/require-default-prop
     car: {
       type: Object,
     },
@@ -128,7 +123,7 @@ export default {
     };
   },
   computed: {
-    carStete() {
+    carState() {
       return (state) => {
         const { trans } = this.getCarState(state);
         return trans;
@@ -154,6 +149,14 @@ export default {
     handleNewOrder() {
       this.$router.push({
         name: allRoutes.NewOrder,
+        params: {
+          carId: this.car.id,
+        },
+      });
+    },
+    handleNewMulripleOrder() {
+      this.$router.push({
+        name: allRoutes.NewMultipleOrder,
         params: {
           carId: this.car.id,
         },
@@ -197,9 +200,11 @@ export default {
     width: 80%;
     margin: -80px auto 30px;
   }
+
   &__lenght {
     cursor: pointer;
   }
+
   .v-skeleton-loader__article.v-skeleton-loader__bone {
     background: #f6f6fb !important;
   }
