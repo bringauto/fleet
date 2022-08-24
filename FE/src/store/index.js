@@ -34,6 +34,12 @@ export default new Vuex.Store({
     [GetterNames.GetTenant](state) {
       return state.selectedTenant;
     },
+    [GetterNames.isFirstStationLatitude](state) {
+      return state.user?.stops[0].nodes.latitude ?? 47.09713;
+    },
+    [GetterNames.isFirstStationLongitude](state) {
+      return state.user?.stops[0].nodes.longitude ?? 37.54337;
+    },
   },
   mutations: {
     [MutationNames.SetMe](state, user) {

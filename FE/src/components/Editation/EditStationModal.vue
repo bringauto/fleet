@@ -19,6 +19,7 @@
             :label="$t('stations.position')"
             :value="positionValue"
             @input="$emit('update:station', { ...station, ...getLatLong($event) })"
+            @keypress="onlyNumber"
           >
             <!-- <template v-slot:prepend>
               <v-tooltip top>
@@ -58,6 +59,11 @@ export default {
 
   methods: {
     getLatLong,
+    onlyNumber(num) {
+      // rgx only numbers and dots
+      const rgx = /^[0-9-]*\.?[0-9]*$/;
+      return num.toString().match(rgx);
+    },
   },
 };
 </script>

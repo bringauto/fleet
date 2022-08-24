@@ -170,7 +170,7 @@ export default {
           }
         }
         this.$router.push({
-          name: this.isAdmin && this.isDriver ? allRoutes.Teleop : allRoutes.Dashboard,
+          name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard,
         });
         this.$notify({
           group: "global",

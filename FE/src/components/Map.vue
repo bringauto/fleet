@@ -124,6 +124,8 @@ export default {
       getMe: GetterNames.GetMe,
       roles: GetterNames.GetRoles,
       isRole: GetterNames.isRole,
+      isFirstStationLatitude: GetterNames.isFirstStationLatitude,
+      isFirstStationLongitude: GetterNames.isFirstStationLongitude,
     }),
     isAdmin() {
       return this.isRole(RoleEnum.Admin);

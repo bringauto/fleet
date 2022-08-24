@@ -14,6 +14,8 @@ export const GetterNames = Object.freeze({
   GetMe: "getMe",
   GetTenant: "getTenant",
   GetRoles: "getRoles",
+  isFirstStationLatitude: "isFirstStationLatitude",
+  isFirstStationLongitude: "isFirstStationLongitude",
   isAdmin: "isAdmin",
   isRole: "isRole",
   isDriver: "isDriver",
