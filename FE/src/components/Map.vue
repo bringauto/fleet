@@ -181,8 +181,6 @@ export default {
     },
   },
 };
-
-export class tenantsId {}
 </script>
 
 <style lang="scss">

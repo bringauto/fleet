@@ -21,10 +21,10 @@
               icon
               @click="handleEditModal('Station', item)"
             >
-              <v-icon small> mdi-pencil </v-icon>
+              <v-icon small> mdi-pencil</v-icon>
             </v-btn>
             <v-btn small color="error" icon @click="handleRemoveStation(item.id)">
-              <v-icon small> mdi-delete </v-icon>
+              <v-icon small> mdi-delete</v-icon>
             </v-btn>
           </template>
         </v-data-table>
@@ -53,10 +53,10 @@
           </template>
           <template #[`item.actions`]="{ item }">
             <v-btn small color="primary" class="mr-2" icon @click="handleEditModal('Route', item)">
-              <v-icon small> mdi-pencil </v-icon>
+              <v-icon small> mdi-pencil</v-icon>
             </v-btn>
             <v-btn small color="error" icon @click="handleRemoveRoute(item.id)">
-              <v-icon small> mdi-delete </v-icon>
+              <v-icon small> mdi-delete</v-icon>
             </v-btn>
           </template>
         </v-data-table>
@@ -79,10 +79,10 @@
         >
           <template #[`item.actions`]="{ item }">
             <v-btn small color="primary" class="mr-2" icon @click="handleEditModal('Car', item)">
-              <v-icon small> mdi-pencil </v-icon>
+              <v-icon small> mdi-pencil</v-icon>
             </v-btn>
             <v-btn small color="error" icon @click="handleRemoveCar(item.id)">
-              <v-icon small> mdi-delete </v-icon>
+              <v-icon small> mdi-delete</v-icon>
             </v-btn>
           </template>
         </v-data-table>
@@ -340,6 +340,14 @@ export default {
         return cloneDeep(DEFAULT_ROUTE);
       }
       return cloneDeep(DEFAULT_CAR);
+    },
+    onlyNumber($event) {
+      // console.log($event.keyCode); //keyCodes value
+      const keyCode = $event.keyCode ? $event.keyCode : $event.which;
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+        // 46 is dot 189 and 109 is -
+        $event.preventDefault();
+      }
     },
     async handleStationUpdate() {
       try {

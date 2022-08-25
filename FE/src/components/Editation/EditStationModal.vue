@@ -62,7 +62,9 @@ export default {
     onlyNumber(num) {
       // rgx only numbers and dots
       const rgx = /^[0-9-]*\.?[0-9]*$/;
-      return num.toString().match(rgx);
+      if (num.toString().match(rgx)) {
+        num.preventDefault();
+      }
     },
   },
 };
