@@ -89,7 +89,7 @@
                       :value="positionValue(stop)"
                       hide-details
                       @input="handleChangeStopVal(index, getLatLong($event))"
-                      @keypress="onlyNumber"
+                      @keydown="onlyNumber"
                     >
                       <template #append>
                         <v-tooltip top>
@@ -176,7 +176,14 @@ export default {
     onlyNumber($event) {
       // console.log($event.keyCode); //keyCodes value
       const keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+      console.log(keyCode);
+      if (
+        (keyCode < 48 || keyCode > 57) &&
+        keyCode !== 46 &&
+        keyCode !== 189 &&
+        keyCode !== 109 &&
+        keyCode !== 8
+      ) {
         // 46 is dot 189 and 109 is -
         $event.preventDefault();
       }

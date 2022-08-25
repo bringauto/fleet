@@ -124,14 +124,15 @@ export default {
       getMe: GetterNames.GetMe,
       roles: GetterNames.GetRoles,
       isRole: GetterNames.isRole,
-      isFirstStationLatitude: GetterNames.isFirstStationLatitude,
-      isFirstStationLongitude: GetterNames.isFirstStationLongitude,
+      getFirstStation: GetterNames.isFirstStation,
     }),
     isAdmin() {
       return this.isRole(RoleEnum.Admin);
     },
   },
   async mounted() {
+    // const { longitude, latitude } = this.getFirstStation;
+
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
       if (settings) {
@@ -144,6 +145,10 @@ export default {
     }
     this.stations = await stationApi.getStations();
     this.routes = await routeApi.getRoutes(true);
+    this.center = latLng(
+      this.stations[0].latitude ?? 47.09713,
+      this.stations[0].longitude ?? 37.54337
+    );
   },
 
   methods: {

@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: {
     user: null,
     selectedTenant: null,
+    stations: null,
   },
   getters: {
     [GetterNames.GetAuthStatus](state) {
@@ -34,11 +35,12 @@ export default new Vuex.Store({
     [GetterNames.GetTenant](state) {
       return state.selectedTenant;
     },
-    [GetterNames.isFirstStationLatitude](state) {
-      return state.user?.stops[0].nodes.latitude ?? 47.09713;
-    },
-    [GetterNames.isFirstStationLongitude](state) {
-      return state.user?.stops[0].nodes.longitude ?? 37.54337;
+    [GetterNames.isFirstStation](state) {
+      console.log(state);
+      if (state.user.stops[0].nodes) {
+        return state.user.stops[0].nodes;
+      }
+      return { longitude: 47.09713, latitude: 37.54337 };
     },
   },
   mutations: {
