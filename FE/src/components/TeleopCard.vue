@@ -173,6 +173,9 @@ export default {
     isDriver() {
       return this.isRole(RoleEnum.Driver);
     },
+    isUser() {
+      return this.isRole(RoleEnum.User);
+    },
     sortOrders() {
       const filtered = this.car.orders.nodes;
       return filtered.sort((a, b) => {

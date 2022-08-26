@@ -8,18 +8,36 @@
         </span>
         <span>{{ getLastUpdate(car) }}</span>
       </div>
-      <v-btn block class="text--center" color="primary" small text @click="showOrder = !showOrder">
+      <v-btn
+        v-if="!isUser"
+        block
+        class="text--center"
+        color="primary"
+        small
+        text
+        @click="showOrder = !showOrder"
+      >
         {{ $t("general.orders") }}
       </v-btn>
       <v-row align="center" class="px-3" justify="center">
-        <p class="text-h4 mb-0 mr-3 dash-card__lenght" @click="showOrder = !showOrder">
+        <p
+          class="text-h4 mb-0 mr-3 dash-card__lenght"
+          :aria-disabled="isUser"
+          @click="showOrder = !showOrder"
+        >
           {{ car.orders.nodes.length }}
         </p>
         <!-- button for create a single order
         <v-btn :disabled="car.underTest" color="primary" icon @click="handleNewOrder">
            <v-icon> mdi-plus-circle-outline</v-icon>
          </v-btn> -->
-        <v-btn :disabled="car.underTest" color="primary" icon @click="handleNewMulripleOrder">
+        <v-btn
+          v-if="!isUser"
+          :disabled="car.underTest"
+          color="primary"
+          icon
+          @click="handleNewMulripleOrder"
+        >
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
       </v-row>
@@ -45,10 +63,17 @@
               hide-default-footer
             >
               <template #[`item.actions`]="{ item }">
-                <v-btn class="mr-2" color="primary" icon small @click="handleEditOrder(item)">
+                <v-btn
+                  v-if="!isUser"
+                  class="mr-2"
+                  color="primary"
+                  icon
+                  small
+                  @click="handleEditOrder(item)"
+                >
                   <v-icon small> mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn color="error" icon small @click="handleDeleteOrder(item)">
+                <v-btn v-if="!isUser" color="error" icon small @click="handleDeleteOrder(item)">
                   <v-icon small> mdi-delete</v-icon>
                 </v-btn>
               </template>
@@ -63,7 +88,7 @@
               </template>
             </v-data-table>
             <v-row justify="center">
-              <v-btn :disabled="car.underTest" color="success" text @click="handleNewMulripleOrder">
+              <v-btn v-if="!isUser" color="success" text @click="handleNewMulripleOrder">
                 {{ $t("orders.new") }}
               </v-btn>
             </v-row>
@@ -73,7 +98,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="showOrder = false">
+            <v-btn v-if="!isUser" color="primary" text @click="showOrder = false">
               {{ $t("general.close") }}
             </v-btn>
           </v-card-actions>
@@ -85,7 +110,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { orderApi } from "../code/api";
+import { GetterNames } from "../store/enums/vuexEnums";
 import { getCarState, CarStateFormated } from "../code/enums/carEnums";
 import { getOrderState } from "../code/enums/orderEnums";
 import { orderListing } from "../code/helpers/orderHelpers";
@@ -93,6 +120,7 @@ import allRoutes from "../code/enums/routesEnum";
 import { getTime, getLastUpdate } from "../code/helpers/timeHelpers";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
+import { RoleEnum } from "../code/enums/roleEnums";
 
 export default {
   name: "DashCard",
@@ -123,6 +151,17 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      getMe: GetterNames.GetMe,
+      roles: GetterNames.GetRoles,
+      isRole: GetterNames.isRole,
+    }),
+    isUser() {
+      return this.isRole(RoleEnum.User);
+    },
+    isDriver() {
+      return this.isRole(RoleEnum.Driver);
+    },
     carState() {
       return (state) => {
         const { trans } = this.getCarState(state);
@@ -155,6 +194,7 @@ export default {
       });
     },
     handleNewMulripleOrder() {
+      console.log(this.isUser);
       this.$router.push({
         name: allRoutes.NewMultipleOrder,
         params: {
