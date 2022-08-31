@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
 
       <v-select
-        v-if="getMe != null"
+        v-if="getMe != isAdmin"
         v-model="selectedTenant"
         :append-icon="isAdmin ? '$dropdown' : ''"
         :disabled="!isAdmin"
@@ -24,6 +24,7 @@
         label="companies"
         outlined
         return-object
+        @change="handleChangeTenant"
       />
       <v-select
         v-model="$i18n.locale"
@@ -61,10 +62,10 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import allRoutes from "../../code/enums/routesEnum";
 import { LOGOUT_USER } from "../../code/graphql/queries";
-import { ActionNames, GetterNames } from "../../store/enums/vuexEnums";
+import { ActionNames, GetterNames, MutationNames } from "../../store/enums/vuexEnums";
 import { RoleEnum } from "../../code/enums/roleEnums";
 
 export default {
@@ -76,7 +77,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      getMe: GetterNames.GetMe,
+      computedMe: GetterNames.GetMe,
       roles: GetterNames.GetRoles,
       isRole: GetterNames.isRole,
       getTenant: GetterNames.GetTenant,
@@ -84,8 +85,11 @@ export default {
     isAdmin() {
       return this.isRole(RoleEnum.Admin, RoleEnum.Driver);
     },
+    isDriver() {
+      return this.isRole(RoleEnum.User);
+    },
     companies() {
-      return this.getMe.tenants.nodes;
+      return this.computedMe?.tenants?.nodes ?? [];
     },
     selectedTenant: {
       get() {
@@ -93,6 +97,7 @@ export default {
       },
       set(val) {
         this.setTenant(val);
+        this.$router.go();
       },
     },
   },
@@ -102,14 +107,19 @@ export default {
       setUser: ActionNames.SetUser,
       getMe: ActionNames.GetMe,
     }),
+    ...mapMutations({
+      setTenant: MutationNames.SetTenant,
+    }),
 
     async logout() {
       try {
         await this.$apollo.query({
           query: LOGOUT_USER,
         });
-
+        this.setTenant(null);
         this.setUser(null);
+        this.getMe(null);
+        sessionStorage.clear();
         this.$router.push({ name: allRoutes.Login });
       } catch (e) {
         this.$notify({

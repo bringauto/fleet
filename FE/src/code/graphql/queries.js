@@ -128,7 +128,7 @@ export const GET_CARS_ORDERS = gql`
 export const GET_STATIONS = gql`
   query {
     StopQuery {
-      stop {
+      stops {
         nodes {
           name
           id

@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickSation" />
+    <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickStation" />
     <v-fade-transition>
       <CarCard :car="selectedCar" class="dashboard__card" @get-cars="getAllCars()" />
     </v-fade-transition>

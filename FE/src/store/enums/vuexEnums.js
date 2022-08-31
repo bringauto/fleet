@@ -6,6 +6,7 @@ export const ActionNames = Object.freeze({
 export const MutationNames = Object.freeze({
   SetMe: "setMe",
   SetTenant: "setTenant",
+  LoadTenant: "loadTenant",
 });
 
 export const GetterNames = Object.freeze({

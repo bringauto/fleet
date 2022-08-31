@@ -41,22 +41,30 @@ export default new Vuex.Store({
     },
     [MutationNames.SetTenant](state, tenant) {
       state.selectedTenant = tenant;
+      sessionStorage.setItem("selectedTenant", JSON.stringify(tenant));
+    },
+    [MutationNames.LoadTenant](state, tenant) {
+      const storedTenant = sessionStorage.getItem("selectedTenant");
+      if (storedTenant) {
+        state.selectedTenant = JSON.parse(storedTenant);
+      } else {
+        state.selectedTenant = tenant;
+      }
     },
   },
   actions: {
     [ActionNames.GetMe]: async ({ commit }) => {
       try {
         const { data } = await apolloClient.query({ query: GET_ME });
-        console.log(data);
         commit(MutationNames.SetMe, data && data.UserQuery.me);
-        commit(MutationNames.SetTenant, data && data.UserQuery.me.tenants.nodes[0]);
+        commit(MutationNames.LoadTenant, data && data.UserQuery.me.tenants.nodes[0]);
       } catch (error) {
         console.error(error);
       }
     },
     [ActionNames.SetUser]: ({ commit }, user) => {
       commit(MutationNames.SetMe, user);
-      commit(MutationNames.SetTenant, user ? user.tenants.node[0] : null);
+      commit(MutationNames.LoadTenant, user ? user.tenants.node[0] : null);
     },
   },
 });
