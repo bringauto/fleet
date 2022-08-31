@@ -44,7 +44,13 @@ namespace BringAuto.Server.Repositories
 
             entity.Priority = allowedPriority.CheckOrderPriority(entity.Priority);
             entity.UserId = currentUserId.CurrentUserId;
-            await base.BeforeAdd(entity);
+
+            if (await dbContext.Stops.AnyAsync(x => x.Id == entity.ToStationId && !x.Deleted)
+                && (!entity.FromStationId.HasValue || await dbContext.Stops.AnyAsync(x => x.Id == entity.FromStationId && !x.Deleted))
+               )
+                await base.BeforeAdd(entity);
+            else
+                throw new ArgumentException("Cannot use deleted or unknown stations");
         }
 
         private async Task CheckCurrentCarPermitions(Artin.BringAuto.DAL.Models.Order entity)
@@ -62,7 +68,13 @@ namespace BringAuto.Server.Repositories
         {
             await CheckCurrentCarPermitions(entity);
             entity.Priority = allowedPriority.CheckOrderPriority(entity.Priority);
-            await base.BeforeAdd(entity);
+
+            if (await dbContext.Stops.AnyAsync(x => x.Id == entity.ToStationId && !x.Deleted)
+                && (!entity.FromStationId.HasValue || await dbContext.Stops.AnyAsync(x => x.Id == entity.FromStationId && !x.Deleted))
+               )
+                await base.BeforeUpdate(entity);
+            else
+                throw new ArgumentException("Cannot use deleted or unknown stations");
         }
 
         public async Task<IList<Order>> GetRouteForCar(string company, string car)
