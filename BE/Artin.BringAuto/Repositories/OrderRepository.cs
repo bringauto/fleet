@@ -1,9 +1,7 @@
 ﻿using Artin.BringAuto.DAL;
-using Artin.BringAuto.MQTTClient;
 using Artin.BringAuto.Shared;
 using Artin.BringAuto.Shared.Enums;
 using Artin.BringAuto.Shared.Ifaces;
-using Artin.BringAuto.Shared.Maps;
 using Artin.BringAuto.Shared.Orders;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -57,7 +55,7 @@ namespace BringAuto.Server.Repositories
                 if (underTest)
                     throw new ArgumentException("Car is under test. Only admin can manage orders");
             }
-               
+
         }
 
         protected override async Task BeforeUpdate(Artin.BringAuto.DAL.Models.Order entity)
