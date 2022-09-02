@@ -173,21 +173,21 @@ export default {
     handleRemovePoint(index) {
       this.route.stops.splice(index, 1);
     },
-    onlyNumber($event) {
-      // console.log($event.keyCode); //keyCodes value
-      const keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      console.log(keyCode);
-      if (
-        (keyCode < 48 || keyCode > 57) &&
-        keyCode !== 46 &&
-        keyCode !== 189 &&
-        keyCode !== 109 &&
-        keyCode !== 8
-      ) {
-        // 46 is dot 189 and 109 is -
-        $event.preventDefault();
-      }
-    },
+    /*   onlyNumber($event) {
+         // console.log($event.keyCode); //keyCodes value
+         const keyCode = $event.keyCode ? $event.keyCode : $event.which;
+         console.log(keyCode);
+         if (
+           (keyCode < 48 || keyCode > 57) &&
+           keyCode !== 46 &&
+           keyCode !== 189 &&
+           keyCode !== 109 &&
+           keyCode !== 8
+         ) {
+           // 46 is dot 189 and 109 is -
+           $event.preventDefault();
+         }
+       }, */
     handleRemovePointStation(index) {
       const orderX = this.route.stops[index].latitude;
       const orderY = this.route.stops[index].longitude;

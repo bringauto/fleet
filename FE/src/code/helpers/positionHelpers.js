@@ -1,5 +1,5 @@
 export function getLatLong(position) {
-  let latLong = position.replaceAll(/[^0-9.,]/g, "");
+  let latLong = position.replaceAll(/[^0-9-.,]/g, "");
   latLong = latLong.split(",");
   if (latLong[0] && latLong[1]) {
     return { latitude: Number(latLong[0]), longitude: Number(latLong[1]) };

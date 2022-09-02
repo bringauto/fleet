@@ -112,7 +112,12 @@
                 <v-btn color="error" text @click="resetModal()">
                   {{ $t("general.cancel") }}
                 </v-btn>
-                <v-btn color="success" text :disabled="invalid" @click="handleSave()">
+                <v-btn
+                  color="success"
+                  text
+                  :disabled="invalid || (!isUniqName && modal === 'Station')"
+                  @click="handleSave()"
+                >
                   {{ $t("settings.save") }}
                 </v-btn>
               </v-card-actions>
@@ -216,6 +221,15 @@ export default {
         );
       }
       return "";
+    },
+    isUniqName() {
+      console.log(this.entity);
+      if (this.entity?.name) {
+        return !this.stations.some(
+          (station) => station.name.toLowerCase() === this.entity.name.toLowerCase()
+        );
+      }
+      return true;
     },
   },
   async mounted() {
