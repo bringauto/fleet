@@ -10,6 +10,7 @@
       <v-spacer></v-spacer>
 
       <v-text-field
+        v-if="getTenant != null"
         solo
         outlined
         d
@@ -20,7 +21,7 @@
         :value="roles"
       />
       <v-select
-        v-if="getMe != null"
+        v-if="getTenant != null"
         v-model="selectedTenant"
         :append-icon="isAdmin ? '$dropdown' : ''"
         :disabled="!isAdmin"
