@@ -9,6 +9,16 @@
 
       <v-spacer></v-spacer>
 
+      <v-text-field
+        solo
+        outlined
+        d
+        dense
+        hide-details
+        class="px-3 pb-0 single-line language white--text text-decoration-none"
+        readonly
+        :value="roles"
+      />
       <v-select
         v-if="getMe != null"
         v-model="selectedTenant"
@@ -24,7 +34,6 @@
         label="companies"
         outlined
         return-object
-        @change="handleChangeTenant"
       />
       <v-select
         v-model="$i18n.locale"
@@ -35,6 +44,7 @@
         hide-details
         outlined
         @change="handleChangeLang"
+        @click="check"
       />
       <v-btn v-if="isAdmin" :to="{ name: settings }" class="mr-3" color="white" icon small>
         <v-icon color="white" small>mdi-cog</v-icon>
@@ -110,7 +120,9 @@ export default {
     ...mapMutations({
       setTenant: MutationNames.SetTenant,
     }),
-
+    async check() {
+      console.log(this.roles);
+    },
     async logout() {
       try {
         await this.$apollo.query({
@@ -137,11 +149,6 @@ export default {
       this.$i18n.lang = val;
       localStorage.setItem("language", val);
       this.$router.go();
-    },
-    handleChangeTenant(val) {
-      this.multiTe = val;
-      localStorage.setItem("company", val);
-      console.log(val);
     },
   },
 };

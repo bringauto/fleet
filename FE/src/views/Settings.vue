@@ -90,9 +90,7 @@
         <v-dialog :value="!!modal && !!entity" width="700" @input="resetModal()">
           <ValidationObserver v-slot="{ invalid }">
             <v-card>
-              <v-card-title class="headline primary white--text">
-                {{ dialogTitle }}
-              </v-card-title>
+              <v-card-title class="headline primary white--text"></v-card-title>
 
               <v-card-text>
                 <EditCarModal v-if="modal === 'Car'" :car.sync="entity" :routes="routes" />
@@ -228,7 +226,6 @@ export default {
       return "";
     },
     isUniqNameStation() {
-      console.log(this.entity);
       if (this.entity?.name) {
         return !this.stations.some(
           (station) =>
@@ -239,7 +236,6 @@ export default {
       return true;
     },
     isUniqNameCar() {
-      console.log(this.entity);
       if (this.entity?.name) {
         return !this.cars.some(
           (car) =>
@@ -249,7 +245,6 @@ export default {
       return true;
     },
     isUniqNameRoute() {
-      console.log(this.entity);
       if (this.entity?.name) {
         return !this.routes.some(
           (route) =>
