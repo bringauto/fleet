@@ -115,7 +115,12 @@
                 <v-btn
                   color="success"
                   text
-                  :disabled="invalid || (!isUniqName && modal === 'Station')"
+                  :disabled="
+                    invalid ||
+                    (!isUniqNameStation && modal === 'Station') ||
+                    (!isUniqNameRoute && modal === 'Route') ||
+                    (!isUniqNameCar && modal === 'Car')
+                  "
                   @click="handleSave()"
                 >
                   {{ $t("settings.save") }}
@@ -222,11 +227,34 @@ export default {
       }
       return "";
     },
-    isUniqName() {
+    isUniqNameStation() {
       console.log(this.entity);
       if (this.entity?.name) {
         return !this.stations.some(
-          (station) => station.name.toLowerCase() === this.entity.name.toLowerCase()
+          (station) =>
+            station.name.toLowerCase() === this.entity.name.toLowerCase() &&
+            station.id !== this.entity.id
+        );
+      }
+      return true;
+    },
+    isUniqNameCar() {
+      console.log(this.entity);
+      if (this.entity?.name) {
+        return !this.cars.some(
+          (car) =>
+            car.name.toLowerCase() === this.entity.name.toLowerCase() && car.id !== this.entity.id
+        );
+      }
+      return true;
+    },
+    isUniqNameRoute() {
+      console.log(this.entity);
+      if (this.entity?.name) {
+        return !this.routes.some(
+          (route) =>
+            route.name.toLowerCase() === this.entity.name.toLowerCase() &&
+            route.id !== this.entity.id
         );
       }
       return true;
@@ -283,8 +311,8 @@ export default {
         this.$notify({
           group: "global",
           type: "error",
-          text: e,
         });
+        console.log(e);
       }
     },
     async handleRemoveRoute(id) {
