@@ -16,7 +16,7 @@
             item-value="id"
             required
             :error-messages="errors"
-          ></v-select>
+          />
           <v-select
             :items="routes"
             :label="$t('settings.route')"

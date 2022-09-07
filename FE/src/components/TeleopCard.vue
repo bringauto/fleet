@@ -1,7 +1,15 @@
 <template>
   <div class="teleop-card">
     <template v-if="car">
-      <p class="text-center text-h6 mb-0">{{ car.name }}</p>
+      <v-select
+        v-model="carId"
+        :label="$t('newOrder.car')"
+        :items="cars"
+        item-text="name"
+        item-value="id"
+        required
+      />
+      <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p> -->
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="car.fuel" class="mr-2">
           <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 100 }}%
@@ -138,7 +146,7 @@ import { mapGetters } from "vuex";
 import { CarStateFormated, getCarState } from "../code/enums/carEnums";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { OrderStateFormated } from "../code/enums/orderEnums";
-import { orderApi } from "../code/api";
+import { orderApi, carApi } from "../code/api";
 import { orderListing } from "../code/helpers/orderHelpers";
 import { getTime, getLastUpdate } from "../code/helpers/timeHelpers";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
@@ -158,11 +166,14 @@ export default {
     CarStateFormated,
     OrderStateFormated,
     collapsed: true,
+    cars: [],
     showOrder: false,
+    carId: null,
     allRoutes,
   }),
   computed: {
     ...mapGetters({
+      getTenant: GetterNames.GetTenant,
       getMe: GetterNames.GetMe,
       roles: GetterNames.GetRoles,
       isRole: GetterNames.isRole,
@@ -176,6 +187,9 @@ export default {
     isUser() {
       return this.isRole(RoleEnum.User);
     },
+    companies() {
+      return this.$data;
+    },
     sortOrders() {
       const filtered = this.car.orders.nodes;
       return filtered.sort((a, b) => {
@@ -188,12 +202,32 @@ export default {
       });
     },
   },
+  watch: {
+    cars: {
+      handler(val) {
+        if (val.length === 1 && !this.carId) {
+          this.carId = val[0].id;
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+  async mounted() {
+    await this.initForm();
+  },
   methods: {
+    async initForm() {
+      const cars = await carApi.getCarsWithoutHistory();
+      this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
+      this.carId = this.$route.params.carId;
+    },
     getPriorityEnum,
     getCarState,
     orderListing,
     getLastUpdate,
     getCarBatteryIcon,
+
     formatTime(val) {
       return getTime(val, "d.M.y k:m");
     },

@@ -13,12 +13,12 @@
         v-if="getTenant != null"
         solo
         outlined
-        d
+        disabled
         dense
         hide-details
         class="px-3 pb-0 single-line language white--text text-decoration-none"
         readonly
-        :value="roles"
+        :value="computedMe.userName"
       />
       <v-select
         v-if="getTenant != null"
@@ -122,7 +122,7 @@ export default {
       setTenant: MutationNames.SetTenant,
     }),
     async check() {
-      console.log(this.roles);
+      console.log(this.getTenant);
     },
     async logout() {
       try {

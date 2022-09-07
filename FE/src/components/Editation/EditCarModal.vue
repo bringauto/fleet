@@ -23,8 +23,9 @@
         <v-col cols="12" md="6">
           <v-text-field
             :label="$t('cars.companyName')"
-            :value="car.companyName"
-            @input="$emit('update:car', { ...car, companyName: $event })"
+            :value="(car.companyName = getTenant.name)"
+            readonly
+            @input="$emit('update:car', { ...car, companyName: getTenant.name })"
           />
         </v-col>
         <v-col cols="12" md="6">
@@ -72,11 +73,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { ValidationProvider } from "vee-validate";
+import { GetterNames } from "../../store/enums/vuexEnums";
 import { CarStateFormated } from "../../code/enums/carEnums";
 
 export default {
   name: "EditStationModal",
+  computed: {
+    ...mapGetters({
+      getTenant: GetterNames.GetTenant,
+    }),
+  },
   components: {
     ValidationProvider,
   },
