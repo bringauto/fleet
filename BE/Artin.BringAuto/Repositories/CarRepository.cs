@@ -141,10 +141,10 @@ namespace BringAuto.Server.Repositories
                 && x.Name == carName)
                 .SelectMany(x => x.Route.Stops)
                 .OrderBy(x => x.Order)
-                .Where(x=>x.StationId.HasValue)
+                .Where(x => x.StationId.HasValue)
                 .Select(x => x.StationId.Value)
                 .ToListAsync();
-                
+
         }
     }
 }
