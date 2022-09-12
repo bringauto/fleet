@@ -23,9 +23,10 @@
         <v-col cols="12" md="6">
           <v-text-field
             :label="$t('cars.companyName')"
-            :value="(car.companyName = getTenant.name)"
+            :value="(car.companyName = getTenant.name.toLowerCase())"
             readonly
-            @input="$emit('update:car', { ...car, companyName: getTenant.name })"
+            disabled
+            @input="$emit('update:car', { ...car, companyName: getTenant.name.toLowerCase() })"
           />
         </v-col>
         <v-col cols="12" md="6">
