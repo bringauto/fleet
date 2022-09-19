@@ -89,6 +89,7 @@
                       :value="positionValue(stop)"
                       hide-details
                       @input="handleChangeStopVal(index, getLatLong($event))"
+                      @keydown="justNumber"
                     >
                       <template #append>
                         <v-tooltip top>
@@ -129,7 +130,7 @@
 
 <script>
 import { ValidationProvider } from "vee-validate";
-import { getLatLong, getPositionValue } from "../../code/helpers/positionHelpers";
+import { getLatLong, getPositionValue, justNumber } from "../../code/helpers/positionHelpers";
 import { getStation } from "../../code/helpers/routesHelpers";
 
 export default {
@@ -166,6 +167,7 @@ export default {
   methods: {
     getStation,
     getLatLong,
+    justNumber,
     positionValue(stop) {
       return getPositionValue(stop);
     },
