@@ -194,7 +194,6 @@ export default {
     },
     selectedCar: {
       get() {
-        console.log(this.cars);
         return this.cars.find((car) => car.id === this.getSelectCar) || this.cars[0];
       },
       set(val) {

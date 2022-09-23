@@ -181,12 +181,10 @@ export default {
     },
     selectedCar: {
       get() {
-        console.log(this.cars);
         return this.cars.find((car) => car.id === this.getSelectCar) || this.cars[0] || this.car;
       },
       set(val) {
         this.setCarId(val);
-        // this.$router.go();
       },
     },
     getFilteredOrders() {
@@ -231,7 +229,6 @@ export default {
       });
     },
     handleNewMulripleOrder() {
-      console.log(this.isUser);
       this.$router.push({
         name: allRoutes.NewMultipleOrder,
         params: {
@@ -254,8 +251,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.deleteFailed"),
           type: "error",
-          text: e,
         });
+        console.log(e);
       }
     },
   },

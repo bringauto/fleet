@@ -284,8 +284,8 @@ export default {
         this.$notify({
           group: "global",
           type: "error",
-          text: e,
         });
+        console.log(e);
       }
     },
     async getAllRoutes() {
@@ -295,8 +295,8 @@ export default {
         this.$notify({
           group: "global",
           type: "error",
-          text: e,
         });
+        console.log(e);
       }
     },
     async getAllCars() {
@@ -378,14 +378,6 @@ export default {
       }
       return cloneDeep(DEFAULT_CAR);
     },
-    onlyNumber($event) {
-      // console.log($event.keyCode); //keyCodes value
-      const keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-        // 46 is dot 189 and 109 is -
-        $event.preventDefault();
-      }
-    },
     async handleStationUpdate() {
       try {
         if (this.editation) {
@@ -453,8 +445,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("settings.somethingWrong"),
           type: "error",
-          text: e,
         });
+        console.log(e);
       }
       await this.getAllCars();
     },

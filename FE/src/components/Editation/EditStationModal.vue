@@ -60,13 +60,6 @@ export default {
   methods: {
     getLatLong,
     justNumber,
-    /* onlyNumber(num) {
-       // rgx only numbers and dots
-       const rgx = /^[0-9-]*\.?[0-9]*$/;
-       if (num.toString().match(rgx)) {
-         num.preventDefault();
-       }
-     }, */
   },
 };
 </script>

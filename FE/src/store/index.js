@@ -40,7 +40,6 @@ export default new Vuex.Store({
       return state.selectedCarId;
     },
     [GetterNames.isFirstStation](state) {
-      console.log(state);
       if (state.user.stops[0].nodes) {
         return state.user.stops[0].nodes;
       }

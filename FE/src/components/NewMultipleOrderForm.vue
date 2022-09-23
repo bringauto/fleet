@@ -145,7 +145,6 @@ export default {
     },
     mappStations(id) {
       this.routeId = id;
-      console.log(id);
       if (id) {
         const selectedRoute = this.routes.find((route) => route.id === id);
         this.mappedStations = selectedRoute.stops.reduce((acc, stop) => {

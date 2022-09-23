@@ -45,7 +45,6 @@
         hide-details
         outlined
         @change="handleChangeLang"
-        @click="check"
       />
       <v-btn v-if="isAdmin" :to="{ name: settings }" class="mr-3" color="white" icon small>
         <v-icon color="white" small>mdi-cog</v-icon>
@@ -121,9 +120,6 @@ export default {
     ...mapMutations({
       setTenant: MutationNames.SetTenant,
     }),
-    async check() {
-      console.log(this.getTenant);
-    },
     async logout() {
       try {
         await this.$apollo.query({
@@ -153,8 +149,6 @@ export default {
     },
   },
 };
-
-export class tenantsId {}
 </script>
 
 <style lang="scss" scoped>

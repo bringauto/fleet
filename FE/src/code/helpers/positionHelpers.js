@@ -1,7 +1,6 @@
 export function getLatLong(position) {
   let latLong = position.replaceAll(/[^0-9-.,]/g, "");
   latLong = latLong.split(",");
-  console.log(latLong);
   if (latLong[0] && latLong[1]) {
     return { latitude: Number(latLong[0]), longitude: Number(latLong[1]) };
   }
@@ -14,7 +13,6 @@ export function getLatLong(position) {
 export function getPositionValue(station) {
   const { latitude, longitude } = station;
   if (latitude && longitude) {
-    console.log(latitude);
     return `${latitude}, ${longitude}`;
   }
   if (latitude && !longitude) {
