@@ -66,16 +66,13 @@
                   </v-col>
                 </v-row>
                 <v-row align="center" justify="center">
-                  <v-col cols="12" md="2">
-                    <v-btn
-                      :block="$vuetify.breakpoint.mobile"
-                      :icon="!$vuetify.breakpoint.mobile"
-                      color="success"
-                      @click="handleAddPoint()"
-                    >
-                      <v-icon> mdi-plus-circle-outline</v-icon>
-                    </v-btn>
-                  </v-col>
+                  <v-btn
+                    :icon="!$vuetify.breakpoint.mobile"
+                    color="success"
+                    @click="handleAddPoint()"
+                  >
+                    <v-icon> mdi-plus-circle-outline</v-icon>
+                  </v-btn>
                 </v-row>
               </v-card>
             </v-col>
@@ -92,6 +89,7 @@
                       :value="positionValue(stop)"
                       hide-details
                       @input="handleChangeStopVal(index, getLatLong($event))"
+                      @keypress="onlyNumber"
                     >
                       <template v-slot:append>
                         <v-tooltip top>
@@ -104,7 +102,6 @@
                     </v-text-field>
                   </v-col>
                   <v-btn
-                    :block="$vuetify.breakpoint.mobile"
                     :icon="!$vuetify.breakpoint.mobile"
                     color="error"
                     small
@@ -114,16 +111,13 @@
                   </v-btn>
                 </v-row>
                 <v-row align="center" justify="center">
-                  <v-col cols="12" md="2">
-                    <v-btn
-                      :block="$vuetify.breakpoint.mobile"
-                      :icon="!$vuetify.breakpoint.mobile"
-                      color="success"
-                      @click="handleAddPoint()"
-                    >
-                      <v-icon> mdi-plus-circle-outline</v-icon>
-                    </v-btn>
-                  </v-col>
+                  <v-btn
+                    :icon="!$vuetify.breakpoint.mobile"
+                    color="success"
+                    @click="handleAddPoint()"
+                  >
+                    <v-icon> mdi-plus-circle-outline</v-icon>
+                  </v-btn>
                 </v-row>
               </v-card-text>
             </v-responsive>
@@ -178,6 +172,14 @@ export default {
     },
     handleRemovePoint(index) {
       this.route.stops.splice(index, 1);
+    },
+    onlyNumber($event) {
+      // console.log($event.keyCode); //keyCodes value
+      const keyCode = $event.keyCode ? $event.keyCode : $event.which;
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+        // 46 is dot
+        $event.preventDefault();
+      }
     },
     handleRemovePointStation(index) {
       const orderX = this.route.stops[index].latitude;
