@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickSation" />
+    <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickStation" />
     <v-fade-transition>
       <CarCard :car="selectedCar" class="dashboard__card" @get-cars="getAllCars()" />
     </v-fade-transition>
@@ -79,7 +79,7 @@ export default {
     handleClickCar(car) {
       this.selectedCar = car;
     },
-    handleClickSation(station) {
+    handleClickStation(station) {
       this.$router.push({ name: allRoutes.NewOrder, params: { stationTo: station.id } });
     },
   },
@@ -89,6 +89,7 @@ export default {
 <style lang="scss">
 .dashboard {
   position: relative;
+
   &__card {
     position: absolute;
     right: 20px;

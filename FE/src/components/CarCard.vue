@@ -14,7 +14,7 @@
               $t("general.order")
             }}</v-btn>
             <v-dialog v-model="showOrder" width="800">
-              <template v-slot:activator="{}">
+              <template #activator="{}">
                 <v-btn large text color="primary" @click="showOrder = !showOrder">{{
                   $t("general.showOrders")
                 }}</v-btn>
@@ -37,7 +37,7 @@
                     :items-per-page="-1"
                     class="elevation-0 mt-2"
                   >
-                    <template v-slot:[`item.actions`]="{ item }">
+                    <template #[`item.actions`]="{ item }">
                       <v-btn small color="primary" icon fab @click="handleEditOrder(item)">
                         <v-icon small> mdi-pencil </v-icon>
                       </v-btn>
@@ -45,7 +45,7 @@
                         <v-icon small> mdi-delete </v-icon>
                       </v-btn>
                     </template>
-                    <template v-slot:[`item.arrive`]="{ item }">
+                    <template #[`item.arrive`]="{ item }">
                       <span v-if="item.arrive">{{ getTime(item.arrive) }}</span>
                     </template>
                   </v-data-table>
