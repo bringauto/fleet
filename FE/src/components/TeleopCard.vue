@@ -4,7 +4,7 @@
       <p class="text-center text-h6 mb-0">{{ car.name }}</p>
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel }}%
+          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 10000 }}%
         </span>
         <span>{{ getLastUpdate(car) }}</span>
       </div>
@@ -92,7 +92,7 @@
                           :block="$vuetify.breakpoint.mobile"
                           @click="removeOrder(order.id)"
                         >
-                          <v-icon small> mdi-delete </v-icon>
+                          <v-icon small> mdi-delete</v-icon>
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -109,7 +109,7 @@
               </template>
             </v-row>
             <v-row justify="center">
-              <v-btn color="success" text @click="handleNewOrder">{{ $t("orders.new") }} </v-btn>
+              <v-btn color="success" text @click="handleNewOrder">{{ $t("orders.new") }}</v-btn>
             </v-row>
           </v-card-text>
 
@@ -222,9 +222,11 @@ export default {
     width: 80%;
     margin: -80px auto 30px;
   }
+
   &__lenght {
     cursor: pointer;
   }
+
   .v-skeleton-loader__article.v-skeleton-loader__bone {
     background: #f6f6fb !important;
   }
