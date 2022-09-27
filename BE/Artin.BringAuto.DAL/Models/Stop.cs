@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Artin.BringAuto.DAL.Models
 {
-    public class Stop : IId<int>, ITenancy
+    public class Stop : IId<int>, ITenancy, ISoftDelete
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,5 +20,6 @@ namespace Artin.BringAuto.DAL.Models
         [ForeignKey(nameof(Tenant))]
         public int? TenantId { get; set; }
         public Tenant Tenant { get; set; }
+        public bool Deleted { get; set; }
     }
 }
