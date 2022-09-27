@@ -4,7 +4,7 @@
       <p class="text-center text-h6 mb-0">{{ car.name }}</p>
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 10000 }}%
+          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 100 }}%
         </span>
         <span>{{ getLastUpdate(car) }}</span>
       </div>
