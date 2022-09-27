@@ -85,5 +85,13 @@
     "cli-service": {
       "eslint": "$eslint"
     }
+  },
+  "overrides": {
+    "eslint-loader": {
+      "eslint": "$eslint"
+    },
+    "eslint-plugin-vue": {
+      "eslint": "$eslint"
+    }
   }
 }
