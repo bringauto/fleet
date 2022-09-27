@@ -13,8 +13,11 @@ namespace Artin.BringAuto.Mappings
     {
         public UserMap()
         {
-            CreateMap<Artin.BringAuto.DAL.Models.ApplicationUser, User>().ReverseMap();
-            CreateMap<NewUser, ApplicationUser>();
+            CreateMap<Artin.BringAuto.DAL.Models.ApplicationUser, User>()
+                .ReverseMap();
+            CreateMap<UpdateUser, ApplicationUser>();
+            CreateMap<NewUser, ApplicationUser>()
+                .IncludeBase<UpdateUser, ApplicationUser>();
                 
         }
     }

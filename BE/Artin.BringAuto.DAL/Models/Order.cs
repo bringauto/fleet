@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Artin.BringAuto.DAL.Models
 {
-    public class Order : IId<int>
+    public class Order : IId<int>, ITenancy
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -24,11 +24,11 @@ namespace Artin.BringAuto.DAL.Models
 
         public int? FromStationId { get; set; }
         [Column(nameof(FromStationId))]
-        public Station FromStation { get; set; }
+        public Stop FromStation { get; set; }
 
         public int ToStationId { get; set; }
         [Column(nameof(ToStationId))]
-        public Station ToStation { get; set; }
+        public Stop ToStation { get; set; }
         public OrderPriority Priority { get; set; }
         public OrderStatus Status { get; set; }
 
@@ -41,5 +41,9 @@ namespace Artin.BringAuto.DAL.Models
 
         [Phone]
         public string ToStationPhone { get; set; }
+
+        [ForeignKey(nameof(Tenant))]
+        public int? TenantId { get; set; }
+        public Tenant Tenant { get; set; }
     }
 }

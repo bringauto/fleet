@@ -1,6 +1,6 @@
 <template>
   <PageWrapper>
-    <template v-slot:title>
+    <template #title>
       {{ $t("settings.title") }}
     </template>
     <h2 class="text-h5 mb-3">{{ $t("settings.stations") }}</h2>
@@ -13,7 +13,7 @@
           :items-per-page="-1"
           class="mt-2 mb-5"
         >
-          <template v-slot:[`item.actions`]="{ item }">
+          <template #[`item.actions`]="{ item }">
             <v-btn
               small
               color="primary"
@@ -45,13 +45,13 @@
           :items-per-page="-1"
           class="mt-2 mb-5"
         >
-          <template v-slot:[`item.stops`]="{ item }">
+          <template #[`item.stops`]="{ item }">
             <span v-if="item.stops && item.stops.length">{{ item.stops.length }}</span>
           </template>
-          <template v-slot:[`item.color`]="{ item }">
+          <template #[`item.color`]="{ item }">
             <div v-if="item.color" class="color-circle" :style="`background-color:${item.color}`" />
           </template>
-          <template v-slot:[`item.actions`]="{ item }">
+          <template #[`item.actions`]="{ item }">
             <v-btn small color="primary" class="mr-2" icon @click="handleEditModal('Route', item)">
               <v-icon small> mdi-pencil </v-icon>
             </v-btn>
@@ -77,7 +77,7 @@
           :items-per-page="-1"
           class="mt-2 mb-5"
         >
-          <template v-slot:[`item.actions`]="{ item }">
+          <template #[`item.actions`]="{ item }">
             <v-btn small color="primary" class="mr-2" icon @click="handleEditModal('Car', item)">
               <v-icon small> mdi-pencil </v-icon>
             </v-btn>

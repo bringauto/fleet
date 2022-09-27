@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Artin.BringAuto.DAL.Models
 {
-    public class Route : IId<int>
+    public class Route : IId<int>, ITenancy
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,6 +18,10 @@ namespace Artin.BringAuto.DAL.Models
         public String Name { get; set; }
         public String Color { get; set; }
         public ICollection<RouteStop> Stops{ get; set; }
+
+        [ForeignKey(nameof(Tenant))]
+        public int? TenantId { get; set; }
+        public Tenant Tenant { get; set; }
 
     }
 }

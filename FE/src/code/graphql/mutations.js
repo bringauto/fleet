@@ -2,9 +2,9 @@ import gql from "graphql-tag";
 
 // Stations
 export const CREATE_STATION = gql`
-  mutation CreateStation($name: String!, $latitude: Float!, $longitude: Float!) {
-    StationMutation {
-      addStation(station: { name: $name, latitude: $latitude, longitude: $longitude }) {
+  mutation CreateStop($name: String!, $latitude: Float!, $longitude: Float!) {
+    StopMutation {
+      addStop(station: { name: $name, latitude: $latitude, longitude: $longitude }) {
         id
       }
     }
@@ -12,9 +12,9 @@ export const CREATE_STATION = gql`
 `;
 
 export const UPDATE_STATION = gql`
-  mutation UpdateStation($id: Int!, $name: String!, $latitude: Float!, $longitude: Float!) {
-    StationMutation {
-      updateStation(station: { id: $id, name: $name, latitude: $latitude, longitude: $longitude }) {
+  mutation UpdateStop($id: Int!, $name: String!, $latitude: Float!, $longitude: Float!) {
+    StopMutation {
+      updateStop(station: { id: $id, name: $name, latitude: $latitude, longitude: $longitude }) {
         id
       }
     }
@@ -22,9 +22,9 @@ export const UPDATE_STATION = gql`
 `;
 
 export const DELETE_STATION = gql`
-  mutation DeleteStation($id: Int!) {
-    StationMutation {
-      deleteStation(stationId: $id) {
+  mutation DeleteStop($id: Int!) {
+    StopMutation {
+      deleteStop(stationId: $id) {
         id
       }
     }

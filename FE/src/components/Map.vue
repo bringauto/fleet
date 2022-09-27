@@ -143,6 +143,7 @@ export default {
     this.stations = await stationApi.getStations();
     this.routes = await routeApi.getRoutes(true);
   },
+
   methods: {
     getLastUpdate,
     handleCarClick(car) {
@@ -178,6 +179,8 @@ export default {
     },
   },
 };
+
+export class tenantsId {}
 </script>
 
 <style lang="scss">
