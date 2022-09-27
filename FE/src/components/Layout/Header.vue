@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
 
       <v-select
-        v-if="getMe != isAdmin"
+        v-if="getMe != null"
         v-model="selectedTenant"
         :append-icon="isAdmin ? '$dropdown' : ''"
         :disabled="!isAdmin"
@@ -116,18 +116,20 @@ export default {
         await this.$apollo.query({
           query: LOGOUT_USER,
         });
+
         this.setTenant(null);
         this.setUser(null);
         this.getMe(null);
         sessionStorage.clear();
+
         this.$router.push({ name: allRoutes.Login });
       } catch (e) {
         this.$notify({
           group: "global",
           title: this.$i18n.tc("notifications.user.logoutFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
 

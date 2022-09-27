@@ -4,7 +4,7 @@
       <p class="text-center text-h6 mb-0">{{ car.name }}</p>
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel }}%
+          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 100 }}%
         </span>
         <span>{{ getLastUpdate(car) }}</span>
       </div>
@@ -22,9 +22,10 @@
         <p class="text-h4 mb-0 mr-3 teleop-card__lenght" @click="showOrder = !showOrder">
           {{ car.orders.nodes.length }}
         </p>
-        <v-btn color="primary" icon @click="handleNewOrder">
+        <!-- button of single Order
+        <v-btn icon color="primary" @click="handleNewOrder">
           <v-icon> mdi-plus-circle-outline</v-icon>
-        </v-btn>
+        </v-btn> -->
         <v-btn :to="{ name: allRoutes.NewMultipleOrder }" color="primary" icon>
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
@@ -33,6 +34,7 @@
         <p :key="order.id" class="text-caption mb-0">{{ key + 1 }}. {{ orderListing(order) }}</p>
       </template>
       <p v-if="car.orders.nodes.length > 3" class="text-caption mb-0">...</p>
+      <!-- select box for car status
       <v-select
         :items="CarStateFormated"
         :label="$t('general.status')"
@@ -45,7 +47,7 @@
         outlined
         @input="$emit('set-car-status', { status: $event, car: car })"
       />
-
+      -->
       <v-dialog v-model="showOrder" width="800">
         <v-card>
           <v-card-title class="headline primary white--text">
@@ -72,6 +74,8 @@
                       </v-col>
                       <v-col cols="12" sm="4">
                         <v-select
+                          :append-icon="isAdmin ? '$dropdown' : ''"
+                          :disabled="!isAdmin"
                           :items="OrderStateFormated"
                           :label="$t('general.status')"
                           :value="order.status"
@@ -108,9 +112,11 @@
                 </v-row>
               </template>
             </v-row>
+            <!--
             <v-row justify="center">
               <v-btn color="success" text @click="handleNewOrder">{{ $t("orders.new") }}</v-btn>
             </v-row>
+            -->
           </v-card-text>
 
           <v-divider></v-divider>
@@ -129,6 +135,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { CarStateFormated, getCarState } from "../code/enums/carEnums";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { OrderStateFormated } from "../code/enums/orderEnums";
@@ -137,6 +144,8 @@ import { orderListing } from "../code/helpers/orderHelpers";
 import { getLastUpdate, getTime } from "../code/helpers/timeHelpers";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
 import allRoutes from "../code/enums/routesEnum";
+import { RoleEnum } from "../code/enums/roleEnums";
+import { GetterNames } from "../store/enums/vuexEnums";
 
 export default {
   name: "CarCard",
@@ -154,6 +163,17 @@ export default {
     allRoutes,
   }),
   computed: {
+    ...mapGetters({
+      getMe: GetterNames.GetMe,
+      roles: GetterNames.GetRoles,
+      isRole: GetterNames.isRole,
+    }),
+    isAdmin() {
+      return this.isRole(RoleEnum.Admin);
+    },
+    isDriver() {
+      return this.isRole(RoleEnum.Driver);
+    },
     sortOrders() {
       const filtered = this.car.orders.nodes;
       return filtered.sort((a, b) => {
@@ -189,8 +209,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.deleteFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
     handleNewOrder() {

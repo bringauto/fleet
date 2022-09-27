@@ -10,11 +10,11 @@ Simple order adds exactly one station to the [Mission].
 
 ![car status](./img/CarStatus.png)
 
-- choose car and station where the autonomous platform shall go
+- Choose car and station where the autonomous platform shall go
 
 ![simple order](./img/SimpleOrder.png)
 
-- click to apply to add order to the [Mission]
+- Click to apply to add order to the [Mission]
 
 ## Update/Delete simple order
 

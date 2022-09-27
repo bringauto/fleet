@@ -4,32 +4,35 @@
       <p class="text-center text-h6 mb-0">{{ car.name }}</p>
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel }}%
+          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 100 }}%
         </span>
         <span>{{ getLastUpdate(car) }}</span>
       </div>
-      <v-btn small block color="primary" class="text--center" text @click="showOrder = !showOrder">
+      <v-btn block class="text--center" color="primary" small text @click="showOrder = !showOrder">
         {{ $t("general.orders") }}
       </v-btn>
-      <v-row justify="center" align="center" class="px-3">
-        <p class="text-h4 mb-0 mr-3 dash-card__lenght" @click="showOrder = !showOrder">
+      <v-row align="center" class="px-3" justify="center">
+        <p class="text-h4 mb-0 mr-3 dash-card__length" @click="showOrder = !showOrder">
           {{ car.orders.nodes.length }}
         </p>
-        <v-btn icon color="primary" :disabled="car.underTest" @click="handleNewOrder">
+        <!--
+        <v-btn :disabled="car.underTest" color="primary" icon @click="handleNewOrder">
           <v-icon> mdi-plus-circle-outline</v-icon>
         </v-btn>
         <v-btn
-          icon
-          color="primary"
-          :to="{ name: allRoutes.NewMultipleOrder }"
           :disabled="car.underTest"
+          :to="{ name: allRoutes.NewMultipleOrder }"
+          color="primary"
+          icon
         >
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
+        -->
       </v-row>
       <template v-for="(order, key) in car.orders.nodes.slice(0, 3)">
         <p :key="order.id" class="text-caption mb-0">{{ key + 1 }}. {{ orderListing(order) }}</p>
       </template>
+
       <p v-if="car.orders.nodes.length > 3" class="text-caption mb-0">...</p>
       <v-dialog v-model="showOrder" width="1000">
         <v-card>
@@ -42,32 +45,32 @@
             </div>
             <v-data-table
               v-else
-              hide-default-footer
               :headers="headers"
               :items="getFilteredOrders"
               :items-per-page="-1"
               class="box-wrapper my-2"
+              hide-default-footer
             >
-              <template #[`item.actions`]="{ item }">
-                <v-btn small color="primary" class="mr-2" icon @click="handleEditOrder(item)">
-                  <v-icon small> mdi-pencil </v-icon>
+              <template v-slot:[`item.actions`]="{ item }">
+                <v-btn class="mr-2" color="primary" icon small @click="handleEditOrder(item)">
+                  <v-icon small> mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn small color="error" icon @click="handleDeleteOrder(item)">
-                  <v-icon small> mdi-delete </v-icon>
+                <v-btn color="error" icon small @click="handleDeleteOrder(item)">
+                  <v-icon small> mdi-delete</v-icon>
                 </v-btn>
               </template>
-              <template #[`item.arrive`]="{ item }">
+              <template v-slot:[`item.arrive`]="{ item }">
                 <span v-if="item.arrive">{{ getTime(item.arrive) }}</span>
                 <span v-else>{{ $t("newOrder.soon") }}</span>
               </template>
-              <template #[`item.priority`]="{ item }">
+              <template v-slot:[`item.priority`]="{ item }">
                 <span :class="`${getPriorityEnum(item.priority).color}--text`">
                   {{ getPriorityEnum(item.priority).trans }}
                 </span>
               </template>
             </v-data-table>
             <v-row justify="center">
-              <v-btn color="success" text :disabled="car.underTest" @click="handleNewOrder">
+              <v-btn :disabled="car.underTest" color="success" text @click="handleNewOrder">
                 {{ $t("orders.new") }}
               </v-btn>
             </v-row>
@@ -90,11 +93,11 @@
 
 <script>
 import { orderApi } from "../code/api";
-import { getCarState, CarStateFormated } from "../code/enums/carEnums";
+import { CarStateFormated, getCarState } from "../code/enums/carEnums";
 import { getOrderState } from "../code/enums/orderEnums";
 import { orderListing } from "../code/helpers/orderHelpers";
 import allRoutes from "../code/enums/routesEnum";
-import { getTime, getLastUpdate } from "../code/helpers/timeHelpers";
+import { getLastUpdate, getTime } from "../code/helpers/timeHelpers";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
 
@@ -128,7 +131,7 @@ export default {
     };
   },
   computed: {
-    carStete() {
+    carState() {
       return (state) => {
         const { trans } = this.getCarState(state);
         return trans;
@@ -159,6 +162,7 @@ export default {
         },
       });
     },
+
     async handleDeleteOrder(order) {
       try {
         await orderApi.deleteOrder(order.id);
@@ -173,8 +177,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.order.deleteFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
   },
@@ -197,9 +201,11 @@ export default {
     width: 80%;
     margin: -80px auto 30px;
   }
+
   &__lenght {
     cursor: pointer;
   }
+
   .v-skeleton-loader__article.v-skeleton-loader__bone {
     background: #f6f6fb !important;
   }

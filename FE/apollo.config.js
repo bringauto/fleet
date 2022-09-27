@@ -1,7 +1,7 @@
 module.exports = {
   client: {
     service: {
-      name: "industrial-portal",
+      name: "fleet",
       // URL to the GraphQL API
       url: process.env.APP_VUE_GRAPHQL_URL,
     },

@@ -12,7 +12,7 @@ Roles are specified as part of [UserRoles]
 
 ## Default Users
 
-Once the Industrial Portal is initialized first time the default users are created
+Once the BringAuto Fleet is initialized first time the default users are created
 
 - Username: Admin, password: Admin1
 - Username: User, password: User1
