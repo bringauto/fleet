@@ -1,8 +1,8 @@
 <template>
   <div class="teleop-card">
-    <template v-if="car">
+    <template v-if="selectedCar">
       <v-select
-        v-model="carId"
+        v-model="selectedCar"
         :label="$t('newOrder.car')"
         :items="cars"
         item-text="name"
@@ -11,10 +11,10 @@
       />
       <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p> -->
       <div class="d-flex justify-center align-center text-caption mb-1">
-        <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 100 }}%
+        <span v-if="selectedCar.fuel" class="mr-2">
+          <v-icon>{{ getCarBatteryIcon(selectedCar.fuel) }}</v-icon> {{ selectedCar.fuel * 100 }}%
         </span>
-        <span>{{ getLastUpdate(car) }}</span>
+        <span>{{ getLastUpdate(selectedCar) }}</span>
       </div>
       <v-btn
         block
@@ -28,7 +28,7 @@
       </v-btn>
       <v-row align="center" class="mb-1" justify="center">
         <p class="text-h4 mb-0 mr-3 teleop-card__lenght" @click="showOrder = !showOrder">
-          {{ car.orders.nodes.length }}
+          {{ selectedCar.orders.nodes.length }}
         </p>
         <!-- button of single Order
         <v-btn icon color="primary" @click="handleNewOrder">
@@ -38,14 +38,14 @@
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
       </v-row>
-      <template v-for="(order, key) in car.orders.nodes.slice(0, 3)">
+      <template v-for="(order, key) in selectedCar.orders.nodes.slice(0, 3)">
         <p :key="order.id" class="text-caption mb-0">{{ key + 1 }}. {{ orderListing(order) }}</p>
       </template>
-      <p v-if="car.orders.nodes.length > 3" class="text-caption mb-0">...</p>
+      <p v-if="selectedCar.orders.nodes.length > 3 || cars[0]" class="text-caption mb-0">...</p>
       <!-- select box for car status
       <v-select
         class="mt-2"
-        :value="car.status"
+        :value="selectedCar.status"
         :items="CarStateFormated"
         item-text="trans"
         item-value="status"
@@ -93,7 +93,7 @@
                           item-text="trans"
                           item-value="status"
                           outlined
-                          @input="$emit('set-order-status', { status: $event, order, car })"
+                          @input="$emit('set-order-status', { status: $event, order, selectedCar })"
                         />
                       </v-col>
                       <v-col align="center" cols="12" sm="1">
@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import { CarStateFormated, getCarState } from "../code/enums/carEnums";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { OrderStateFormated } from "../code/enums/orderEnums";
@@ -152,7 +152,7 @@ import { getTime, getLastUpdate } from "../code/helpers/timeHelpers";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
 import allRoutes from "../code/enums/routesEnum";
 import { RoleEnum } from "../code/enums/roleEnums";
-import { GetterNames } from "../store/enums/vuexEnums";
+import { GetterNames, MutationNames } from "../store/enums/vuexEnums";
 
 export default {
   name: "CarCard",
@@ -175,9 +175,11 @@ export default {
     ...mapGetters({
       getTenant: GetterNames.GetTenant,
       getMe: GetterNames.GetMe,
+      getSelectCar: GetterNames.GetSelectCar,
       roles: GetterNames.GetRoles,
       isRole: GetterNames.isRole,
     }),
+
     isAdmin() {
       return this.isRole(RoleEnum.Admin);
     },
@@ -190,8 +192,17 @@ export default {
     companies() {
       return this.$data;
     },
+    selectedCar: {
+      get() {
+        return this.cars.find((car) => car.id === this.getSelectCar) || this.cars[0];
+      },
+      set(val) {
+        this.setCarId(val);
+        // this.$router.go();
+      },
+    },
     sortOrders() {
-      const filtered = this.car.orders.nodes;
+      const filtered = this.selectedCar.orders.nodes;
       return filtered.sort((a, b) => {
         const aVal = this.getPriorityEnum(a.priority).value;
         const bVal = this.getPriorityEnum(b.priority).value;
@@ -217,10 +228,22 @@ export default {
     await this.initForm();
   },
   methods: {
+    ...mapMutations({
+      setCarId: MutationNames.SetCarId,
+    }),
+
     async initForm() {
-      const cars = await carApi.getCarsWithoutHistory();
+      const cars = await carApi.getCarsWithOrders();
       this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
-      this.carId = this.$route.params.carId;
+      this.handleSelectedParams();
+    },
+    handleSelectedParams() {
+      if (this.$route.params.carId) {
+        this.setCarId(this.$route.params.carId);
+      }
+      if (!this.getSelectCar) {
+        this.setCarId(this.cars[0]);
+      }
     },
     getPriorityEnum,
     getCarState,
@@ -240,6 +263,7 @@ export default {
           title: this.$i18n.tc("notifications.order.delete"),
           type: "success",
         });
+        this.$router.go();
       } catch (e) {
         this.$notify({
           group: "global",
@@ -253,7 +277,7 @@ export default {
       this.$router.push({
         name: allRoutes.NewOrder,
         params: {
-          carId: this.car.id,
+          carId: this.selectedCar.id,
         },
       });
     },

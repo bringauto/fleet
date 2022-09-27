@@ -20,3 +20,10 @@ export function getPositionValue(station) {
   }
   return `${0}, ${0}`;
 }
+
+export function justNumber(event, keys = []) {
+  const enabledKeys = ["Backspace", ...keys];
+  if (event.key.match(/^[a-zA-Z]*$/) && !enabledKeys.includes(event.key)) {
+    event.preventDefault();
+  }
+}

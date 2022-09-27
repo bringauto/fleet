@@ -52,8 +52,8 @@ export default {
       this.$notify({
         group: "global",
         type: "error",
-        text: e,
       });
+      console.log(e);
     }
   },
   beforeDestroy() {
@@ -67,8 +67,8 @@ export default {
         this.$notify({
           group: "global",
           type: "error",
-          text: e,
         });
+        console.log(e);
       }
     },
     pollData() {

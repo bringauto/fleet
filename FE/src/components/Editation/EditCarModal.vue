@@ -18,14 +18,16 @@
             :label="$t('cars.hwId')"
             :value="car.hwId"
             @input="$emit('update:car', { ...car, hwId: $event })"
+            @keydown="justNumber"
           />
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
             :label="$t('cars.companyName')"
-            :value="(car.companyName = getTenant.name)"
+            :value="(car.companyName = getTenant.name.toLowerCase())"
             readonly
-            @input="$emit('update:car', { ...car, companyName: getTenant.name })"
+            disabled
+            @input="$emit('update:car', { ...car, companyName: getTenant.name.toLowerCase() })"
           />
         </v-col>
         <v-col cols="12" md="6">
@@ -33,6 +35,7 @@
             :label="$t('cars.carAdminPhone')"
             :value="car.carAdminPhone"
             @input="$emit('update:car', { ...car, carAdminPhone: $event })"
+            @keydown="justNumber"
           />
         </v-col>
         <v-col cols="12" md="6">
@@ -77,6 +80,7 @@ import { mapGetters } from "vuex";
 import { ValidationProvider } from "vee-validate";
 import { GetterNames } from "../../store/enums/vuexEnums";
 import { CarStateFormated } from "../../code/enums/carEnums";
+import { justNumber } from "../../code/helpers/positionHelpers";
 
 export default {
   name: "EditStationModal",
@@ -84,6 +88,9 @@ export default {
     ...mapGetters({
       getTenant: GetterNames.GetTenant,
     }),
+  },
+  methods: {
+    justNumber,
   },
   components: {
     ValidationProvider,

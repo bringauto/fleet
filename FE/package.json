@@ -70,14 +70,6 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
-    },
-    "overrides": {
-      "eslint-loader": {
-        "eslint": "$eslint"
-      },
-      "eslint-plugin-vue": {
-        "eslint": "$eslint"
-      }
     }
   },
   "overrides": {
@@ -85,6 +77,12 @@
       "eslint": "$eslint"
     },
     "eslint-plugin-vue": {
+      "eslint": "$eslint"
+    },
+    "eslint-config-airbnb": {
+      "eslint": "$eslint"
+    },
+    "cli-service": {
       "eslint": "$eslint"
     }
   }
