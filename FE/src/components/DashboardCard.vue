@@ -4,7 +4,7 @@
       <p class="text-center text-h6 mb-0">{{ car.name }}</p>
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel }}%
+          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel * 100 }}%
         </span>
         <span>{{ getLastUpdate(car) }}</span>
       </div>
@@ -48,19 +48,19 @@
               :items-per-page="-1"
               class="box-wrapper my-2"
             >
-              <template v-slot:[`item.actions`]="{ item }">
+              <template #[`item.actions`]="{ item }">
                 <v-btn small color="primary" class="mr-2" icon @click="handleEditOrder(item)">
-                  <v-icon small> mdi-pencil </v-icon>
+                  <v-icon small> mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn small color="error" icon @click="handleDeleteOrder(item)">
-                  <v-icon small> mdi-delete </v-icon>
+                  <v-icon small> mdi-delete</v-icon>
                 </v-btn>
               </template>
-              <template v-slot:[`item.arrive`]="{ item }">
+              <template #[`item.arrive`]="{ item }">
                 <span v-if="item.arrive">{{ getTime(item.arrive) }}</span>
                 <span v-else>{{ $t("newOrder.soon") }}</span>
               </template>
-              <template v-slot:[`item.priority`]="{ item }">
+              <template #[`item.priority`]="{ item }">
                 <span :class="`${getPriorityEnum(item.priority).color}--text`">
                   {{ getPriorityEnum(item.priority).trans }}
                 </span>
@@ -197,9 +197,11 @@ export default {
     width: 80%;
     margin: -80px auto 30px;
   }
+
   &__lenght {
     cursor: pointer;
   }
+
   .v-skeleton-loader__article.v-skeleton-loader__bone {
     background: #f6f6fb !important;
   }
