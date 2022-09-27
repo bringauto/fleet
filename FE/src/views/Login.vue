@@ -114,9 +114,7 @@ export default {
         if (data?.UserQuery?.login) {
           this.setMe(data && data.UserQuery.login);
           this.setTenant(data && data.UserQuery.login.tenants.nodes[0]);
-          console.log(data.user);
           this.$router.push({ path: "/" });
-          console.log(data);
         } else {
           this.$notify({
             group: "global",
@@ -129,15 +127,15 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.user.loginFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
   },
 };
 </script>
 <style lang="scss">
-@import "@/assets/styles/variables.scss";
+@import "../assets/styles/variables.scss";
 
 .login {
   background: $white !important;

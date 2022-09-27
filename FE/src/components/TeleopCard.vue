@@ -1,12 +1,20 @@
 <template>
   <div class="teleop-card">
-    <template v-if="car">
-      <p class="text-center text-h6 mb-0">{{ car.name }}</p>
+    <template v-if="selectedCar">
+      <v-select
+        v-model="selectedCar"
+        :label="$t('newOrder.car')"
+        :items="cars"
+        item-text="name"
+        item-value="id"
+        required
+      />
+      <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p> -->
       <div class="d-flex justify-center align-center text-caption mb-1">
-        <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel }}%
+        <span v-if="selectedCar.fuel" class="mr-2">
+          <v-icon>{{ getCarBatteryIcon(selectedCar.fuel) }}</v-icon> {{ selectedCar.fuel * 100 }}%
         </span>
-        <span>{{ getLastUpdate(car) }}</span>
+        <span>{{ getLastUpdate(selectedCar) }}</span>
       </div>
       <v-btn
         block
@@ -20,32 +28,34 @@
       </v-btn>
       <v-row align="center" class="mb-1" justify="center">
         <p class="text-h4 mb-0 mr-3 teleop-card__lenght" @click="showOrder = !showOrder">
-          {{ car.orders.nodes.length }}
+          {{ selectedCar.orders.nodes.length }}
         </p>
-        <v-btn color="primary" icon @click="handleNewOrder">
+        <!-- button of single Order
+        <v-btn icon color="primary" @click="handleNewOrder">
           <v-icon> mdi-plus-circle-outline</v-icon>
-        </v-btn>
+        </v-btn> -->
         <v-btn :to="{ name: allRoutes.NewMultipleOrder }" color="primary" icon>
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
       </v-row>
-      <template v-for="(order, key) in car.orders.nodes.slice(0, 3)">
+      <template v-for="(order, key) in selectedCar.orders.nodes.slice(0, 3)">
         <p :key="order.id" class="text-caption mb-0">{{ key + 1 }}. {{ orderListing(order) }}</p>
       </template>
-      <p v-if="car.orders.nodes.length > 3" class="text-caption mb-0">...</p>
+      <p v-if="selectedCar.orders.nodes.length > 3 || cars[0]" class="text-caption mb-0">...</p>
+      <!-- select box for car status
       <v-select
-        :items="CarStateFormated"
-        :label="$t('general.status')"
-        :value="car.status"
         class="mt-2"
-        dense
-        hide-details
+        :value="selectedCar.status"
+        :items="CarStateFormated"
         item-text="trans"
         item-value="status"
+        :label="$t('general.status')"
         outlined
+        hide-details
+        dense
         @input="$emit('set-car-status', { status: $event, car: car })"
       />
-
+      -->
       <v-dialog v-model="showOrder" width="800">
         <v-card>
           <v-card-title class="headline primary white--text">
@@ -72,6 +82,8 @@
                       </v-col>
                       <v-col cols="12" sm="4">
                         <v-select
+                          :append-icon="isAdmin ? '$dropdown' : ''"
+                          :disabled="!isAdmin"
                           :items="OrderStateFormated"
                           :label="$t('general.status')"
                           :value="order.status"
@@ -81,12 +93,11 @@
                           item-text="trans"
                           item-value="status"
                           outlined
-                          @input="$emit('set-order-status', { status: $event, order, car })"
+                          @input="$emit('set-order-status', { status: $event, order, selectedCar })"
                         />
                       </v-col>
                       <v-col align="center" cols="12" sm="1">
                         <v-btn
-                          :block="$vuetify.breakpoint.mobile"
                           :icon="!$vuetify.breakpoint.mobile"
                           color="error"
                           small
@@ -108,9 +119,11 @@
                 </v-row>
               </template>
             </v-row>
+            <!--
             <v-row justify="center">
-              <v-btn color="success" text @click="handleNewOrder">{{ $t("orders.new") }}</v-btn>
+              <v-btn color="success" text @click="handleNewOrder">{{ $t("orders.new") }} </v-btn>
             </v-row>
+            -->
           </v-card-text>
 
           <v-divider></v-divider>
@@ -129,14 +142,17 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import { CarStateFormated, getCarState } from "../code/enums/carEnums";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { OrderStateFormated } from "../code/enums/orderEnums";
-import { orderApi } from "../code/api";
+import { orderApi, carApi } from "../code/api";
 import { orderListing } from "../code/helpers/orderHelpers";
-import { getLastUpdate, getTime } from "../code/helpers/timeHelpers";
+import { getTime, getLastUpdate } from "../code/helpers/timeHelpers";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
 import allRoutes from "../code/enums/routesEnum";
+import { RoleEnum } from "../code/enums/roleEnums";
+import { GetterNames, MutationNames } from "../store/enums/vuexEnums";
 
 export default {
   name: "CarCard",
@@ -150,12 +166,43 @@ export default {
     CarStateFormated,
     OrderStateFormated,
     collapsed: true,
+    cars: [],
     showOrder: false,
+    carId: null,
     allRoutes,
   }),
   computed: {
+    ...mapGetters({
+      getTenant: GetterNames.GetTenant,
+      getMe: GetterNames.GetMe,
+      getSelectCar: GetterNames.GetSelectCar,
+      roles: GetterNames.GetRoles,
+      isRole: GetterNames.isRole,
+    }),
+
+    isAdmin() {
+      return this.isRole(RoleEnum.Admin);
+    },
+    isDriver() {
+      return this.isRole(RoleEnum.Driver);
+    },
+    isUser() {
+      return this.isRole(RoleEnum.User);
+    },
+    companies() {
+      return this.$data;
+    },
+    selectedCar: {
+      get() {
+        return this.cars.find((car) => car.id === this.getSelectCar) || this.cars[0];
+      },
+      set(val) {
+        this.setCarId(val);
+        // this.$router.go();
+      },
+    },
     sortOrders() {
-      const filtered = this.car.orders.nodes;
+      const filtered = this.selectedCar.orders.nodes;
       return filtered.sort((a, b) => {
         const aVal = this.getPriorityEnum(a.priority).value;
         const bVal = this.getPriorityEnum(b.priority).value;
@@ -166,12 +213,44 @@ export default {
       });
     },
   },
+  watch: {
+    cars: {
+      handler(val) {
+        if (val.length === 1 && !this.carId) {
+          this.carId = val[0].id;
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+  async mounted() {
+    await this.initForm();
+  },
   methods: {
+    ...mapMutations({
+      setCarId: MutationNames.SetCarId,
+    }),
+
+    async initForm() {
+      const cars = await carApi.getCarsWithOrders();
+      this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
+      this.handleSelectedParams();
+    },
+    handleSelectedParams() {
+      if (this.$route.params.carId) {
+        this.setCarId(this.$route.params.carId);
+      }
+      if (!this.getSelectCar) {
+        this.setCarId(this.cars[0]);
+      }
+    },
     getPriorityEnum,
     getCarState,
     orderListing,
     getLastUpdate,
     getCarBatteryIcon,
+
     formatTime(val) {
       return getTime(val, "d.M.y k:m");
     },
@@ -184,20 +263,21 @@ export default {
           title: this.$i18n.tc("notifications.order.delete"),
           type: "success",
         });
+        this.$router.go();
       } catch (e) {
         this.$notify({
           group: "global",
           title: this.$i18n.tc("notifications.order.deleteFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
     handleNewOrder() {
       this.$router.push({
         name: allRoutes.NewOrder,
         params: {
-          carId: this.car.id,
+          carId: this.selectedCar.id,
         },
       });
     },

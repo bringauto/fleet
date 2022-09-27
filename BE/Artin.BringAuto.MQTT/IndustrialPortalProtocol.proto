@@ -14,7 +14,7 @@ option csharp_namespace = "Google.Protobuf.ba_proto";
 
 /**
  * Special message which contains other IndustrialPortal messages
- * Every message of this type can contain only one of the IndustrialPortal messages
+ * Every message of this type can contain only one of the Fleet messages
  * From Server to Client only.
  */
 message MessageIndustrialPortal {
@@ -75,9 +75,11 @@ message ConnectResponse {
          * If some car is already logged in under same company and name
          */
         ALREADY_LOGGED = 1;
+        CONNECTION_REFUSED = 2;
     }
     Type type = 1;
     string sessionId = 2;
+    string errorMessage  = 3;
 }
 
 /**

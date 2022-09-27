@@ -1,8 +1,8 @@
 ﻿version: '3.0'
 
 services:
-  industrialPortal:
-    image: bring-auto-industrial-portal
+  BringAutoFleet:
+    image: bringauto-fleet
     restart: always
     environment:
       ASPNETCORE_ENVIRONMENT: BringAutoTest
@@ -16,17 +16,17 @@ services:
       - "8033:443"
     networks:
       - bring-emulator
-
+    
 
   database:
     image: mcr.microsoft.com/mssql/server:2017-latest
     environment:
-      - SA_PASSWORD=ArtinTheBest123!
-      - ACCEPT_EULA=Y
+        - SA_PASSWORD=ArtinTheBest123!
+        - ACCEPT_EULA=Y
     networks:
       - bring-emulator
-
+        
 networks:
   bring-emulator:
-    external:
+    external: 
       name: bring-emulator

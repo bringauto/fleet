@@ -1,7 +1,7 @@
 const translations = {
   cs: {
     general: {
-      appName: "Industrial Portal",
+      appName: "BringAuto Fleet",
       order: "Objednat",
       showOrders: "Zobrazit objednávky",
       orders: "Objednávky",
@@ -28,6 +28,7 @@ const translations = {
       underTest: "Testovací",
       hwId: "Hardware id",
       carAdminPhone: "Admin telefon",
+      carName: "Jméno auta",
     },
     settings: {
       from: "Ze stanice",
@@ -148,6 +149,7 @@ const translations = {
     routes: {
       color: "Barva",
       order: "Pořadí",
+      coordinates: "Souřadnice",
     },
     tables: {
       car: "Auto",
@@ -168,7 +170,7 @@ const translations = {
   // English
   en: {
     general: {
-      appName: "Industrial Portal",
+      appName: "BringAuto Fleet",
       order: "Order",
       showOrders: "View orders",
       orders: "Orders",
@@ -195,6 +197,7 @@ const translations = {
       underTest: "Testing",
       hwId: "Hardware id",
       carAdminPhone: "Admin phone",
+      carName: "Car name",
     },
     settings: {
       from: "From station",
@@ -204,9 +207,9 @@ const translations = {
       stations: "Stops",
       routes: "Routes",
       route: "Route",
-      editStation: "Station editation",
+      editStation: "Station edit",
       createStation: "Create station",
-      editRoute: "Route editation",
+      editRoute: "Route edit",
       createRoute: "Create route",
       name: "Station name",
       latitude: "Latitude",
@@ -280,6 +283,8 @@ const translations = {
         deleteFailed: "Order could not be deleted.",
         update: "Order successfully modified.",
         updateFailed: "Order could not be modified.",
+        createMultiple: "Orders successfully created.",
+        createMultipleFailed: "Orders creation failed.",
       },
       car: {
         create: "Car successfully created.",
@@ -313,6 +318,7 @@ const translations = {
     routes: {
       color: "Color",
       order: "Order",
+      coordinates: "Coordinates",
     },
     tables: {
       car: "Car",

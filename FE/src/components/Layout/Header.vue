@@ -9,8 +9,19 @@
 
       <v-spacer></v-spacer>
 
+      <v-text-field
+        v-if="getTenant != null"
+        solo
+        outlined
+        disabled
+        dense
+        hide-details
+        class="px-3 pb-0 single-line language white--text text-decoration-none"
+        readonly
+        :value="computedMe.userName"
+      />
       <v-select
-        v-if="getMe != null"
+        v-if="getTenant != null"
         v-model="selectedTenant"
         :append-icon="isAdmin ? '$dropdown' : ''"
         :disabled="!isAdmin"
@@ -24,7 +35,6 @@
         label="companies"
         outlined
         return-object
-        @change="handleChangeTenant"
       />
       <v-select
         v-model="$i18n.locale"
@@ -110,7 +120,6 @@ export default {
     ...mapMutations({
       setTenant: MutationNames.SetTenant,
     }),
-
     async logout() {
       try {
         await this.$apollo.query({
@@ -128,8 +137,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("notifications.user.logoutFailed"),
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
 
@@ -138,15 +147,8 @@ export default {
       localStorage.setItem("language", val);
       this.$router.go();
     },
-    handleChangeTenant(val) {
-      this.multiTe = val;
-      localStorage.setItem("company", val);
-      console.log(val);
-    },
   },
 };
-
-export class tenantsId {}
 </script>
 
 <style lang="scss" scoped>

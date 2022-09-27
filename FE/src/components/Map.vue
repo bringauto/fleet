@@ -42,7 +42,7 @@
           :icon="stationIcon"
           :lat-lng="[station.latitude, station.longitude]"
           :z-index-offset="2"
-          @click="$emit('station-clicked', station)"
+          @click="isAdmin ? $emit('station-clicked', station) : ''"
         >
           <l-tooltip>{{ station.name }}</l-tooltip>
         </l-marker>
@@ -63,11 +63,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { isAfter, subMinutes } from "date-fns";
 import { icon, latLng } from "leaflet";
 import { LIcon, LMap, LMarker, LPolyline, LTileLayer, LTooltip } from "vue2-leaflet";
 import { routeApi, stationApi } from "../code/api";
 import { getLastUpdate } from "../code/helpers/timeHelpers";
+import { GetterNames } from "../store/enums/vuexEnums";
+import { RoleEnum } from "../code/enums/roleEnums";
 
 export default {
   name: "Map",
@@ -85,7 +88,7 @@ export default {
   },
   data: () => ({
     zoom: 15,
-    center: latLng(51.50337, -0.113511),
+    center: latLng(49.8401525, 18.2302432),
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     selectedCar: null,
     stationIcon: icon({
@@ -116,7 +119,20 @@ export default {
     stations: [],
     routes: [],
   }),
+  computed: {
+    ...mapGetters({
+      getMe: GetterNames.GetMe,
+      roles: GetterNames.GetRoles,
+      isRole: GetterNames.isRole,
+      getFirstStation: GetterNames.isFirstStation,
+    }),
+    isAdmin() {
+      return this.isRole(RoleEnum.Admin);
+    },
+  },
   async mounted() {
+    // const { longitude, latitude } = this.getFirstStation;
+
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
       if (settings) {
@@ -129,6 +145,10 @@ export default {
     }
     this.stations = await stationApi.getStations();
     this.routes = await routeApi.getRoutes(true);
+    this.center = latLng(
+      this.stations[0].latitude ?? 47.09713,
+      this.stations[0].longitude ?? 37.54337
+    );
   },
 
   methods: {
@@ -166,8 +186,6 @@ export default {
     },
   },
 };
-
-export class tenantsId {}
 </script>
 
 <style lang="scss">

@@ -1,5 +1,5 @@
 {
-  "name": "vue-template-notum",
+  "name": "bringauto-fleet-fe",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -70,14 +70,28 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
+    }
+  },
+  "overrides": {
+    "eslint-loader": {
+      "eslint": "$eslint"
     },
-    "overrides": {
-      "eslint-loader": {
-        "eslint": "$eslint"
-      },
-      "eslint-plugin-vue": {
-        "eslint": "$eslint"
-      }
+    "eslint-plugin-vue": {
+      "eslint": "$eslint"
+    },
+    "eslint-config-airbnb": {
+      "eslint": "$eslint"
+    },
+    "cli-service": {
+      "eslint": "$eslint"
+    }
+  },
+  "overrides": {
+    "eslint-loader": {
+      "eslint": "$eslint"
+    },
+    "eslint-plugin-vue": {
+      "eslint": "$eslint"
     }
   }
 }
