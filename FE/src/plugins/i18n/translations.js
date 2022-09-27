@@ -28,6 +28,7 @@ const translations = {
       underTest: "Testovací",
       hwId: "Hardware id",
       carAdminPhone: "Admin telefon",
+      carName: "Jméno auta",
     },
     settings: {
       from: "Ze stanice",
@@ -196,6 +197,7 @@ const translations = {
       underTest: "Testing",
       hwId: "Hardware id",
       carAdminPhone: "Admin phone",
+      carName: "Car name",
     },
     settings: {
       from: "From station",

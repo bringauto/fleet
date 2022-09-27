@@ -11,6 +11,8 @@ export default new Vuex.Store({
   state: {
     user: null,
     selectedTenant: null,
+    stations: null,
+    selectedCarId: null,
   },
   getters: {
     [GetterNames.GetAuthStatus](state) {
@@ -34,6 +36,15 @@ export default new Vuex.Store({
     [GetterNames.GetTenant](state) {
       return state.selectedTenant;
     },
+    [GetterNames.GetSelectCar](state) {
+      return state.selectedCarId;
+    },
+    [GetterNames.isFirstStation](state) {
+      if (state.user.stops[0].nodes) {
+        return state.user.stops[0].nodes;
+      }
+      return { longitude: 47.09713, latitude: 37.54337 };
+    },
   },
   mutations: {
     [MutationNames.SetMe](state, user) {
@@ -42,6 +53,9 @@ export default new Vuex.Store({
     [MutationNames.SetTenant](state, tenant) {
       state.selectedTenant = tenant;
       sessionStorage.setItem("selectedTenant", JSON.stringify(tenant));
+    },
+    [MutationNames.SetCarId](state, id) {
+      state.selectedCarId = id;
     },
     [MutationNames.LoadTenant](state, tenant) {
       const storedTenant = sessionStorage.getItem("selectedTenant");

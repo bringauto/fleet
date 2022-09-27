@@ -1,23 +1,23 @@
 <template>
   <v-row class="flex-column align-center">
-    <v-col cols="12" class="box-wrapper">
-      <v-row no-gutters class="justify-space-between align-baseline mb-4">
+    <v-col class="box-wrapper" cols="12">
+      <v-row class="justify-space-between align-baseline mb-4" no-gutters>
         <h2 class="text-h5">{{ car.name }}</h2>
-        <v-chip outlined color="primary">
+        <v-chip color="primary" outlined>
           {{ carState(car.status) }}
         </v-chip>
       </v-row>
-      <v-row no-gutters class="justify-space-between align-baseline">
+      <v-row class="justify-space-between align-baseline" no-gutters>
         <v-col cols="12">
           <v-row class="flex-column align-center">
-            <v-btn large color="success" class="mb-2" @click="$router.push('new-order')">{{
-              $t("general.order")
-            }}</v-btn>
+            <v-btn class="mb-2" color="success" large @click="$router.push('new-order')"
+              >{{ $t("general.order") }}
+            </v-btn>
             <v-dialog v-model="showOrder" width="800">
               <template #activator="{}">
-                <v-btn large text color="primary" @click="showOrder = !showOrder">{{
-                  $t("general.showOrders")
-                }}</v-btn>
+                <v-btn color="primary" large text @click="showOrder = !showOrder"
+                  >{{ $t("general.showOrders") }}
+                </v-btn>
               </template>
 
               <v-card>
@@ -31,18 +31,18 @@
                   </div>
                   <v-data-table
                     v-else
-                    hide-default-footer
                     :headers="headers"
                     :items="getFilteredOrders(car.id)"
                     :items-per-page="-1"
                     class="elevation-0 mt-2"
+                    hide-default-footer
                   >
                     <template #[`item.actions`]="{ item }">
-                      <v-btn small color="primary" icon fab @click="handleEditOrder(item)">
-                        <v-icon small> mdi-pencil </v-icon>
+                      <v-btn color="primary" fab icon small @click="handleEditOrder(item)">
+                        <v-icon small> mdi-pencil</v-icon>
                       </v-btn>
-                      <v-btn small color="error" icon fab @click="handleDeleteOrder(item)">
-                        <v-icon small> mdi-delete </v-icon>
+                      <v-btn color="error" fab icon small @click="handleDeleteOrder(item)">
+                        <v-icon small> mdi-delete</v-icon>
                       </v-btn>
                     </template>
                     <template #[`item.arrive`]="{ item }">
@@ -134,8 +134,8 @@ export default {
         this.$notify({
           group: "global",
           type: "error",
-          text: e,
         });
+        console.error(e);
       }
     },
     async handleDeleteOrder(order) {

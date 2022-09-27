@@ -89,11 +89,11 @@
                       :value="positionValue(stop)"
                       hide-details
                       @input="handleChangeStopVal(index, getLatLong($event))"
-                      @keypress="onlyNumber"
+                      @keydown="justNumber"
                     >
-                      <template v-slot:append>
+                      <template #append>
                         <v-tooltip top>
-                          <template v-slot:activator="{ on }">
+                          <template #activator="{ on }">
                             <v-icon x-small v-on="on"> mdi-help-circle-outline</v-icon>
                           </template>
                           {{ $t("routes.order") }}: {{ stop.order }}
@@ -130,7 +130,7 @@
 
 <script>
 import { ValidationProvider } from "vee-validate";
-import { getLatLong, getPositionValue } from "../../code/helpers/positionHelpers";
+import { getLatLong, getPositionValue, justNumber } from "../../code/helpers/positionHelpers";
 import { getStation } from "../../code/helpers/routesHelpers";
 
 export default {
@@ -167,20 +167,14 @@ export default {
   methods: {
     getStation,
     getLatLong,
+    justNumber,
     positionValue(stop) {
       return getPositionValue(stop);
     },
     handleRemovePoint(index) {
       this.route.stops.splice(index, 1);
     },
-    onlyNumber($event) {
-      // console.log($event.keyCode); //keyCodes value
-      const keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-        // 46 is dot
-        $event.preventDefault();
-      }
-    },
+
     handleRemovePointStation(index) {
       const orderX = this.route.stops[index].latitude;
       const orderY = this.route.stops[index].longitude;
@@ -200,7 +194,6 @@ export default {
     handleChangeStationVal(index, val) {
       const { stops } = this.route;
       stops[index] = { ...stops[index], ...val };
-      console.log("VAL", val, index);
       this.$emit("update:route", { ...this.route, stops });
     },
     handleAddPoint() {
