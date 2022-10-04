@@ -32,7 +32,7 @@ namespace Artin.BringAuto.Providers
             }
         }
 
-        public string CurrentUserId => Context?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? "";
+        public string CurrentUserId => Context?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
 
         public HttpContext Context { get; }
     }

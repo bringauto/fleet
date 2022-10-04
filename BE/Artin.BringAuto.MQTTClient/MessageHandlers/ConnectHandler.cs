@@ -32,14 +32,21 @@ namespace Artin.BringAuto.MQTTClient.MessageHandlers
 
             var response = new MessageIndustrialPortal();
             response.ConnectReponse = new ConnectResponse();
-            response.ConnectReponse.SessionId = data.SessionId;
-            response.ConnectReponse.Type = ConnectResponse.Types.Type.Ok;
-
             if (await carRepository.IsKnownCar(company, car))
             {
-                await mqttClient.PublishAsync(response.CreateMqttMessage(company, car, logger));
+                response.ConnectReponse.SessionId = data.SessionId;
+                response.ConnectReponse.Type = ConnectResponse.Types.Type.Ok;
                 await carRepository.SetSessionId(company, car, data.SessionId);
             }
+            else
+            {
+                response.ConnectReponse.SessionId = data.SessionId;
+                response.ConnectReponse.ErrorMessage = "Unknown pair Car and CompanyName";
+                response.ConnectReponse.Type = ConnectResponse.Types.Type.ConnectionRefused;
+                logger.LogWarning(response.ConnectReponse.ErrorMessage);
+
+            }
+            await mqttClient.PublishAsync(response.CreateMqttMessage(company, car, logger));
         }
     }
 }

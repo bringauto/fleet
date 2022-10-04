@@ -8,6 +8,7 @@ using Artin.BringAuto.GraphQL.Routes;
 using Artin.BringAuto.GraphQL.Stations;
 using Artin.BringAuto.GraphQL.Users;
 using Artin.BringAuto.Helpers;
+using Artin.BringAuto.Middlewares;
 using Artin.BringAuto.MQTTClient;
 using Artin.BringAuto.Providers;
 using Artin.BringAuto.Services;
@@ -110,7 +111,7 @@ namespace Artin.BringAuto
                      descriptor.Name("Queries");
                      descriptor.AddField<CarQuery>();
                      descriptor.AddField<OrderQuery>();
-                     descriptor.AddField<StationQuery>();
+                     descriptor.AddField<StopQuery>();
                      descriptor.AddField<RouteQuery>();
                      descriptor.AddField<UserQuery>();
                      descriptor.AddField<MapQuery>();
@@ -120,12 +121,13 @@ namespace Artin.BringAuto
                      descriptor.Name("Mutations");
                      descriptor.AddField<CarMutation>();
                      descriptor.AddField<OrderMutation>();
-                     descriptor.AddField<StationMutation>();
+                     descriptor.AddField<StopMutation>();
                      descriptor.AddField<RouteMutation>();
                      descriptor.AddField<UserMutation>();
                      descriptor.AddField<MapMutation>();
                  })
                  .AddType<CarExtension>()
+                 .AddType<UserExtension>()
                  );
 
 
@@ -164,6 +166,7 @@ namespace Artin.BringAuto
             services.AddScoped<IUpdateCarByMQTTService, UpdateCarByMQTTService>();
             services.AddScoped<ITwillioCaller, TwillioCaller>();
             services.AddScoped<IIsInStationProcess, IsInStationProcess>();
+            services.AddScoped<ICurrentTenant, CurrentTenant>();
             services.Configure<TwillioConfig>(Configuration.GetSection(nameof(TwillioConfig)));
 
             services.AddCors(opt => opt.AddPolicy("AllowAll",
@@ -189,8 +192,9 @@ namespace Artin.BringAuto
                 ctx.Database.Migrate(); //Auto migrate database. 
 
                 scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>().SeedRolesAsync().GetAwaiter().GetResult();
+                
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                userManager.SeedUsersAsync().GetAwaiter().GetResult();
+                userManager.SeedUsersAsync(scope.ServiceProvider.GetRequiredService<BringAutoDbContext>()).GetAwaiter().GetResult();
 
                 try
                 { ctx.SaveChanges(); }
@@ -221,6 +225,8 @@ namespace Artin.BringAuto
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<TenantMiddleware>();
 
             app.UseGraphQL("/graphql");
             app.UseSpaStaticFiles();

@@ -1,4 +1,5 @@
 ﻿using Artin.BringAuto.DAL;
+using Artin.BringAuto.Extensions;
 using Artin.BringAuto.Shared;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -37,6 +38,7 @@ namespace BringAuto.Server.Bases
                 if (!scopeCache.TryGetValue(id, out result))
                 {
                     scopeCache[id] = result = await dbContext.Set<TDal>()
+                                                             .SoftDeleteFilter()
                                                              .ProjectTo<TDto>(mapper.ConfigurationProvider)
                                                              .FirstOrDefaultAsync(x => x.Id.Equals(id));
                 }
@@ -50,7 +52,7 @@ namespace BringAuto.Server.Bases
 
         public async Task<TDto> UpdateAsync(TUpdate dto)
         {
-            TDal dal = AddIncludesForUpdate(dbContext.Set<TDal>()).FirstOrDefault(x => x.Id.Equals(dto.Id));
+            TDal dal = AddIncludesForUpdate(dbContext.Set<TDal>().SoftDeleteFilter()).FirstOrDefault(x => x.Id.Equals(dto.Id));
             BeforeUpdateMap(dal);
             dal = mapper.Map(dto, dal);
             await BeforeUpdate(dal);
@@ -84,7 +86,15 @@ namespace BringAuto.Server.Bases
         {
             TDto ent = await GetByIdAsync(id);
             BeforeDelete(id);
-            dbContext.Set<TDal>().Remove(new TDal() { Id = id });
+            var entity = await dbContext.Set<TDal>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (entity is ISoftDelete softDelete)
+            {
+                softDelete.Deleted = true;
+            }
+            else
+            {
+                dbContext.Set<TDal>().Remove(entity);
+            }
             return (await dbContext.SaveChangesAsync() > 0) ? ent : null;
         }
 
@@ -94,7 +104,7 @@ namespace BringAuto.Server.Bases
 
         public IQueryable<TDto> Load()
         {
-            return dbContext.Set<TDal>().ProjectTo<TDto>(mapper.ConfigurationProvider);
+            return dbContext.Set<TDal>().SoftDeleteFilter().ProjectTo<TDto>(mapper.ConfigurationProvider);
         }
 
         protected virtual Task BeforeAdd(TDal entity) => Task.CompletedTask;

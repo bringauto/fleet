@@ -3,12 +3,12 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <ValidationProvider v-slot="{ errors }" rules="required" :name="$t('general.name')">
+          <ValidationProvider v-slot="{ errors }" :name="$t('general.name')" rules="required">
             <v-text-field
-              :label="$t('general.name')"
-              required
-              :value="car.name"
               :error-messages="errors"
+              :label="$t('general.name')"
+              :value="car.name"
+              required
               @input="$emit('update:car', { ...car, name: $event })"
             />
           </ValidationProvider>
@@ -18,13 +18,16 @@
             :label="$t('cars.hwId')"
             :value="car.hwId"
             @input="$emit('update:car', { ...car, hwId: $event })"
+            @keydown="justNumber"
           />
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
             :label="$t('cars.companyName')"
-            :value="car.companyName"
-            @input="$emit('update:car', { ...car, companyName: $event })"
+            :value="(car.companyName = getTenant.name.toLowerCase())"
+            readonly
+            disabled
+            @input="$emit('update:car', { ...car, companyName: getTenant.name.toLowerCase() })"
           />
         </v-col>
         <v-col cols="12" md="6">
@@ -32,6 +35,7 @@
             :label="$t('cars.carAdminPhone')"
             :value="car.carAdminPhone"
             @input="$emit('update:car', { ...car, carAdminPhone: $event })"
+            @keydown="justNumber"
           />
         </v-col>
         <v-col cols="12" md="6">
@@ -39,8 +43,8 @@
             :items="routes"
             :label="$t('settings.route')"
             :value="car.routeId"
-            hide-details
             clearable
+            hide-details
             item-text="name"
             item-value="id"
             @input="$emit('update:car', { ...car, routeId: $event })"
@@ -48,21 +52,21 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-select
-            :value="car.status"
             :items="CarStateFormated"
+            :label="$t('general.status')"
+            :value="car.status"
+            hide-details
             item-text="trans"
             item-value="status"
-            :label="$t('general.status')"
-            hide-details
             @input="$emit('update:car', { ...car, status: $event })"
           />
         </v-col>
         <v-col cols="12" md="6">
           <v-checkbox
-            :input-value="car.underTest"
             :false-value="false"
-            :true-value="true"
+            :input-value="car.underTest"
             :label="$t('cars.underTest')"
+            :true-value="true"
             @change="$emit('update:car', { ...car, underTest: $event })"
           />
         </v-col>
@@ -72,8 +76,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { ValidationProvider } from "vee-validate";
+import { GetterNames } from "../../store/enums/vuexEnums";
 import { CarStateFormated } from "../../code/enums/carEnums";
+import { justNumber } from "../../code/helpers/positionHelpers";
 
 export default {
   name: "EditStationModal",
@@ -95,5 +102,13 @@ export default {
   data: () => ({
     CarStateFormated,
   }),
+  methods: {
+    justNumber,
+  },
+  computed: {
+    ...mapGetters({
+      getTenant: GetterNames.GetTenant,
+    }),
+  },
 };
 </script>
