@@ -12,7 +12,8 @@
       <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p> -->
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="selectedCar.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(selectedCar.fuel) }}</v-icon> {{ selectedCar.fuel * 100 }}%
+          <v-icon>{{ getCarBatteryIcon(selectedCar.fuel.toFixed(4)) }}</v-icon>
+          {{ selectedCar.fuel.toFixed(4) * 100 }}%
         </span>
         <span>{{ getLastUpdate(selectedCar) }}</span>
       </div>
