@@ -84,14 +84,6 @@ import { justNumber } from "../../code/helpers/positionHelpers";
 
 export default {
   name: "EditStationModal",
-  computed: {
-    ...mapGetters({
-      getTenant: GetterNames.GetTenant,
-    }),
-  },
-  methods: {
-    justNumber,
-  },
   components: {
     ValidationProvider,
   },
@@ -110,13 +102,13 @@ export default {
   data: () => ({
     CarStateFormated,
   }),
-  methods: {
-    justNumber,
-  },
   computed: {
     ...mapGetters({
       getTenant: GetterNames.GetTenant,
     }),
+  },
+  methods: {
+    justNumber,
   },
 };
 </script>
