@@ -1,13 +1,6 @@
-﻿using Artin.BringAuto.Shared.Cars;
-using Artin.BringAuto.Shared.Enums;
-using Artin.BringAuto.Shared.Stations;
-using Artin.BringAuto.Shared.Users;
+﻿using Artin.BringAuto.Shared.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Artin.BringAuto.Shared.Orders
 {

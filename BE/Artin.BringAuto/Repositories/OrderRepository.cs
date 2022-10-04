@@ -1,9 +1,7 @@
 ﻿using Artin.BringAuto.DAL;
-using Artin.BringAuto.MQTTClient;
 using Artin.BringAuto.Shared;
 using Artin.BringAuto.Shared.Enums;
 using Artin.BringAuto.Shared.Ifaces;
-using Artin.BringAuto.Shared.Maps;
 using Artin.BringAuto.Shared.Orders;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -46,7 +44,13 @@ namespace BringAuto.Server.Repositories
 
             entity.Priority = allowedPriority.CheckOrderPriority(entity.Priority);
             entity.UserId = currentUserId.CurrentUserId;
-            await base.BeforeAdd(entity);
+
+            if (await dbContext.Stops.AnyAsync(x => x.Id == entity.ToStationId && !x.Deleted)
+                && (!entity.FromStationId.HasValue || await dbContext.Stops.AnyAsync(x => x.Id == entity.FromStationId && !x.Deleted))
+               )
+                await base.BeforeAdd(entity);
+            else
+                throw new ArgumentException("Cannot use deleted or unknown stations");
         }
 
         private async Task CheckCurrentCarPermitions(Artin.BringAuto.DAL.Models.Order entity)
@@ -57,14 +61,20 @@ namespace BringAuto.Server.Repositories
                 if (underTest)
                     throw new ArgumentException("Car is under test. Only admin can manage orders");
             }
-               
+
         }
 
         protected override async Task BeforeUpdate(Artin.BringAuto.DAL.Models.Order entity)
         {
             await CheckCurrentCarPermitions(entity);
             entity.Priority = allowedPriority.CheckOrderPriority(entity.Priority);
-            await base.BeforeAdd(entity);
+
+            if (await dbContext.Stops.AnyAsync(x => x.Id == entity.ToStationId && !x.Deleted)
+                && (!entity.FromStationId.HasValue || await dbContext.Stops.AnyAsync(x => x.Id == entity.FromStationId && !x.Deleted))
+               )
+                await base.BeforeUpdate(entity);
+            else
+                throw new ArgumentException("Cannot use deleted or unknown stations");
         }
 
         public async Task<IList<Order>> GetRouteForCar(string company, string car)

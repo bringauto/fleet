@@ -8,7 +8,6 @@
               :error-messages="errors"
               :label="$t('general.name')"
               :value="route.name"
-              hide-details
               required
               @input="$emit('update:route', { ...route, name: $event })"
             />
@@ -36,7 +35,9 @@
                 hide-mode-switch
               />
               <v-col cols="6" md="8">
-                <v-btn justify="center" @click="isHidden = !isHidden">Coordinates</v-btn>
+                <v-btn justify="center" @click="isHidden = !isHidden">
+                  {{ $t("routes.coordinates") }}
+                </v-btn>
               </v-col>
             </v-col>
             <v-col cols="12" md="6">
@@ -65,16 +66,13 @@
                   </v-col>
                 </v-row>
                 <v-row align="center" justify="center">
-                  <v-col cols="12" md="2">
-                    <v-btn
-                      :block="$vuetify.breakpoint.mobile"
-                      :icon="!$vuetify.breakpoint.mobile"
-                      color="success"
-                      @click="handleAddPointStation()"
-                    >
-                      <v-icon> mdi-plus-circle-outline</v-icon>
-                    </v-btn>
-                  </v-col>
+                  <v-btn
+                    :icon="!$vuetify.breakpoint.mobile"
+                    color="success"
+                    @click="handleAddPoint()"
+                  >
+                    <v-icon> mdi-plus-circle-outline</v-icon>
+                  </v-btn>
                 </v-row>
               </v-card>
             </v-col>
@@ -91,10 +89,11 @@
                       :value="positionValue(stop)"
                       hide-details
                       @input="handleChangeStopVal(index, getLatLong($event))"
+                      @keydown="justNumber"
                     >
-                      <template v-slot:append>
+                      <template #append>
                         <v-tooltip top>
-                          <template v-slot:activator="{ on }">
+                          <template #activator="{ on }">
                             <v-icon x-small v-on="on"> mdi-help-circle-outline</v-icon>
                           </template>
                           {{ $t("routes.order") }}: {{ stop.order }}
@@ -103,7 +102,6 @@
                     </v-text-field>
                   </v-col>
                   <v-btn
-                    :block="$vuetify.breakpoint.mobile"
                     :icon="!$vuetify.breakpoint.mobile"
                     color="error"
                     small
@@ -113,16 +111,13 @@
                   </v-btn>
                 </v-row>
                 <v-row align="center" justify="center">
-                  <v-col cols="12" md="2">
-                    <v-btn
-                      :block="$vuetify.breakpoint.mobile"
-                      :icon="!$vuetify.breakpoint.mobile"
-                      color="success"
-                      @click="handleAddPoint()"
-                    >
-                      <v-icon> mdi-plus-circle-outline</v-icon>
-                    </v-btn>
-                  </v-col>
+                  <v-btn
+                    :icon="!$vuetify.breakpoint.mobile"
+                    color="success"
+                    @click="handleAddPoint()"
+                  >
+                    <v-icon> mdi-plus-circle-outline</v-icon>
+                  </v-btn>
                 </v-row>
               </v-card-text>
             </v-responsive>
@@ -135,7 +130,7 @@
 
 <script>
 import { ValidationProvider } from "vee-validate";
-import { getLatLong, getPositionValue } from "../../code/helpers/positionHelpers";
+import { getLatLong, getPositionValue, justNumber } from "../../code/helpers/positionHelpers";
 import { getStation } from "../../code/helpers/routesHelpers";
 
 export default {
@@ -172,12 +167,14 @@ export default {
   methods: {
     getStation,
     getLatLong,
+    justNumber,
     positionValue(stop) {
       return getPositionValue(stop);
     },
     handleRemovePoint(index) {
       this.route.stops.splice(index, 1);
     },
+
     handleRemovePointStation(index) {
       const orderX = this.route.stops[index].latitude;
       const orderY = this.route.stops[index].longitude;
@@ -197,7 +194,6 @@ export default {
     handleChangeStationVal(index, val) {
       const { stops } = this.route;
       stops[index] = { ...stops[index], ...val };
-      console.log("VAL", val, index);
       this.$emit("update:route", { ...this.route, stops });
     },
     handleAddPoint() {

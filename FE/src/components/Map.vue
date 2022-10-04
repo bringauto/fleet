@@ -1,10 +1,10 @@
 <template>
-  <div class="map" :class="{ small }">
+  <div :class="{ small }" class="map">
     <l-map
       ref="map"
-      class="map__container"
-      :zoom="zoom"
       :center="center"
+      :zoom="zoom"
+      class="map__container"
       @update:center="centerUpdated"
       @update:zoom="zoomUpdated"
     >
@@ -14,8 +14,8 @@
           <l-marker
             v-if="history.latitude && history.longitude"
             :key="history.id"
-            :lat-lng="[history.latitude, history.longitude]"
             :icon="car.underTest ? disabledHistoryIcon : historyIcon"
+            :lat-lng="[history.latitude, history.longitude]"
             :z-index-offset="0"
           />
         </template>
@@ -27,8 +27,8 @@
           @click="handleCarClick(car)"
         >
           <l-icon
-            :icon-anchor="[22.5, 22.5]"
             :class-name="`car-icon ${car.underTest ? 'disabled' : ''}`"
+            :icon-anchor="[22.5, 22.5]"
           >
             <span> {{ car.hwId }}</span>
           </l-icon>
@@ -39,10 +39,10 @@
         <l-marker
           v-if="station.latitude && station.longitude"
           :key="`station${station.id}`"
-          :lat-lng="[station.latitude, station.longitude]"
           :icon="stationIcon"
+          :lat-lng="[station.latitude, station.longitude]"
           :z-index-offset="2"
-          @click="$emit('station-clicked', station)"
+          @click="isAdmin ? $emit('station-clicked', station) : ''"
         >
           <l-tooltip>{{ station.name }}</l-tooltip>
         </l-marker>
@@ -51,8 +51,8 @@
         <l-polyline
           v-if="route"
           :key="`route${route.id}`"
-          :lat-lngs="route.stops"
           :color="route.color"
+          :lat-lngs="route.stops"
           @click="$emit('route-clicked', route)"
         >
           <!-- <l-tooltip>{{ route.name }}</l-tooltip> -->
@@ -63,11 +63,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { isAfter, subMinutes } from "date-fns";
-import { latLng, icon } from "leaflet";
-import { LMap, LTileLayer, LMarker, LIcon, LTooltip, LPolyline } from "vue2-leaflet";
-import { stationApi, routeApi } from "../code/api";
+import { icon, latLng } from "leaflet";
+import { LIcon, LMap, LMarker, LPolyline, LTileLayer, LTooltip } from "vue2-leaflet";
+import { routeApi, stationApi } from "../code/api";
 import { getLastUpdate } from "../code/helpers/timeHelpers";
+import { GetterNames } from "../store/enums/vuexEnums";
+import { RoleEnum } from "../code/enums/roleEnums";
 
 export default {
   name: "Map",
@@ -85,7 +88,7 @@ export default {
   },
   data: () => ({
     zoom: 15,
-    center: latLng(51.50337, -0.113511),
+    center: latLng(49.8401525, 18.2302432),
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     selectedCar: null,
     stationIcon: icon({
@@ -116,7 +119,20 @@ export default {
     stations: [],
     routes: [],
   }),
+  computed: {
+    ...mapGetters({
+      getMe: GetterNames.GetMe,
+      roles: GetterNames.GetRoles,
+      isRole: GetterNames.isRole,
+      getFirstStation: GetterNames.isFirstStation,
+    }),
+    isAdmin() {
+      return this.isRole(RoleEnum.Admin);
+    },
+  },
   async mounted() {
+    // const { longitude, latitude } = this.getFirstStation;
+
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
       if (settings) {
@@ -129,7 +145,12 @@ export default {
     }
     this.stations = await stationApi.getStations();
     this.routes = await routeApi.getRoutes(true);
+    this.center = latLng(
+      this.stations[0].latitude ?? 47.09713,
+      this.stations[0].longitude ?? 37.54337
+    );
   },
+
   methods: {
     getLastUpdate,
     handleCarClick(car) {
@@ -174,21 +195,25 @@ export default {
   z-index: 0;
 
   padding: 10px;
+
   &__button {
     z-index: 999;
     position: absolute;
     right: 20px;
     bottom: 20px;
   }
+
   &.small {
     height: calc(80vh - 64px) !important;
   }
+
   &__container {
     box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
   }
+
   .car-icon {
-    background: url("/img/activeMarker.svg") no-repeat;
+    background: url("../../public/img/activeMarker.svg") no-repeat;
     background-size: cover;
     background-position: center !important;
     line-height: 45px;
@@ -197,8 +222,9 @@ export default {
     text-align: center;
     color: white;
     transition: transform 0.2s ease;
+
     &.disabled {
-      background: url("/img/defaultMarker.svg") no-repeat;
+      background: url("../../public/img/defaultMarker.svg") no-repeat;
       background-size: cover;
       background-position: center !important;
     }

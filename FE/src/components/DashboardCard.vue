@@ -1,58 +1,90 @@
 <template>
   <div class="dash-card">
-    <template v-if="car">
-      <p class="text-center text-h6 mb-0">{{ car.name }}</p>
+    <template v-if="selectedCar">
+      <v-select
+        v-model="selectedCar"
+        :label="$t('newOrder.car')"
+        :items="cars"
+        item-text="name"
+        item-value="id"
+        required
+      />
+      <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p>-->
       <div class="d-flex justify-center align-center text-caption mb-1">
-        <span v-if="car.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(car.fuel) }}</v-icon> {{ car.fuel.toFixed(4) * 100 }}%
+        <span v-if="selectedCar.fuel" class="mr-2">
+          <v-icon>{{
+            getCarBatteryIcon(selectedCar.fuel.toFixed(4) || car.fuel.toFixed(4))
+          }}</v-icon>
+          {{ selectedCar.fuel.toFixed(4) * 100 || car.fuel.toFixed(4) * 100 }}%
         </span>
-        <span>{{ getLastUpdate(car) }}</span>
+        <span>{{ getLastUpdate(selectedCar) }}</span>
       </div>
-      <v-btn small block color="primary" class="text--center" text @click="showOrder = !showOrder">
+      <v-btn
+        v-if="!isUser"
+        block
+        class="text--center"
+        color="primary"
+        small
+        text
+        @click="showOrder = !showOrder"
+      >
         {{ $t("general.orders") }}
       </v-btn>
-      <v-row justify="center" align="center" class="px-3">
-        <p class="text-h4 mb-0 mr-3 dash-card__length" @click="showOrder = !showOrder">
-          {{ car.orders.nodes.length }}
+      <v-row align="center" class="px-3" justify="center">
+        <p
+          class="text-h4 mb-0 mr-3 dash-card__lenght"
+          :aria-disabled="isUser"
+          @click="showOrder = !showOrder"
+        >
+          {{ selectedCar.orders.nodes.length }}
         </p>
-        <v-btn icon color="primary" :disabled="car.underTest" @click="handleNewOrder">
-          <v-icon> mdi-plus-circle-outline</v-icon>
-        </v-btn>
+        <!-- button for create a single order
+        <v-btn :disabled="selectedCar.underTest" color="primary" icon @click="handleNewOrder">
+           <v-icon> mdi-plus-circle-outline</v-icon>
+         </v-btn> -->
         <v-btn
-          icon
+          v-if="!isUser"
+          :disabled="selectedCar.underTest"
           color="primary"
-          :to="{ name: allRoutes.NewMultipleOrder }"
-          :disabled="car.underTest"
+          icon
+          @click="handleNewMulripleOrder"
         >
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
       </v-row>
-      <template v-for="(order, key) in car.orders.nodes.slice(0, 3)">
+      <template v-for="(order, key) in selectedCar.orders.nodes.slice(0, 3)">
         <p :key="order.id" class="text-caption mb-0">{{ key + 1 }}. {{ orderListing(order) }}</p>
       </template>
-      <p v-if="car.orders.nodes.length > 3" class="text-caption mb-0">...</p>
+      <p v-if="selectedCar.orders.nodes.length > 3" class="text-caption mb-0">...</p>
       <v-dialog v-model="showOrder" width="1000">
         <v-card>
           <v-card-title class="headline primary white--text">
             {{ $t("general.orders") }}
           </v-card-title>
           <v-card-text class="mt-2">
-            <div v-if="car.orders.nodes === undefined">
+            <div v-if="selectedCar.orders.nodes === undefined">
               {{ $t("general.noOrders") }}
             </div>
             <v-data-table
               v-else
-              hide-default-footer
               :headers="headers"
               :items="getFilteredOrders"
               :items-per-page="-1"
               class="box-wrapper my-2"
+              hide-default-footer
             >
               <template #[`item.actions`]="{ item }">
-                <v-btn small color="primary" class="mr-2" icon @click="handleEditOrder(item)">
+                <v-btn
+                  v-if="!isUser"
+                  class="mr-2"
+                  color="primary"
+                  icon
+                  small
+                  @click="handleEditOrder(item)"
+                >
                   <v-icon small> mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn small color="error" icon @click="handleDeleteOrder(item)">
+                <v-btn v-if="!isUser" color="error" icon small @click="handleDeleteOrder(item)">
                   <v-icon small> mdi-delete</v-icon>
                 </v-btn>
               </template>
@@ -67,7 +99,7 @@
               </template>
             </v-data-table>
             <v-row justify="center">
-              <v-btn color="success" text :disabled="car.underTest" @click="handleNewOrder">
+              <v-btn v-if="!isUser" color="success" text @click="handleNewMulripleOrder">
                 {{ $t("orders.new") }}
               </v-btn>
             </v-row>
@@ -77,7 +109,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="showOrder = false">
+            <v-btn v-if="!isUser" color="primary" text @click="showOrder = false">
               {{ $t("general.close") }}
             </v-btn>
           </v-card-actions>
@@ -89,7 +121,9 @@
 </template>
 
 <script>
-import { orderApi } from "../code/api";
+import { mapGetters, mapMutations } from "vuex";
+import { orderApi, carApi } from "../code/api";
+import { GetterNames, MutationNames } from "../store/enums/vuexEnums";
 import { getCarState, CarStateFormated } from "../code/enums/carEnums";
 import { getOrderState } from "../code/enums/orderEnums";
 import { orderListing } from "../code/helpers/orderHelpers";
@@ -97,11 +131,11 @@ import allRoutes from "../code/enums/routesEnum";
 import { getTime, getLastUpdate } from "../code/helpers/timeHelpers";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
+import { RoleEnum } from "../code/enums/roleEnums";
 
 export default {
   name: "DashCard",
   props: {
-    // eslint-disable-next-line vue/require-default-prop
     car: {
       type: Object,
     },
@@ -110,6 +144,7 @@ export default {
     return {
       CarStateFormated,
       orders: [],
+      cars: [],
       showOrder: false,
       allRoutes,
       headers: [
@@ -128,16 +163,36 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      getMe: GetterNames.GetMe,
+      roles: GetterNames.GetRoles,
+      getSelectCar: GetterNames.GetSelectCar,
+      isRole: GetterNames.isRole,
+    }),
+    isUser() {
+      return this.isRole(RoleEnum.User);
+    },
+    isDriver() {
+      return this.isRole(RoleEnum.Driver);
+    },
     carState() {
       return (state) => {
         const { trans } = this.getCarState(state);
         return trans;
       };
     },
+    selectedCar: {
+      get() {
+        return this.cars.find((car) => car.id === this.getSelectCar) || this.cars[0] || this.car;
+      },
+      set(val) {
+        this.setCarId(val);
+      },
+    },
     getFilteredOrders() {
-      return this.car.orders.nodes.map((order) => {
+      return this.selectedCar.orders.nodes.map((order) => {
         const { trans } = getOrderState(order.status);
-        return { ...order, trans, name: this.car.name };
+        return { ...order, trans, name: this.selectedCar.name };
       });
     },
   },
@@ -148,14 +203,38 @@ export default {
     getLastUpdate,
     getPriorityEnum,
     getCarBatteryIcon,
+    ...mapMutations({
+      setCarId: MutationNames.SetCarId,
+    }),
+    async initForm() {
+      const cars = await carApi.getCarsWithOrders();
+      this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
+      this.handleSelectedParams();
+    },
     handleEditOrder(item) {
       this.$router.push({ name: allRoutes.EditOrder, params: { id: item.id } });
+    },
+    handleSelectedParams() {
+      if (this.$route.params.carId) {
+        this.setCarId(this.$route.params.carId);
+      }
+      if (!this.getSelectCar) {
+        this.setCarId(this.cars[0]);
+      }
     },
     handleNewOrder() {
       this.$router.push({
         name: allRoutes.NewOrder,
         params: {
-          carId: this.car.id,
+          carId: this.selectedCar.id,
+        },
+      });
+    },
+    handleNewMulripleOrder() {
+      this.$router.push({
+        name: allRoutes.NewMultipleOrder,
+        params: {
+          carId: this.selectedCar.id,
         },
       });
     },
@@ -168,13 +247,14 @@ export default {
           title: this.$i18n.tc("notifications.order.delete"),
           type: "success",
         });
+        this.$router.go();
       } catch (e) {
         this.$notify({
           group: "global",
           title: this.$i18n.tc("notifications.order.deleteFailed"),
           type: "error",
         });
-        console.error(e);
+        console.log(e);
       }
     },
   },
