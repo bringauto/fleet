@@ -110,5 +110,13 @@ export default {
   data: () => ({
     CarStateFormated,
   }),
+  methods: {
+    justNumber,
+  },
+  computed: {
+    ...mapGetters({
+      getTenant: GetterNames.GetTenant,
+    }),
+  },
 };
 </script>
