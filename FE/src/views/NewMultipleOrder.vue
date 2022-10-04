@@ -1,6 +1,6 @@
 <template>
   <PageWrapper>
-    <template #title>
+    <template v-slot:title>
       {{ $t("newOrder.multiple") }}
     </template>
 

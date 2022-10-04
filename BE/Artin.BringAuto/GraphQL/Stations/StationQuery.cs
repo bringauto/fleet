@@ -1,5 +1,5 @@
 ﻿using Artin.BringAuto.Shared;
-using Artin.BringAuto.Shared.Stops;
+using Artin.BringAuto.Shared.Stations;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace Artin.BringAuto.GraphQL.Stations
 {
-    public class StopQuery
+    public class StationQuery
     {
-        private readonly IStopRepository stopRepository;
+        private readonly IStationRepository stationRepository;
 
-        public StopQuery(IStopRepository stopRepository)
+        public StationQuery(IStationRepository stationRepository)
         {
-            this.stopRepository = stopRepository;
+            this.stationRepository = stationRepository;
         }
 
         [UsePaging]
@@ -22,9 +22,9 @@ namespace Artin.BringAuto.GraphQL.Stations
         [UseSelection]
         [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.Driver, RoleNames.Privileged, RoleNames.User })]
 
-        public IQueryable<Stop> GetStops()
+        public IQueryable<Station> GetStations()
         {
-            return stopRepository.Load();
+            return stationRepository.Load();
         }
 
 

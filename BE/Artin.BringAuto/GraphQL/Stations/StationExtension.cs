@@ -1,6 +1,6 @@
 ﻿using Artin.BringAuto.GraphQL.Orders;
 using Artin.BringAuto.Shared.Orders;
-using Artin.BringAuto.Shared.Stops;
+using Artin.BringAuto.Shared.Stations;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using System;
@@ -9,15 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Artin.BringAuto.GraphQL.Stops
+namespace Artin.BringAuto.GraphQL.Stations
 {
-    public class StationExtension : ObjectTypeExtension<Stop>
+    public class StationExtension : ObjectTypeExtension<Station>
     {
-        protected override void Configure(IObjectTypeDescriptor<Stop> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<Station> descriptor)
         {
             base.Configure(descriptor);
             descriptor.Field<OrderResolver>(x => x.GetStationFromOrders(default, default))
-                .Name("ordersFromThisStop")
+                .Name("ordersFromThisStation")
                 .UsePaging<ObjectType<Order>>()
                 .UseFiltering()
                 .UseSorting();

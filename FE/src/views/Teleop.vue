@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard">
-    <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickStation" />
+    <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickSation" />
     <v-fade-transition>
       <CarCard
-        :car="selectedCar"
         class="dashboard__card"
+        :car="selectedCar"
         @set-car-status="updateSelectedCar"
         @set-order-status="updateSelectedOrder"
         @get-cars="getAllCars()"
@@ -143,7 +143,7 @@ export default {
     handleClickCar(car) {
       this.selectedCar = car;
     },
-    handleClickStation() {
+    handleClickSation() {
       this.$router.push({ name: allRoutes.Settings });
     },
   },

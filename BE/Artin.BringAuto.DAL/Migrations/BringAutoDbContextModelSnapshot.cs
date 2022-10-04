@@ -156,9 +156,6 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TenantId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
@@ -168,8 +165,6 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RouteId");
-
-                    b.HasIndex("TenantId");
 
                     b.ToTable("Cars");
                 });
@@ -229,15 +224,10 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.Property<double>("MinLongitude")
                         .HasColumnType("float");
 
-                    b.Property<int?>("TenantId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Width")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TenantId");
 
                     b.ToTable("Maps");
                 });
@@ -270,9 +260,6 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TenantId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ToStationId")
                         .HasColumnType("int");
 
@@ -290,8 +277,6 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.HasIndex("CarId");
 
                     b.HasIndex("FromStationId");
-
-                    b.HasIndex("TenantId");
 
                     b.HasIndex("ToStationId");
 
@@ -313,12 +298,7 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TenantId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TenantId");
 
                     b.ToTable("Routes");
                 });
@@ -345,21 +325,16 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.Property<int?>("StationId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TenantId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RouteId");
 
                     b.HasIndex("StationId");
 
-                    b.HasIndex("TenantId");
-
                     b.ToTable("RouteStops");
                 });
 
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.Stop", b =>
+            modelBuilder.Entity("Artin.BringAuto.DAL.Models.Station", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -368,9 +343,6 @@ namespace Artin.BringAuto.DAL.Migrations
 
                     b.Property<string>("ContactPhone")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
@@ -381,55 +353,9 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TenantId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("Stops");
-                });
-
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.Tenant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
-
-                    b.ToTable("Tenants");
-                });
-
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.UserTenancy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTenancy");
+                    b.ToTable("Stations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -584,13 +510,7 @@ namespace Artin.BringAuto.DAL.Migrations
                         .WithMany()
                         .HasForeignKey("RouteId");
 
-                    b.HasOne("Artin.BringAuto.DAL.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId");
-
                     b.Navigation("Route");
-
-                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Artin.BringAuto.DAL.Models.LocationHistory", b =>
@@ -604,15 +524,6 @@ namespace Artin.BringAuto.DAL.Migrations
                     b.Navigation("Car");
                 });
 
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.Map", b =>
-                {
-                    b.HasOne("Artin.BringAuto.DAL.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId");
-
-                    b.Navigation("Tenant");
-                });
-
             modelBuilder.Entity("Artin.BringAuto.DAL.Models.Order", b =>
                 {
                     b.HasOne("Artin.BringAuto.DAL.Models.Car", "Car")
@@ -621,15 +532,11 @@ namespace Artin.BringAuto.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Artin.BringAuto.DAL.Models.Stop", "FromStation")
+                    b.HasOne("Artin.BringAuto.DAL.Models.Station", "FromStation")
                         .WithMany()
                         .HasForeignKey("FromStationId");
 
-                    b.HasOne("Artin.BringAuto.DAL.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId");
-
-                    b.HasOne("Artin.BringAuto.DAL.Models.Stop", "ToStation")
+                    b.HasOne("Artin.BringAuto.DAL.Models.Station", "ToStation")
                         .WithMany()
                         .HasForeignKey("ToStationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -643,20 +550,9 @@ namespace Artin.BringAuto.DAL.Migrations
 
                     b.Navigation("FromStation");
 
-                    b.Navigation("Tenant");
-
                     b.Navigation("ToStation");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.Route", b =>
-                {
-                    b.HasOne("Artin.BringAuto.DAL.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId");
-
-                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Artin.BringAuto.DAL.Models.RouteStop", b =>
@@ -665,45 +561,13 @@ namespace Artin.BringAuto.DAL.Migrations
                         .WithMany("Stops")
                         .HasForeignKey("RouteId");
 
-                    b.HasOne("Artin.BringAuto.DAL.Models.Stop", "Station")
+                    b.HasOne("Artin.BringAuto.DAL.Models.Station", "Station")
                         .WithMany()
                         .HasForeignKey("StationId");
-
-                    b.HasOne("Artin.BringAuto.DAL.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId");
 
                     b.Navigation("Route");
 
                     b.Navigation("Station");
-
-                    b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.Stop", b =>
-                {
-                    b.HasOne("Artin.BringAuto.DAL.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId");
-
-                    b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("Artin.BringAuto.DAL.Models.UserTenancy", b =>
-                {
-                    b.HasOne("Artin.BringAuto.DAL.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Artin.BringAuto.DAL.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Tenant");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

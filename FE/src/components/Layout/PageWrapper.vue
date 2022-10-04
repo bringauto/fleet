@@ -2,15 +2,11 @@
   <v-container class="page">
     <v-row class="flex-column align-center mb-5">
       <v-col cols="12">
-        <v-row class="align-baseline mb-1" no-gutters>
-          <h2 class="text-h5">
-            <slot name="title" />
-          </h2>
+        <v-row no-gutters class="align-baseline mb-1">
+          <h2 class="text-h5"><slot name="title" /></h2>
         </v-row>
-        <v-row class="align-baseline" no-gutters>
-          <v-btn color="primary" icon @click="handleBack">
-            <v-icon>mdi-arrow-left</v-icon>
-          </v-btn>
+        <v-row no-gutters class="align-baseline">
+          <v-btn icon color="primary" @click="handleBack"><v-icon>mdi-arrow-left</v-icon></v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -40,9 +36,7 @@ export default {
   },
   methods: {
     handleBack() {
-      this.$router.push({
-        name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard,
-      });
+      this.$router.push({ name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard });
     },
   },
 };

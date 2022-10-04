@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Artin.BringAuto.DAL.Models
 {
-    public class RouteStop : IId<int>, ITenancy
+    public class RouteStop : IId<int>
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,11 +19,7 @@ namespace Artin.BringAuto.DAL.Models
 
         public int? StationId { get; set; }
         [ForeignKey(nameof(StationId))]
-        public Stop Station { get; set; }
-
-        [ForeignKey(nameof(Tenant))]
-        public int? TenantId { get; set; }
-        public Tenant Tenant { get; set; }
+        public Station Station { get; set; }
 
     }
 }

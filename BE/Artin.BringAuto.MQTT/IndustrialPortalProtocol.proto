@@ -75,11 +75,9 @@ message ConnectResponse {
          * If some car is already logged in under same company and name
          */
         ALREADY_LOGGED = 1;
-        CONNECTION_REFUSED = 2;
     }
     Type type = 1;
     string sessionId = 2;
-    string errorMessage  = 3;
 }
 
 /**

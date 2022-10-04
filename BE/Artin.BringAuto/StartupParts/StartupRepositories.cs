@@ -5,8 +5,7 @@ using Artin.BringAuto.Shared.LocationHistory;
 using Artin.BringAuto.Shared.Maps;
 using Artin.BringAuto.Shared.Orders;
 using Artin.BringAuto.Shared.Routes;
-using Artin.BringAuto.Shared.Stops;
-using Artin.BringAuto.Shared.Tenants;
+using Artin.BringAuto.Shared.Stations;
 using BringAuto.Server.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,11 +18,10 @@ namespace BringAuto.Server.StartupParts
             services.AddTransient<ICarRepository, CarRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IRouteRepository, RouteRepository>();
-            services.AddTransient<IStopRepository, StationRepository>();
+            services.AddTransient<IStationRepository, StationRepository>();
             services.AddTransient<IMapRepository, MapRepository>();
             services.AddTransient<ILocationHistoryRepository, CarLocationHistoryRepository>();
             services.AddTransient<IButtonRepository, ButtonRepository>();
-            services.AddTransient<ITenantRepository, TenantRepository>();
 
             return services;
         }

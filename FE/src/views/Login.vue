@@ -3,27 +3,27 @@
     <v-row class="mb-10 justify-center align-center text-center">
       <v-col cols="10" sm="4">
         <h3 class="title mt-3 mb-4">{{ $t("login.title") }}</h3>
-        <ValidationObserver ref="form" v-slot="{ handleSubmit }">
+        <ValidationObserver v-slot="{ handleSubmit }" ref="form">
           <form novalidate @submit.prevent="handleSubmit(onSubmit)">
             <v-row>
               <v-col cols="12">
                 <ValidationProvider
                   v-slot="{ errors }"
-                  name="$t('login.username')"
-                  rules="required"
                   vid="username"
+                  rules="required"
+                  name="$t('login.username')"
                 >
                   <v-text-field
                     id="username"
                     v-model.lazy="userName"
+                    full-width
                     :label="$t('login.username')"
+                    outline
+                    hide-details
+                    type="username"
+                    name="username"
                     class="ma-0 pa-0"
                     data-at="username"
-                    full-width
-                    hide-details
-                    name="username"
-                    outline
-                    type="username"
                   />
 
                   <div v-if="errors[0]" class="login__input--error mt-0 pt-0">
@@ -36,21 +36,21 @@
               <v-col cols="12">
                 <ValidationProvider
                   v-slot="{ errors }"
-                  name="$t('login.password')"
-                  rules="required"
                   vid="password"
+                  rules="required"
+                  name="$t('login.password')"
                 >
                   <v-text-field
                     id="password"
                     v-model.lazy="password"
+                    full-width
                     :label="$t('login.password')"
+                    hide-details
+                    outline
+                    name="password"
+                    type="password"
                     class="ma-0 pa-0"
                     data-at="password"
-                    full-width
-                    hide-details
-                    name="password"
-                    outline
-                    type="password"
                   />
                   <div v-if="errors[0]" class="login__input--error mt-0 pt-0">
                     {{ $t("login.required") }}
@@ -64,11 +64,11 @@
             <v-row>
               <v-col cols="12">
                 <v-btn
-                  class="primary mt-3"
                   color="primary"
-                  data-at="login-button"
-                  large
                   type="submit"
+                  large
+                  data-at="login-button"
+                  class="primary mt-3"
                 >
                   <div>{{ $t("login.submit") }}</div>
                 </v-btn>
@@ -82,7 +82,7 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import { ValidationObserver, ValidationProvider } from "vee-validate/dist/vee-validate.full";
+import { ValidationProvider, ValidationObserver } from "vee-validate/dist/vee-validate.full";
 import { LOGIN_USER } from "../code/graphql/queries";
 import { MutationNames } from "../store/enums/vuexEnums";
 
@@ -100,7 +100,6 @@ export default {
   methods: {
     ...mapMutations({
       setMe: MutationNames.SetMe,
-      setTenant: MutationNames.SetTenant,
     }),
     async onSubmit() {
       try {
@@ -113,7 +112,6 @@ export default {
         });
         if (data?.UserQuery?.login) {
           this.setMe(data && data.UserQuery.login);
-          this.setTenant(data && data.UserQuery.login.tenants.nodes[0]);
           this.$router.push({ path: "/" });
         } else {
           this.$notify({
@@ -134,6 +132,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss">
 @import "../assets/styles/variables.scss";
 
