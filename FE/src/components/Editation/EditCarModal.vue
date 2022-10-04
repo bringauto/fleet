@@ -84,6 +84,14 @@ import { justNumber } from "../../code/helpers/positionHelpers";
 
 export default {
   name: "EditStationModal",
+  computed: {
+    ...mapGetters({
+      getTenant: GetterNames.GetTenant,
+    }),
+  },
+  methods: {
+    justNumber,
+  },
   components: {
     ValidationProvider,
   },
