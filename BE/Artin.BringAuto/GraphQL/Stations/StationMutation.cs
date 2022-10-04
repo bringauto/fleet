@@ -1,5 +1,5 @@
 ﻿using Artin.BringAuto.Shared;
-using Artin.BringAuto.Shared.Stops;
+using Artin.BringAuto.Shared.Stations;
 using HotChocolate.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
@@ -9,25 +9,25 @@ using System.Threading.Tasks;
 
 namespace Artin.BringAuto.GraphQL.Stations
 {
-    public class StopMutation
+    public class StationMutation
     {
-        private readonly IStopRepository stationRepository;
+        private readonly IStationRepository stationRepository;
 
-        public StopMutation(IStopRepository stationRepository)
+        public StationMutation(IStationRepository stationRepository)
         {
             this.stationRepository = stationRepository;
         }
 
         [Authorize(Roles = new[] { RoleNames.Admin })]
-        public async Task<Stop> AddStop(NewStop station)
+        public async Task<Station> AddStation(NewStation station)
             => await stationRepository.AddAsync(station);
 
         [Authorize(Roles = new[] { RoleNames.Admin })]
-        public async Task<Stop> UpdateStop(Stop station)
+        public async Task<Station> UpdateStation(Station station)
             => await stationRepository.UpdateAsync(station);
 
         [Authorize(Roles = new[] { RoleNames.Admin })]
-        public async Task<Stop> DeleteStop(int stationId)
+        public async Task<Station> DeleteStation(int stationId)
             => await stationRepository.DeleteAsync(stationId);
 
     }

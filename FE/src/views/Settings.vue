@@ -1,6 +1,6 @@
 <template>
   <PageWrapper>
-    <template #title>
+    <template v-slot:title>
       {{ $t("settings.title") }}
     </template>
     <h2 class="text-h5 mb-3">{{ $t("settings.stations") }}</h2>
@@ -13,7 +13,7 @@
           :items-per-page="-1"
           class="mt-2 mb-5"
         >
-          <template #[`item.actions`]="{ item }">
+          <template v-slot:[`item.actions`]="{ item }">
             <v-btn
               small
               color="primary"
@@ -21,10 +21,10 @@
               icon
               @click="handleEditModal('Station', item)"
             >
-              <v-icon small> mdi-pencil</v-icon>
+              <v-icon small> mdi-pencil </v-icon>
             </v-btn>
             <v-btn small color="error" icon @click="handleRemoveStation(item.id)">
-              <v-icon small> mdi-delete</v-icon>
+              <v-icon small> mdi-delete </v-icon>
             </v-btn>
           </template>
         </v-data-table>
@@ -45,18 +45,18 @@
           :items-per-page="-1"
           class="mt-2 mb-5"
         >
-          <template #[`item.stops`]="{ item }">
+          <template v-slot:[`item.stops`]="{ item }">
             <span v-if="item.stops && item.stops.length">{{ item.stops.length }}</span>
           </template>
-          <template #[`item.color`]="{ item }">
+          <template v-slot:[`item.color`]="{ item }">
             <div v-if="item.color" class="color-circle" :style="`background-color:${item.color}`" />
           </template>
-          <template #[`item.actions`]="{ item }">
+          <template v-slot:[`item.actions`]="{ item }">
             <v-btn small color="primary" class="mr-2" icon @click="handleEditModal('Route', item)">
-              <v-icon small> mdi-pencil</v-icon>
+              <v-icon small> mdi-pencil </v-icon>
             </v-btn>
             <v-btn small color="error" icon @click="handleRemoveRoute(item.id)">
-              <v-icon small> mdi-delete</v-icon>
+              <v-icon small> mdi-delete </v-icon>
             </v-btn>
           </template>
         </v-data-table>
@@ -77,12 +77,12 @@
           :items-per-page="-1"
           class="mt-2 mb-5"
         >
-          <template #[`item.actions`]="{ item }">
+          <template v-slot:[`item.actions`]="{ item }">
             <v-btn small color="primary" class="mr-2" icon @click="handleEditModal('Car', item)">
-              <v-icon small> mdi-pencil</v-icon>
+              <v-icon small> mdi-pencil </v-icon>
             </v-btn>
             <v-btn small color="error" icon @click="handleRemoveCar(item.id)">
-              <v-icon small> mdi-delete</v-icon>
+              <v-icon small> mdi-delete </v-icon>
             </v-btn>
           </template>
         </v-data-table>
@@ -90,7 +90,9 @@
         <v-dialog :value="!!modal && !!entity" width="700" @input="resetModal()">
           <ValidationObserver v-slot="{ invalid }">
             <v-card>
-              <v-card-title class="headline primary white--text"></v-card-title>
+              <v-card-title class="headline primary white--text">
+                {{ dialogTitle }}
+              </v-card-title>
 
               <v-card-text>
                 <EditCarModal v-if="modal === 'Car'" :car.sync="entity" :routes="routes" />
@@ -110,17 +112,7 @@
                 <v-btn color="error" text @click="resetModal()">
                   {{ $t("general.cancel") }}
                 </v-btn>
-                <v-btn
-                  color="success"
-                  text
-                  :disabled="
-                    invalid ||
-                    (!isUniqNameStation && modal === 'Station') ||
-                    (!isUniqNameRoute && modal === 'Route') ||
-                    (!isUniqNameCar && modal === 'Car')
-                  "
-                  @click="handleSave()"
-                >
+                <v-btn color="success" text :disabled="invalid" @click="handleSave()">
                   {{ $t("settings.save") }}
                 </v-btn>
               </v-card-actions>
@@ -225,35 +217,6 @@ export default {
       }
       return "";
     },
-    isUniqNameStation() {
-      if (this.entity?.name) {
-        return !this.stations.some(
-          (station) =>
-            station.name.toLowerCase() === this.entity.name.toLowerCase() &&
-            station.id !== this.entity.id
-        );
-      }
-      return true;
-    },
-    isUniqNameCar() {
-      if (this.entity?.name) {
-        return !this.cars.some(
-          (car) =>
-            car.name.toLowerCase() === this.entity.name.toLowerCase() && car.id !== this.entity.id
-        );
-      }
-      return true;
-    },
-    isUniqNameRoute() {
-      if (this.entity?.name) {
-        return !this.routes.some(
-          (route) =>
-            route.name.toLowerCase() === this.entity.name.toLowerCase() &&
-            route.id !== this.entity.id
-        );
-      }
-      return true;
-    },
   },
   async mounted() {
     this.getAllStations();
@@ -284,8 +247,8 @@ export default {
         this.$notify({
           group: "global",
           type: "error",
+          text: e,
         });
-        console.log(e);
       }
     },
     async getAllRoutes() {
@@ -295,8 +258,8 @@ export default {
         this.$notify({
           group: "global",
           type: "error",
+          text: e,
         });
-        console.log(e);
       }
     },
     async getAllCars() {
@@ -306,8 +269,8 @@ export default {
         this.$notify({
           group: "global",
           type: "error",
+          text: e,
         });
-        console.log(e);
       }
     },
     async handleRemoveRoute(id) {
@@ -445,8 +408,8 @@ export default {
           group: "global",
           title: this.$i18n.tc("settings.somethingWrong"),
           type: "error",
+          text: e,
         });
-        console.log(e);
       }
       await this.getAllCars();
     },

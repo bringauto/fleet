@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Artin.BringAuto.Shared.Stops
+namespace Artin.BringAuto.Shared.Stations
 {
-    public class NewStop
+    public class StationInfo
     {
+        public int? Id { get; set; }
         public string Name { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
         [Phone]
         public string ContactPhone { get; set; }
     }

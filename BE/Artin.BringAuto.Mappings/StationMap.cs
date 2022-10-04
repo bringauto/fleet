@@ -1,4 +1,4 @@
-﻿using Artin.BringAuto.Shared.Stops;
+﻿using Artin.BringAuto.Shared.Stations;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ namespace Artin.BringAuto.Mappings
     {
         public StationMap()
         {
-            CreateMap<Artin.BringAuto.DAL.Models.Stop, Stop>().ReverseMap();
-            CreateMap<Artin.BringAuto.DAL.Models.Stop, StopInfo>();
-            CreateMap<NewStop, Artin.BringAuto.DAL.Models.Stop>();
+            CreateMap<Artin.BringAuto.DAL.Models.Station, Station>().ReverseMap();
+            CreateMap<Artin.BringAuto.DAL.Models.Station, StationInfo>();
+            CreateMap<NewStation, Artin.BringAuto.DAL.Models.Station>();
         }
     }
 }

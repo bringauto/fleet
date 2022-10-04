@@ -1,53 +1,53 @@
 <template>
   <v-col cols="12" md="8">
-    <ValidationObserver ref="form" v-slot="{ handleSubmit }">
+    <ValidationObserver v-slot="{ handleSubmit }" ref="form">
       <form novalidate @submit.prevent="handleSubmit(editig ? updateOrder : onSubmit)">
         <ValidationProvider
           v-slot="{ errors }"
-          :name="$t('newOrder.car')"
-          rules="required"
           vid="carId"
+          rules="required"
+          :name="$t('newOrder.car')"
         >
           <v-select
             v-model="carId"
-            :error-messages="errors"
-            :items="cars"
             :label="$t('newOrder.car')"
+            :items="cars"
             item-text="name"
             item-value="id"
             required
+            :error-messages="errors"
           ></v-select>
         </ValidationProvider>
 
         <ValidationProvider
           v-slot="{ errors }"
-          :name="$t('newOrder.stationTo')"
-          rules="required"
           vid="stationTo"
+          rules="required"
+          :name="$t('newOrder.stationTo')"
         >
           <v-select
             v-model="stationTo"
-            :error-messages="errors"
-            :items="stations"
             :label="$t('newOrder.stationTo')"
+            :items="stations"
             item-text="name"
             item-value="id"
             required
+            :error-messages="errors"
           ></v-select>
         </ValidationProvider>
-        <ValidationProvider v-slot="{ errors }" :name="$t('newOrder.priority')" vid="selectedPrio">
+        <ValidationProvider v-slot="{ errors }" vid="selectedPrio" :name="$t('newOrder.priority')">
           <v-select
             v-model="selectedPrio"
-            :error-messages="errors"
-            :items="priorities"
             :label="$t('newOrder.priority')"
+            :items="priorities"
             item-text="trans"
             item-value="priority"
             required
+            :error-messages="errors"
           ></v-select>
         </ValidationProvider>
         <div class="mt-5">
-          <v-btn class="mr-4" color="success" large type="submit">
+          <v-btn large color="success" class="mr-4" type="submit">
             {{ $t("login.submit") }}
           </v-btn>
         </div>
@@ -58,11 +58,11 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { ValidationObserver, ValidationProvider } from "vee-validate";
-import { carApi, orderApi, stationApi } from "../../code/api";
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+import { carApi, stationApi, orderApi } from "../../code/api";
 import { getPrioEnumAccordingToRole } from "../../code/enums/prioEnum";
 import allRoutes from "../../code/enums/routesEnum";
-import { formatArrive, getTime } from "../../code/helpers/timeHelpers";
+import { getTime, formatArrive } from "../../code/helpers/timeHelpers";
 import { GetterNames } from "../../store/enums/vuexEnums";
 
 export default {
@@ -151,9 +151,7 @@ export default {
       dto.arrive = formatArrive(this.arrive);
       try {
         await orderApi.addOrder(dto);
-        this.$router.push({
-          name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard,
-        });
+        this.$router.push({ name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard });
         this.$notify({
           group: "global",
           title: this.$i18n.tc("notifications.order.create"),
@@ -179,9 +177,7 @@ export default {
       dto.arrive = this.formatArrive();
       try {
         await orderApi.updateOrder(dto);
-        this.$router.push({
-          name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard,
-        });
+        this.$router.push({ name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard });
         this.$notify({
           group: "global",
           title: this.$i18n.tc("notifications.order.update"),
