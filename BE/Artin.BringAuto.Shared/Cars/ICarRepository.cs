@@ -20,5 +20,6 @@ namespace Artin.BringAuto.Shared.Cars
         Task<string> GetSessionId(string companyName, string carName);
         Task<List<int>> GetCarStationOrder(string companyName, string carName);
         Task<bool> IsLoggedInAsync(string company, string car, string sessionId);
+        Task<string> GetCarRoute(string company, string car);
     }
 }

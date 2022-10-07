@@ -44,7 +44,7 @@ namespace BringAuto.Server.Repositories
 
         public async Task SetSessionId(string companyName, string carName, string sessionId)
         {
-            var car = await dbContext.Cars.FirstOrDefaultAsync(x => x.CompanyName == companyName && x.Name == carName);
+            var car = await dbContext.Cars.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.CompanyName == companyName && x.Name == carName);
             if (car is object)
             {
                 car.SessionId = sessionId;
@@ -145,6 +145,15 @@ namespace BringAuto.Server.Repositories
                 .Select(x => x.StationId.Value)
                 .ToListAsync();
 
+        }
+
+        public async Task<string> GetCarRoute(string company, string car)
+        {
+            return await dbContext.Cars.Where(
+                x => x.CompanyName == company
+                && x.Name == car)
+                .Select(x => x.Route.Name)
+                .FirstOrDefaultAsync();
         }
     }
 }

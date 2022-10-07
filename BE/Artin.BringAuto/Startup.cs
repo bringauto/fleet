@@ -70,7 +70,13 @@ namespace Artin.BringAuto
                 opt.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:BringAuto"));
             }, ServiceLifetime.Transient);
             services.AddAutoMapper(typeof(Artin.BringAuto.Mappings.CarMap).Assembly);
+            services.AddHttpContextAccessor();
+            services.AddScoped<RequireTenantProvider>(sb =>
+            {
+                var httpContext = sb.GetRequiredService<IHttpContextAccessor>();
 
+                return new RequireTenantProvider(httpContext.HttpContext is not null);
+            });
 
             var CookieSecurity = Environment.GetEnvironmentVariable("CookieSecurity");
             if (Enum.TryParse<CookieSecurePolicy>(CookieSecurity, out var securePolicy))
@@ -192,7 +198,7 @@ namespace Artin.BringAuto
                 ctx.Database.Migrate(); //Auto migrate database. 
 
                 scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>().SeedRolesAsync().GetAwaiter().GetResult();
-                
+
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 userManager.SeedUsersAsync(scope.ServiceProvider.GetRequiredService<BringAutoDbContext>()).GetAwaiter().GetResult();
 

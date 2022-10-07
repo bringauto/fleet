@@ -36,6 +36,7 @@ namespace Artin.BringAuto.MQTTClient
             {
                 var route = await orderRepository.GetRouteForCar(company, car);
                 var sessionId = await carRepository.GetSessionId(company, car);
+                
                 if (!String.IsNullOrEmpty(sessionId))
                 {
                     var msg = new MessageIndustrialPortal
@@ -57,7 +58,8 @@ namespace Artin.BringAuto.MQTTClient
                         if (order.ToStationStatus != Shared.Enums.OrderStopStatus.Done)
                             msg.Command.CarCommand.Stops.Add(new Stop() { To = order.To.Name });
                     }
-                   await mqttClient.PublishAsync(msg.CreateMqttMessage(company, car, logger));
+                    msg.Command.CarCommand.Route = await carRepository.GetCarRoute(company, car);
+                    await mqttClient.PublishAsync(msg.CreateMqttMessage(company, car, logger));
                 }
             }
         }

@@ -20,15 +20,17 @@ namespace Artin.BringAuto.DAL
         public BringAutoDbContext(
             DbContextOptions options,
             ICanAccessOrderProvider canAccessOrderProvider,
-            ICurrentTenant tenancy) : base(options)
+            ICurrentTenant tenancy,
+            RequireTenantProvider requireTenantProvider) : base(options)
         {
+            requireTenant = requireTenantProvider.RequireTenant;
             CanAccessOrderProvider = canAccessOrderProvider;
             this.tenantId = tenancy.GetTenantId();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Order>().HasQueryFilter(x => tenantId.HasValue && tenantId == x.TenantId && (CanAccessOrderProvider.CanAccessAllOrders || x.UserId == CanAccessOrderProvider.CurrentUserId));
+            builder.Entity<Order>().HasQueryFilter(x => !requireTenant || (tenantId.HasValue && tenantId == x.TenantId && (CanAccessOrderProvider.CanAccessAllOrders || x.UserId == CanAccessOrderProvider.CurrentUserId)));
 
             builder.Entity<LocationHistory>().HasIndex(x => x.Time);
             builder.Entity<LocationHistory>().HasIndex(x => new { x.Latitude, x.Longitude, x.Time });
@@ -47,7 +49,7 @@ namespace Artin.BringAuto.DAL
 
         private void TenantFilter<Tenancy>(ModelBuilder modelBuilder)
             where Tenancy : class, ITenancy
-            => modelBuilder.Entity<Tenancy>().HasQueryFilter(x => tenantId.HasValue && tenantId == x.TenantId);
+            => modelBuilder.Entity<Tenancy>().HasQueryFilter(x => !requireTenant || (tenantId.HasValue && tenantId == x.TenantId));
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Button> ButtonStates { get; set; }
@@ -60,6 +62,9 @@ namespace Artin.BringAuto.DAL
         public DbSet<RouteStop> RouteStops { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<UserTenancy> UserTenancy { get; set; }
+
+        private readonly bool requireTenant;
+
         public ICanAccessOrderProvider CanAccessOrderProvider { get; }
 
 
@@ -90,7 +95,8 @@ namespace Artin.BringAuto.DAL
 
 
 
-            foreach (var entity in this.ChangeTracker.Entries().Where(x => x.State == EntityState.Modified || x.State == EntityState.Added))
+
+            foreach (var entity in this.ChangeTracker.Entries().Where(x => (requireTenant && (x.State == EntityState.Modified) || x.State == EntityState.Added)))
             {
                 if (entity.Entity is ITenancy tenancy)
                 {

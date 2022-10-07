@@ -153,6 +153,7 @@ message CarCommand {
 
   Action action = 2;
 
+  string route = 3;
 }
 
 /**
