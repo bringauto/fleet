@@ -232,12 +232,16 @@ export default {
     ...mapMutations({
       setCarId: MutationNames.SetCarId,
     }),
-
-    async initForm() {
+    async fetchOrders() {
       const cars = await carApi.getCarsWithOrders();
       this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
+    },
+
+    async initForm() {
+      await this.fetchOrders();
       this.handleSelectedParams();
     },
+
     handleSelectedParams() {
       if (this.$route.params.carId) {
         this.setCarId(this.$route.params.carId);
@@ -258,13 +262,13 @@ export default {
     async removeOrder(id) {
       try {
         await orderApi.deleteOrder(id);
+        await this.fetchOrders();
         this.$emit("get-cars");
         this.$notify({
           group: "global",
           title: this.$i18n.tc("notifications.order.delete"),
           type: "success",
         });
-        this.$router.go();
       } catch (e) {
         this.$notify({
           group: "global",

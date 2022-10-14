@@ -206,9 +206,14 @@ export default {
     ...mapMutations({
       setCarId: MutationNames.SetCarId,
     }),
-    async initForm() {
+
+    async fetchOrders() {
       const cars = await carApi.getCarsWithOrders();
       this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
+    },
+
+    async initForm() {
+      await this.fetchOrders();
       this.handleSelectedParams();
     },
     handleEditOrder(item) {
@@ -241,6 +246,7 @@ export default {
     async handleDeleteOrder(order) {
       try {
         await orderApi.deleteOrder(order.id);
+        await this.fetchOrders();
         this.$emit("get-cars");
         this.$notify({
           group: "global",

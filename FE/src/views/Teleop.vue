@@ -85,7 +85,7 @@ export default {
 
     async updateSelectedOrder(obj) {
       const dto = {
-        car: obj.car.id,
+        car: obj.selectedCar.id,
         id: obj.order.id,
         priority: obj.order.priority,
         status: obj.status,
