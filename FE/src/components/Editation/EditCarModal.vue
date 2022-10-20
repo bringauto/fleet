@@ -40,10 +40,12 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-select
-            :items="routes"
+            :items="mappedRoutes"
             :label="$t('settings.route')"
             :value="car.routeId"
             clearable
+            disabled
+            append-icon="dropdown"
             hide-details
             item-text="name"
             item-value="id"
@@ -78,8 +80,10 @@
 <script>
 import { mapGetters } from "vuex";
 import { ValidationProvider } from "vee-validate";
+import { carApi, routeApi, stationApi } from "../../code/api";
 import { GetterNames } from "../../store/enums/vuexEnums";
 import { CarStateFormated } from "../../code/enums/carEnums";
+import { OrderState } from "../../code/enums/orderEnums";
 import { justNumber } from "../../code/helpers/positionHelpers";
 
 export default {
@@ -101,13 +105,45 @@ export default {
   },
   data: () => ({
     CarStateFormated,
+    stations: [],
+    cars: [],
+    carId: null,
+    route: [],
   }),
+
   computed: {
     ...mapGetters({
       getTenant: GetterNames.GetTenant,
     }),
+    mappedRoutes() {
+      const selectedCar = this.cars.find((car) => this.carId === car.id);
+      console.log(selectedCar);
+      if (selectedCar) {
+        const selectedOrder = selectedCar.orders.nodes.find((order) =>
+          [OrderState.ACCEPTED, OrderState.TOACCEPT, OrderState.INPROGRESS].includes(order.status)
+        );
+        console.log(selectedOrder);
+        if (selectedOrder) {
+          console.log(this.route);
+          return this.route.filter((route) =>
+            route.stops.some((stop) => stop.station && stop.station.id === selectedOrder.to.id)
+          );
+        }
+      }
+      return this.route;
+    },
+  },
+  async mounted() {
+    await this.initForm();
   },
   methods: {
+    async initForm() {
+      this.route = await routeApi.getRoutes();
+      this.stations = await stationApi.getStations();
+      const cars = await carApi.getCarsWithOrders();
+      this.carId = this.car.id;
+      this.cars = cars;
+    },
     justNumber,
   },
 };

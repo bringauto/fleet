@@ -109,9 +109,12 @@ export default {
         );
         if (selectedOrder) {
           console.log(this.routes);
-          return this.routes.filter((route) =>
-            route.stops.some((stop) => stop.station.id && stop.station.id === selectedOrder.to.id)
-          );
+          return this.routes.filter((route) => {
+            console.log(route);
+            return route.stops.some(
+              (stop) => stop.station && stop.station.id === selectedOrder.to.id
+            );
+          });
         }
       }
       return this.routes;
@@ -159,7 +162,6 @@ export default {
       dto.arrive = formatArrive(this.arrive);
       return dto;
     },
-
     mappStations(id) {
       this.routeId = id;
       if (id) {
@@ -185,6 +187,11 @@ export default {
             await orderApi.addOrder(dto);
           }
         }
+        const selectedCar = this.cars.find((car) => car.id === this.carId);
+        if (selectedCar) {
+          await carApi.updateCar({ ...selectedCar, routeId: this.routeId });
+        }
+
         this.$router.push({
           name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard,
         });
