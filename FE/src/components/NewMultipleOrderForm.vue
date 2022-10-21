@@ -108,9 +108,7 @@ export default {
           [OrderState.ACCEPTED, OrderState.TOACCEPT, OrderState.INPROGRESS].includes(order.status)
         );
         if (selectedOrder) {
-          console.log(this.routes);
           return this.routes.filter((route) => {
-            console.log(route);
             return route.stops.some(
               (stop) => stop.station && stop.station.id === selectedOrder.to.id
             );
@@ -188,9 +186,10 @@ export default {
           }
         }
         const selectedCar = this.cars.find((car) => car.id === this.carId);
-        if (selectedCar) {
-          await carApi.updateCar({ ...selectedCar, routeId: this.routeId });
-        }
+        await carApi.updateCar({
+          ...selectedCar,
+          routeId: this.routeId,
+        });
 
         this.$router.push({
           name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard,

@@ -117,14 +117,11 @@ export default {
     }),
     mappedRoutes() {
       const selectedCar = this.cars.find((car) => this.carId === car.id);
-      console.log(selectedCar);
       if (selectedCar) {
         const selectedOrder = selectedCar.orders.nodes.find((order) =>
           [OrderState.ACCEPTED, OrderState.TOACCEPT, OrderState.INPROGRESS].includes(order.status)
         );
-        console.log(selectedOrder);
         if (selectedOrder) {
-          console.log(this.route);
           return this.route.filter((route) =>
             route.stops.some((stop) => stop.station && stop.station.id === selectedOrder.to.id)
           );
