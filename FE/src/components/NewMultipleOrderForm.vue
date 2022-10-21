@@ -18,7 +18,7 @@
             :error-messages="errors"
           />
           <v-select
-            :items="routes"
+            :items="mappedRoutes"
             :label="$t('settings.route')"
             :value="routeId"
             clearable
@@ -72,6 +72,7 @@ import { getPrioEnumAccordingToRole } from "../code/enums/prioEnum";
 import allRoutes from "../code/enums/routesEnum";
 import { GetterNames } from "../store/enums/vuexEnums";
 import { CarStateFormated } from "../code/enums/carEnums";
+import { OrderState } from "../code/enums/orderEnums";
 
 export default {
   components: {
@@ -100,6 +101,22 @@ export default {
       isAdmin: GetterNames.isAdmin,
       isDriver: GetterNames.isDriver,
     }),
+    mappedRoutes() {
+      const selectedCar = this.cars.find((car) => this.carId === car.id);
+      if (selectedCar) {
+        const selectedOrder = selectedCar.orders.nodes.find((order) =>
+          [OrderState.ACCEPTED, OrderState.TOACCEPT, OrderState.INPROGRESS].includes(order.status)
+        );
+        if (selectedOrder) {
+          return this.routes.filter((route) => {
+            return route.stops.some(
+              (stop) => stop.station && stop.station.id === selectedOrder.to.id
+            );
+          });
+        }
+      }
+      return this.routes;
+    },
   },
   watch: {
     cars: {
@@ -128,7 +145,7 @@ export default {
     async initForm() {
       this.routes = await routeApi.getRoutes();
       this.stations = await stationApi.getStations();
-      const cars = await carApi.getCarsWithoutHistory();
+      const cars = await carApi.getCarsWithOrders();
       this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
       this.priorities = getPrioEnumAccordingToRole(this.$store.state.user.roles);
       this.stationTo = this.$route.params.stationTo;
@@ -168,6 +185,12 @@ export default {
             await orderApi.addOrder(dto);
           }
         }
+        const selectedCar = this.cars.find((car) => car.id === this.carId);
+        await carApi.updateCar({
+          ...selectedCar,
+          routeId: this.routeId,
+        });
+
         this.$router.push({
           name: this.isAdmin ? allRoutes.Teleop : allRoutes.Dashboard,
         });
