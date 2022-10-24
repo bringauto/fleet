@@ -14,6 +14,7 @@ const translations = {
       cancel: "Zrušit",
       name: "Jméno",
       carUpdate: "Neznámo",
+      companyName: "Společnosti",
     },
     login: {
       title: "Přihlášení",
@@ -183,6 +184,7 @@ const translations = {
       cancel: "Cancel",
       name: "Name",
       carUpdate: "No data",
+      companyName: "Companies",
     },
     login: {
       title: "Login",

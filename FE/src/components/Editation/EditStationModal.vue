@@ -16,9 +16,9 @@
 
         <v-col cols="12" md="12">
           <v-text-field
-            :label="$t('stations.position')"
-            :value="positionValue"
-            @input="$emit('update:station', { ...station, ...getLatLong($event) })"
+            :label="$t('stations.latitude')"
+            :value="station.latitude"
+            @input="$emit('update:station', { ...station.latitude, ...getLat($event) })"
             @keydown="justNumber"
           >
             <!-- <template v-slot:prepend>
@@ -30,6 +30,12 @@
               </v-tooltip>
             </template> -->
           </v-text-field>
+          <v-text-field
+            :label="$t('stations.longitude')"
+            :value="station.longitude"
+            @input="$emit('update:station', { ...station.longitude, ...getLong($event) })"
+            @keydown="justNumber"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -38,7 +44,13 @@
 
 <script>
 import { ValidationProvider } from "vee-validate";
-import { getLatLong, getPositionValue, justNumber } from "../../code/helpers/positionHelpers";
+import {
+  getLatLong,
+  getLat,
+  getLong,
+  getPositionValue,
+  justNumber,
+} from "../../code/helpers/positionHelpers";
 
 export default {
   name: "EditStationModal",
@@ -58,6 +70,8 @@ export default {
   },
 
   methods: {
+    getLat,
+    getLong,
     getLatLong,
     justNumber,
   },

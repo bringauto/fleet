@@ -10,6 +10,22 @@ export function getLatLong(position) {
   return { latitude: 0, longitude: 0 };
 }
 
+export function getLat(position) {
+  const getLatid = position.latitude;
+  if (getLatid[0]) {
+    return { latitude: Number(getLatid[0]) };
+  }
+  return { latitude: 0 };
+}
+
+export function getLong(position) {
+  const getLongit = position.longitude;
+  if (getLongit[0]) {
+    return { longitude: Number(getLongit[0]) };
+  }
+  return { longitude: 0 };
+}
+
 export function getPositionValue(station) {
   const { latitude, longitude } = station;
   if (latitude && longitude) {
@@ -22,7 +38,7 @@ export function getPositionValue(station) {
 }
 
 export function justNumber(event, keys = []) {
-  const enabledKeys = ["Backspace", ...keys];
+  const enabledKeys = ["Backspace", "Control", "c", "v", ...keys];
   if (event.key.match(/^[a-zA-Z]*$/) && !enabledKeys.includes(event.key)) {
     event.preventDefault();
   }
