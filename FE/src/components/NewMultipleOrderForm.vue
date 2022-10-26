@@ -16,6 +16,7 @@
             item-value="id"
             required
             :error-messages="errors"
+            :no-data-text="$t('cars.noCars')"
           />
           <v-select
             :items="mappedRoutes"
@@ -25,6 +26,7 @@
             hide-details
             item-text="name"
             item-value="id"
+            :no-data-text="$t('routes.noRoutes')"
             @input="mappStations"
           />
         </ValidationProvider>

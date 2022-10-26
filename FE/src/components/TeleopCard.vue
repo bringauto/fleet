@@ -8,11 +8,12 @@
         item-text="name"
         item-value="id"
         required
+        :no-data-text="$t('cars.noCars')"
       />
       <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p> -->
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="selectedCar.fuel" class="mr-2">
-          <v-icon>{{ getCarBatteryIcon(selectedCar.fuel.toFixed(4)) }}</v-icon>
+          <v-icon>{{ getCarBatteryIcon(selectedCar.fuel || car.fuel) }}</v-icon>
           {{ selectedCar.fuel.toFixed(4) * 100 }}%
         </span>
         <span>{{ getLastUpdate(selectedCar) }}</span>
@@ -195,7 +196,7 @@ export default {
     },
     selectedCar: {
       get() {
-        return this.cars.find((car) => car.id === this.getSelectCar) || this.cars[0];
+        return this.cars.find((car) => car.id === this.getSelectCar) || this.cars[0] || this.car;
       },
       set(val) {
         this.setCarId(val);

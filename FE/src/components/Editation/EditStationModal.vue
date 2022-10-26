@@ -18,7 +18,7 @@
           <v-text-field
             :label="$t('stations.latitude')"
             :value="station.latitude"
-            @input="$emit('update:station', { ...station.latitude, ...getLat($event) })"
+            @input="$emit('update:station', { ...station, ...getLat($event) })"
             @keydown="justNumber"
           >
             <!-- <template v-slot:prepend>
@@ -33,7 +33,7 @@
           <v-text-field
             :label="$t('stations.longitude')"
             :value="station.longitude"
-            @input="$emit('update:station', { ...station.longitude, ...getLong($event) })"
+            @input="$emit('update:station', { ...station, ...getLong($event) })"
             @keydown="justNumber"
           />
         </v-col>

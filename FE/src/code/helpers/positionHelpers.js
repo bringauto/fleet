@@ -11,17 +11,17 @@ export function getLatLong(position) {
 }
 
 export function getLat(position) {
-  const getLatid = position.latitude;
-  if (getLatid[0]) {
-    return { latitude: Number(getLatid[0]) };
+  const getLatid = position;
+  if (getLatid) {
+    return { latitude: Number(getLatid) };
   }
   return { latitude: 0 };
 }
 
 export function getLong(position) {
-  const getLongit = position.longitude;
-  if (getLongit[0]) {
-    return { longitude: Number(getLongit[0]) };
+  const getLongit = position;
+  if (getLongit) {
+    return { longitude: Number(getLongit) };
   }
   return { longitude: 0 };
 }

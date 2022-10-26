@@ -30,6 +30,7 @@ const translations = {
       hwId: "Hardware id",
       carAdminPhone: "Admin telefon",
       carName: "Jméno auta",
+      noCars: "Nejsou k dispozici žádná auta",
     },
     settings: {
       from: "Ze stanice",
@@ -151,6 +152,7 @@ const translations = {
       color: "Barva",
       order: "Pořadí",
       coordinates: "Souřadnice",
+      noRoutes: "Nejsou k dispozici žádná trasa",
     },
     tables: {
       car: "Auto",
@@ -200,6 +202,7 @@ const translations = {
       hwId: "Hardware id",
       carAdminPhone: "Admin phone",
       carName: "Car name",
+      noCars: "No cars available",
     },
     settings: {
       from: "From station",
@@ -321,6 +324,7 @@ const translations = {
       color: "Color",
       order: "Order",
       coordinates: "Coordinates",
+      noRoutes: "No routes available",
     },
     tables: {
       car: "Car",
