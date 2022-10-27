@@ -63,13 +63,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import { isAfter, subMinutes } from "date-fns";
 import { icon, latLng } from "leaflet";
 import { LIcon, LMap, LMarker, LPolyline, LTileLayer, LTooltip } from "vue2-leaflet";
 import { routeApi, stationApi } from "../code/api";
 import { getLastUpdate } from "../code/helpers/timeHelpers";
-import { GetterNames } from "../store/enums/vuexEnums";
+import { GetterNames, MutationNames } from "../store/enums/vuexEnums";
 import { RoleEnum } from "../code/enums/roleEnums";
 
 export default {
@@ -126,13 +126,15 @@ export default {
       isRole: GetterNames.isRole,
       getFirstStation: GetterNames.isFirstStation,
     }),
+    ...mapMutations({
+      loadTenant: MutationNames.LoadTenant,
+    }),
     isAdmin() {
       return this.isRole(RoleEnum.Admin);
     },
   },
   async mounted() {
     // const { longitude, latitude } = this.getFirstStation;
-
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
       if (settings) {
@@ -143,12 +145,8 @@ export default {
     } catch (e) {
       console.error(e);
     }
-    this.stations = await stationApi.getStations();
+
     this.routes = await routeApi.getRoutes(true);
-    this.center = latLng(
-      this.stations[0].latitude ?? 47.09713,
-      this.stations[0].longitude ?? 37.54337
-    );
   },
 
   methods: {
@@ -158,9 +156,14 @@ export default {
       this.setLocalSettings({ selectedCar: car.id });
       this.$emit("car-clicked", car);
     },
-    centerUpdated(center) {
+    async centerUpdated(center) {
+      this.stations = await stationApi.getStations();
+      this.center = latLng(
+        this.stations[0].latitude ?? 49.8401525,
+        this.stations[0].longitude ?? 18.2302432
+      );
+      console.log(center);
       this.setLocalSettings({ center });
-      this.center = center;
     },
     zoomUpdated(zoom) {
       this.setLocalSettings({ zoom });
