@@ -140,6 +140,7 @@
 <script>
 import { ValidationObserver } from "vee-validate";
 import { cloneDeep } from "lodash";
+import Swal from "sweetalert2";
 import { carApi, stationApi, routeApi } from "../code/api";
 import EditStationModal from "../components/Editation/EditStationModal.vue";
 import EditRouteModal from "../components/Editation/EditRouteModal.vue";
@@ -311,58 +312,97 @@ export default {
       }
     },
     async handleRemoveRoute(id) {
-      try {
-        await routeApi.deleteRoute(id);
-        this.$notify({
-          group: "global",
-          title: this.$i18n.tc("notifications.route.removed"),
-          type: "success",
-        });
-      } catch (e) {
-        this.$notify({
-          group: "global",
-          title: this.$i18n.tc("notifications.route.removeFiled"),
-          type: "error",
-        });
-        console.error(e);
-      }
-      await this.getAllRoutes();
+      Swal.fire({
+        title: this.$i18n.tc("notifications.confirmWindow.title"),
+        text: this.$i18n.tc("notifications.confirmWindow.text"),
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: this.$i18n.tc("notifications.confirmWindow.deleteConfirm"),
+        cancelButtonText: this.$i18n.tc("notifications.confirmWindow.cancelConfirm"),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            routeApi.deleteRoute(id);
+            this.$notify({
+              group: "global",
+              title: this.$i18n.tc("notifications.route.removed"),
+              type: "success",
+            });
+          } catch (e) {
+            this.$notify({
+              group: "global",
+              title: this.$i18n.tc("notifications.route.removeFiled"),
+              type: "error",
+            });
+            console.error(e);
+          }
+          this.getAllRoutes();
+        }
+      });
     },
     async handleRemoveStation(id) {
-      try {
-        await stationApi.deleteStation(id);
-        this.$notify({
-          group: "global",
-          title: this.$i18n.tc("notifications.station.removed"),
-          type: "success",
-        });
-      } catch (e) {
-        this.$notify({
-          group: "global",
-          title: this.$i18n.tc("notifications.station.removeFiled"),
-          type: "error",
-        });
-        console.error(e);
-      }
-      await this.getAllStations();
+      Swal.fire({
+        title: this.$i18n.tc("notifications.confirmWindow.title"),
+        text: this.$i18n.tc("notifications.confirmWindow.text"),
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: this.$i18n.tc("notifications.confirmWindow.deleteConfirm"),
+        cancelButtonText: this.$i18n.tc("notifications.confirmWindow.cancelConfirm"),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            stationApi.deleteStation(id);
+            this.$notify({
+              group: "global",
+              title: this.$i18n.tc("notifications.station.removed"),
+              type: "success",
+            });
+          } catch (e) {
+            this.$notify({
+              group: "global",
+              title: this.$i18n.tc("notifications.station.removeFiled"),
+              type: "error",
+            });
+            console.error(e);
+          }
+          this.getAllStations();
+        }
+      });
     },
     async handleRemoveCar(id) {
-      try {
-        await carApi.deleteCar(id);
-        this.$notify({
-          group: "global",
-          title: this.$i18n.tc("notifications.car.delete"),
-          type: "success",
-        });
-      } catch (e) {
-        this.$notify({
-          group: "global",
-          title: this.$i18n.tc("notifications.car.deleteFailed"),
-          type: "error",
-        });
-        console.error(e);
-      }
-      await this.getAllCars();
+      Swal.fire({
+        title: this.$i18n.tc("notifications.confirmWindow.title"),
+        text: this.$i18n.tc("notifications.confirmWindow.text"),
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: this.$i18n.tc("notifications.confirmWindow.deleteConfirm"),
+        cancelButtonText: this.$i18n.tc("notifications.confirmWindow.cancelConfirm"),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            carApi.deleteCar(id);
+            this.$notify({
+              group: "global",
+              title: this.$i18n.tc("notifications.car.delete"),
+              type: "success",
+            });
+          } catch (e) {
+            this.$notify({
+              group: "global",
+              title: this.$i18n.tc("notifications.car.deleteFailed"),
+              type: "error",
+            });
+            console.error(e);
+          }
+        }
+        this.getAllCars();
+      });
     },
     handleEditModal(type, entity) {
       this.editation = !!entity;

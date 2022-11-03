@@ -109,6 +109,14 @@ const translations = {
       asap: "Co nejdříve",
     },
     notifications: {
+      confirmWindow: {
+        deleteConfirm: "Ano, smazat!",
+        cancelConfirm: "Ne, zrušit!",
+        text: "Tohle už nebudete moci vrátit!",
+        title: "Jsi si jistá?",
+        deleted: "Smazáno!",
+        deletedSucces: "Váš soubor byl smazán.",
+      },
       order: {
         create: "Objednávka úspěšně vytvořena.",
         createFailed: "Objednávku se nepodařilo vytvořit.",
@@ -281,6 +289,14 @@ const translations = {
       asap: "As soon as possible",
     },
     notifications: {
+      confirmWindow: {
+        deleteConfirm: "Yes, delete it!",
+        cancelConfirm: "No, cancel!",
+        text: "You won't be able to revert this!",
+        title: "Are you sure?",
+        deleted: "Deleted!",
+        deletedSucces: "Your file has been deleted.",
+      },
       order: {
         create: "Order successfully created.",
         createFailed: "Order creation failed.",
