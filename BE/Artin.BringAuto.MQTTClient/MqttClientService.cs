@@ -57,7 +57,7 @@ namespace Artin.BringAuto.MQTTClient
                 {
                     using var myScope = serviceProvider.CreateScope();
                     {
-                        var mqttClient = myScope.ServiceProvider.GetService<IMqttClient>();
+                        var mqttClient = myScope.ServiceProvider.GetService<IMqttClient>();                        
                         if (!mqttClient.IsConnected)
                             await mqttClient.ReconnectAsync();
                         await myScope.ServiceProvider.GetService<ISendCarRouteService>().SendToAllCars();

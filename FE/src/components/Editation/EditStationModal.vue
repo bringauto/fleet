@@ -19,6 +19,7 @@
             :label="$t('stations.position')"
             :value="positionValue"
             @input="$emit('update:station', { ...station, ...getLatLong($event) })"
+            @keydown="justNumber"
           >
             <!-- <template v-slot:prepend>
               <v-tooltip top>
@@ -37,7 +38,7 @@
 
 <script>
 import { ValidationProvider } from "vee-validate";
-import { getLatLong, getPositionValue } from "../../code/helpers/positionHelpers";
+import { getLatLong, getPositionValue, justNumber } from "../../code/helpers/positionHelpers";
 
 export default {
   name: "EditStationModal",
@@ -58,6 +59,7 @@ export default {
 
   methods: {
     getLatLong,
+    justNumber,
   },
 };
 </script>

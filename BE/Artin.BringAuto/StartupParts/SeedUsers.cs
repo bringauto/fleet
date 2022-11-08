@@ -1,6 +1,8 @@
-﻿using Artin.BringAuto.DAL.Models;
+﻿using Artin.BringAuto.DAL;
+using Artin.BringAuto.DAL.Models;
 using Artin.BringAuto.Shared;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +13,45 @@ namespace Artin.BringAuto.StartupParts
 {
     public static class SeedUsers
     {
-        public static async Task SeedUsersAsync(this UserManager<ApplicationUser> userManager)
+        public static async Task SeedUsersAsync(this UserManager<ApplicationUser> userManager, BringAutoDbContext context)
         {
-            await CheckCreateUserAsync(userManager, RoleNames.Admin, RoleNames.Admin);
-            await CheckCreateUserAsync(userManager, RoleNames.User, RoleNames.User);
-            await CheckCreateUserAsync(userManager, RoleNames.Privileged, RoleNames.Privileged);
-            await CheckCreateUserAsync(userManager, RoleNames.Driver, RoleNames.Driver);
+            await CheckCreateUserAsync(context, userManager, RoleNames.Admin, RoleNames.Admin, RoleNames.Admin + "1", "BringAuto");
+            await CheckCreateUserAsync(context, userManager, RoleNames.User, RoleNames.User, RoleNames.User + "1", "BringAuto");
+            await CheckCreateUserAsync(context, userManager, RoleNames.Privileged, RoleNames.Privileged, RoleNames.Privileged + "1", "BringAuto");
+            await CheckCreateUserAsync(context, userManager, RoleNames.Driver, RoleNames.Driver, RoleNames.Driver + "1", "BringAuto");
 
-            await CheckCreateUserAsync(userManager, "BorsodChem", RoleNames.User, "bringauto");
-            await CheckCreateUserAsync(userManager, "BorsodChemAdmin", RoleNames.Privileged, "bringautopilot");
-            await CheckCreateUserAsync(userManager, "BringAuto", RoleNames.Driver, "bringautothebest");
+            await CheckCreateUserAsync(context, userManager, "BorsodChem", RoleNames.User, "bringauto", "BorsodChem");
+            await CheckCreateUserAsync(context, userManager, "BorsodChemAdmin", RoleNames.Privileged, "bringautopilot", "BorsodChem");
+            await CheckCreateUserAsync(context, userManager, "BringAuto", RoleNames.Driver, "bringautothebest", "BorsodChem");
         }
 
 
 
-        private static async Task CheckCreateUserAsync(UserManager<ApplicationUser> userManager, string user, string role, string pass = null)
+        private static async Task CheckCreateUserAsync(BringAutoDbContext context, UserManager<ApplicationUser> userManager, string user, string role, string pass, string tenant)
         {
             var exist = await userManager.FindByNameAsync(user);
             if (exist is null)
-                await userManager.CreateUserAsync(user, role, pass ?? user + "1");
+                await userManager.CreateUserAsync(user, role, pass);
+
+            exist = await userManager.FindByNameAsync(user);
+
+            var tenantEntry = await context.Tenants.FirstOrDefaultAsync(x => x.Name == tenant);
+            if (tenantEntry is null)
+                tenantEntry = new Tenant() { Name = tenant };
+
+            var tenantAssign = await context.UserTenancy.FirstOrDefaultAsync(x => x.Tenant.Name == tenant && x.UserId == exist.Id);
+            if (tenantAssign is null)
+            {
+                tenantAssign = new UserTenancy()
+                {
+                    UserId = exist.Id,
+                    Tenant = tenantEntry,
+                };
+
+                context.Add(tenantAssign);
+            }
+            await context.SaveChangesAsync();
+
         }
 
         public static async Task CreateUserAsync(this UserManager<ApplicationUser> userManager, string username, string role, string pass)
@@ -50,6 +72,7 @@ namespace Artin.BringAuto.StartupParts
         {
             await CheckCreateRoleAsync(roleManager, RoleNames.Driver);
             await CheckCreateRoleAsync(roleManager, RoleNames.Admin);
+            await CheckCreateRoleAsync(roleManager, RoleNames.SuperAdmin);
             await CheckCreateRoleAsync(roleManager, RoleNames.User);
             await CheckCreateRoleAsync(roleManager, RoleNames.Privileged);
         }

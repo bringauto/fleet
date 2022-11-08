@@ -17,7 +17,8 @@ namespace Artin.BringAuto.MQTTClient.MessageHandlers
         {
             var msg = new MqttApplicationMessage()
             {
-                Topic = $"{company}/default/{car}/industrial_portal"
+                Topic = $"{company}/default/{car}/industrial_portal",
+                QualityOfServiceLevel = MQTTnet.Protocol.MqttQualityOfServiceLevel.AtMostOnce
             };
             using (var ms = new MemoryStream())
             {

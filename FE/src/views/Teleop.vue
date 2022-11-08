@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard">
-    <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickSation" />
+    <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickStation" />
     <v-fade-transition>
       <CarCard
-        class="dashboard__card"
         :car="selectedCar"
+        class="dashboard__card"
         @set-car-status="updateSelectedCar"
         @set-order-status="updateSelectedOrder"
         @get-cars="getAllCars()"
@@ -85,7 +85,7 @@ export default {
 
     async updateSelectedOrder(obj) {
       const dto = {
-        car: obj.car.id,
+        car: obj.selectedCar.id,
         id: obj.order.id,
         priority: obj.order.priority,
         status: obj.status,
@@ -143,7 +143,7 @@ export default {
     handleClickCar(car) {
       this.selectedCar = car;
     },
-    handleClickSation() {
+    handleClickStation() {
       this.$router.push({ name: allRoutes.Settings });
     },
   },
