@@ -4,6 +4,7 @@ using Artin.BringAuto.Shared;
 using Artin.BringAuto.Shared.Butons;
 using Artin.BringAuto.Shared.Cars;
 using Artin.BringAuto.Shared.Enums;
+using Artin.BringAuto.Shared.Routes;
 using AutoMapper;
 using BringAuto.Server.Bases;
 using HotChocolate;
@@ -147,12 +148,16 @@ namespace BringAuto.Server.Repositories
 
         }
 
-        public async Task<string> GetCarRoute(string company, string car)
+        public async Task<CarTrack> GetCarTrack(string company, string car)
         {
             return await dbContext.Cars.Where(
                 x => x.CompanyName == company
                 && x.Name == car)
-                .Select(x => x.Route.Name)
+                .Select(x => new CarTrack() {
+                    Name = x.Route.Name,
+                    RouteStops = x.Route.Stops.Select(s => new CarTrackStop() { Latitude = s.Latitude, Longitude = s.Longitude,  Name = s.Station.Name})
+                    }
+                 )
                 .FirstOrDefaultAsync();
         }
     }

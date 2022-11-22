@@ -68,6 +68,7 @@ namespace Artin.BringAuto
             services.AddDbContext<DAL.BringAutoDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:BringAuto"));
+                opt.EnableSensitiveDataLogging();
             }, ServiceLifetime.Transient);
             services.AddAutoMapper(typeof(Artin.BringAuto.Mappings.CarMap).Assembly);
             services.AddHttpContextAccessor();
