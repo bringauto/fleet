@@ -64,7 +64,7 @@ namespace Artin.BringAuto.MQTTClient
                         msg.Command.CarCommand.RouteStations.Add(
                             carTrack.RouteStops.Select(s => new Station()
                             {
-                                Name = s.Name,
+                                Name = s.Name ?? string.Empty,
                                 Position = new Station.Types.Position()
                                 {
                                     Latitude = s.Latitude,
