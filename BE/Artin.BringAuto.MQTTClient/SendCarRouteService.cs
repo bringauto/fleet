@@ -3,7 +3,6 @@ using Artin.BringAuto.Shared.Cars;
 using Artin.BringAuto.Shared.Orders;
 using Google.Protobuf.ba_proto;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client;
 using System;
@@ -62,13 +61,16 @@ namespace Artin.BringAuto.MQTTClient
                         msg.Command.CarCommand.Route = carTrack.Name ?? string.Empty;
                     if (carTrack?.RouteStops is not null)
                         msg.Command.CarCommand.RouteStations.Add(
-                            carTrack.RouteStops.Select(s => new Station()
+                            carTrack.RouteStops
+                            .Where(x => !string.IsNullOrEmpty(x.Name))
+                            .Select(s => new Station()
                             {
                                 Name = s.Name ?? string.Empty,
                                 Position = new Station.Types.Position()
                                 {
                                     Latitude = s.Latitude,
-                                    Longitude = s.Longitude
+                                    Longitude = s.Longitude,
+                                    Altitude = 0
                                 }
                             }));
                     await mqttClient.PublishAsync(msg.CreateMqttMessage(company, car, logger));
