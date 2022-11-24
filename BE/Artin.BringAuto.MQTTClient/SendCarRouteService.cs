@@ -6,9 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Artin.BringAuto.MQTTClient
@@ -36,7 +34,7 @@ namespace Artin.BringAuto.MQTTClient
             {
                 var route = await orderRepository.GetRouteForCar(company, car);
                 var sessionId = await carRepository.GetSessionId(company, car);
-                
+
                 if (!String.IsNullOrEmpty(sessionId))
                 {
                     var msg = new MessageIndustrialPortal
@@ -58,7 +56,23 @@ namespace Artin.BringAuto.MQTTClient
                         if (order.ToStationStatus != Shared.Enums.OrderStopStatus.Done)
                             msg.Command.CarCommand.Stops.Add(new Stop() { To = order.To.Name });
                     }
-                    msg.Command.CarCommand.Route = await carRepository.GetCarRoute(company, car);
+                    var carTrack = await carRepository.GetCarTrack(company, car);
+                    if (carTrack is not null)
+                        msg.Command.CarCommand.Route = carTrack.Name ?? string.Empty;
+                    if (carTrack?.RouteStops is not null)
+                        msg.Command.CarCommand.RouteStations.Add(
+                            carTrack.RouteStops
+                            .Where(x => !string.IsNullOrEmpty(x.Name))
+                            .Select(s => new Station()
+                            {
+                                Name = s.Name ?? string.Empty,
+                                Position = new Station.Types.Position()
+                                {
+                                    Latitude = s.Latitude,
+                                    Longitude = s.Longitude,
+                                    Altitude = 0
+                                }
+                            }));
                     await mqttClient.PublishAsync(msg.CreateMqttMessage(company, car, logger));
                 }
             }
