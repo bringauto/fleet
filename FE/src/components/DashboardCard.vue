@@ -47,7 +47,7 @@
           :disabled="selectedCar.underTest"
           color="primary"
           icon
-          @click="handleNewMulripleOrder"
+          @click="handleNewMultipleOrder"
         >
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
@@ -99,7 +99,7 @@
               </template>
             </v-data-table>
             <v-row justify="center">
-              <v-btn v-if="!isUser" color="success" text @click="handleNewMulripleOrder">
+              <v-btn v-if="!isUser" color="success" text @click="handleNewMultipleOrder">
                 {{ $t("orders.new") }}
               </v-btn>
             </v-row>
@@ -235,7 +235,7 @@ export default {
         },
       });
     },
-    handleNewMulripleOrder() {
+    handleNewMultipleOrder() {
       this.$router.push({
         name: allRoutes.NewMultipleOrder,
         params: {

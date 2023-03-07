@@ -14,6 +14,7 @@
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="6">
+          {{ car }}
           <v-text-field
             :label="$t('cars.hwId')"
             :value="car.hwId"
