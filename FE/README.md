@@ -1,9 +1,9 @@
 # BringAuto Fleet Front-End
 
 ## Project setup
-Environment variablest to setup:
+Environment variables to setup:
 * APP_VUE_GRAPHQL_URL
-* APP_VUE_SENTRY_URL 
+* APP_VUE_SENTRY_URL
 
 Node packages setup:
 ```
