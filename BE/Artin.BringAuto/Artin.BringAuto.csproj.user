@@ -4,7 +4,7 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>Artin.BringAuto</ActiveDebugProfile>
+    <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
     <NameOfLastUsedPublishProfile>Bring_Azure</NameOfLastUsedPublishProfile>
     <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>

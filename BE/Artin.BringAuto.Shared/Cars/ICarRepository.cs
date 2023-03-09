@@ -12,8 +12,6 @@ namespace Artin.BringAuto.Shared.Cars
     {
 
         Task<Car> UpdateStatusAsync(int carId, CarStatusInfo status);
-        Task<Car> UpdateButonAsync(int carId, CarButtonStatus buttonStatus);
-        Task NormalizeButtonAsync(int timeoutSec);
 
         Task SetSessionId(string companyName, string carName, string sessionId);
         Task<bool> IsKnownCar(string companyName, string carName);

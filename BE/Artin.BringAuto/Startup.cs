@@ -33,6 +33,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using System.IO;
@@ -65,9 +66,11 @@ namespace Artin.BringAuto
             section = Configuration.GetSection("ButtonSettings");
             services.Configure<ButtonSettings>(section);
 
-            services.AddDbContext<DAL.BringAutoDbContext>(opt =>
+            services.AddEntityFrameworkNpgsql().AddDbContext<DAL.BringAutoDbContext>(opt =>
+
             {
-                opt.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:BringAuto"));
+                //opt.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:BringAuto"));
+                opt.UseNpgsql(Configuration.GetValue<string>("Data:ConnectionStrings:BringAuto"));
                 opt.EnableSensitiveDataLogging();
             }, ServiceLifetime.Transient);
             services.AddAutoMapper(typeof(Artin.BringAuto.Mappings.CarMap).Assembly);
@@ -182,7 +185,20 @@ namespace Artin.BringAuto
                    .AllowAnyOrigin()
                    .AllowAnyHeader()));
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(/*options =>
+                options.SwaggerDoc("bringauto", new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "Bringauto",
+                        Description = "Bringauto backend API",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Kontakt",
+                            Url = new Uri("https://bringauto.com/en/")
+                        }
+                    }
+                )*/
+            );
 
             services.AddSpaStaticFiles(opt => { opt.RootPath = "App"; });
 

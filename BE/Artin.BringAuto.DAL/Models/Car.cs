@@ -31,8 +31,6 @@ namespace Artin.BringAuto.DAL.Models
         public double Fuel { get; set; }
         public double Speed { get; set; }
         public CarStatus Status { get; set; }
-
-        public ButtonStatus Button { get; set; }
         public ICollection<Order> Orders { get; set; }
 
         public ICollection<LocationHistory> LocationHistory { get; set; }

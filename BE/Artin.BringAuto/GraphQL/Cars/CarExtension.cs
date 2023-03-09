@@ -33,12 +33,6 @@ namespace Artin.BringAuto.GraphQL.Cars
                .UseFiltering()
                .UseSorting();
 
-            descriptor.Field<ButtonHistoryResolver>(x => x.GetCarButtonHistory(default, default))
-               .Name("buttonHistory")
-               .UsePaging<ObjectType<Button>>()
-               .UseFiltering()
-               .UseSorting();
-
             descriptor.Field<CarMapPositionResolver>(x => x.GetMapPositionAsync(default, default, default))
                 .Name("mapPosition")
                 .Argument("mapId", x =>
