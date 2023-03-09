@@ -6,6 +6,7 @@ using Artin.BringAuto.Shared.Users;
 using AutoMapper;
 using HotChocolate.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ using System.Threading.Tasks;
 
 namespace Artin.BringAuto.GraphQL.Users
 {
+    [ApiController]
+    [Route("users")]
     public class UserMutation
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -43,6 +46,7 @@ namespace Artin.BringAuto.GraphQL.Users
             this.currentRoles = currentRoles;
         }
 
+        [HttpPost("create")]
         [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.SuperAdmin })]
         public async Task<IdentityResult> Add(NewUser user)
         {
@@ -144,6 +148,7 @@ namespace Artin.BringAuto.GraphQL.Users
             return tenant.Id;
         }
 
+        [HttpPost("update")]
         [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.SuperAdmin })]
         public async Task<IdentityResult> Update(UpdateUser user)
         {
@@ -159,6 +164,7 @@ namespace Artin.BringAuto.GraphQL.Users
             return result;
         }
 
+        [HttpPost("delete")]
         [Authorize(Roles = new[] { RoleNames.Admin, RoleNames.SuperAdmin })]
         public async Task<IdentityResult> Delete(DeleteUser user, CancellationToken cancellationToken)
         {
