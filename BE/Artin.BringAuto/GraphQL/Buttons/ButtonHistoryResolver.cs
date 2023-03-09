@@ -7,7 +7,5 @@ namespace Artin.BringAuto.GraphQL.Buttons
 {
     public class ButtonHistoryResolver
     {
-        public IQueryable<Button> GetCarButtonHistory([Parent] Car car, [Service] IButtonRepository buttonHistoryRepository)
-      => buttonHistoryRepository.GetButtonsByCar(car.Id);
     }
 }

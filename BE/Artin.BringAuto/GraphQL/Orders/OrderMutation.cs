@@ -5,6 +5,7 @@ using Artin.BringAuto.Shared.Ifaces;
 using Artin.BringAuto.Shared.Maps;
 using Artin.BringAuto.Shared.Orders;
 using HotChocolate.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -12,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace Artin.BringAuto.GraphQL.Orders
 {
+    [ApiController]
+    [Route("orders")]
     public class OrderMutation
     {
         private readonly IOrderRepository orderRepository;
@@ -31,6 +34,7 @@ namespace Artin.BringAuto.GraphQL.Orders
             this.twillioCaller = twillioCaller;
         }
 
+        [HttpPost("create")]
         [Authorize(Roles = new[] { RoleNames.Privileged, RoleNames.User, RoleNames.Admin, RoleNames.Driver })]
         public async Task<Order> AddOrder(NewOrder order)
         {
@@ -57,6 +61,7 @@ namespace Artin.BringAuto.GraphQL.Orders
             }
         }
 
+        [HttpPut("update")]
         [Authorize(Roles = new[] { RoleNames.Driver, RoleNames.Privileged, RoleNames.User, RoleNames.Admin })]
         public async Task<Order> UpdateOrder(UpdateOrder order)
         {
@@ -65,6 +70,7 @@ namespace Artin.BringAuto.GraphQL.Orders
             return result;
         }
 
+        [HttpDelete("delete")]
         [Authorize(Roles = new[] { RoleNames.Privileged, RoleNames.User, RoleNames.Driver, RoleNames.Admin })]
         public async Task<Order> DeleteOrder(int orderId)
         {

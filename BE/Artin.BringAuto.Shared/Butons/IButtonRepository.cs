@@ -8,6 +8,5 @@ namespace Artin.BringAuto.Shared.Butons
 {
     public interface IButtonRepository : IRepository<Button, NewButton, Button, int>
     {
-        public IQueryable<Button> GetButtonsByCar(int carId);
     }
 }

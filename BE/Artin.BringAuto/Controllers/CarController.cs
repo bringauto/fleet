@@ -47,21 +47,5 @@ namespace Artin.BringAuto.Controllers
             }
             return null;
         }
-
-        [HttpPost("button")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = PolicyNames.IsCar)]
-        public async Task<ActionResult<Car>> UpdateCarButtonStatus(CarButtonStatus buttonStatus)
-        {
-            if (Int32.TryParse(HttpContext.User.FindFirst(ClaimNames.CarId).Value, out var carId))
-            {
-                var carChanges = carRepository.UpdateButonAsync(carId, buttonStatus);
-                var newHistory = mapper.Map<NewButton>(buttonStatus);
-                newHistory.CarId = carId;
-                var result = await carChanges;
-                await buttonRepository.AddAsync(newHistory);
-                return result;
-            }
-            return null;
-        }
     }
 }

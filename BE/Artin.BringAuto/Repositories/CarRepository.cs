@@ -58,27 +58,6 @@ namespace BringAuto.Server.Repositories
             => dbContext.Cars.IgnoreQueryFilters().AnyAsync(x => EF.Functions.Collate(x.CompanyName, "SQL_Latin1_General_CP1_CS_AS") == companyName
             && EF.Functions.Collate(x.Name, "SQL_Latin1_General_CP1_CS_AS") == carName);
 
-        public async Task NormalizeButtonAsync(int timeoutSec)
-        {
-            var expiredButtons = dbContext.ButtonStates.GroupBy(x => x.CarId).Select(x => new { x.Key, MAX = x.Max(b => b.DateTime) }).Where(x => x.MAX < DateTime.UtcNow.AddSeconds(-timeoutSec)).Select(x => x.Key);
-
-            await dbContext.Cars.Where(x => expiredButtons.Contains(x.Id)).ForEachAsync(x => x.Button = ButtonStatus.NORMAL);
-
-            await dbContext.SaveChangesAsync();
-        }
-
-
-
-        public async Task<Car> UpdateButonAsync(int carId, CarButtonStatus buttonStatus)
-        {
-            var car = await dbContext.Cars.FirstOrDefaultAsync(x => x.Id == carId);
-            if (buttonStatus.Status == ButtonStatus.PRESSED)
-            {
-                car.Button = buttonStatus.Status;
-                await dbContext.SaveChangesAsync();
-            }
-            return await GetByIdAsync(carId);
-        }
 
         public async Task<Car> UpdateStatusAsync(int carId, CarStatusInfo status)
         {

@@ -34,7 +34,6 @@ namespace Artin.BringAuto.Workers
                 {
                     using var scope = serviceProvider.CreateScope();
                     var carRepository = scope.ServiceProvider.GetRequiredService<ICarRepository>();
-                    await carRepository.NormalizeButtonAsync(buttonOptions.Value.TimeoutSec);
                 }
                 catch (Exception exc)
                 {
