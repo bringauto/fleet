@@ -4,6 +4,7 @@
     <v-fade-transition>
       <CarCard
         :car="selectedCar"
+        :cars="cars"
         class="dashboard__card"
         @set-car-status="updateSelectedCar"
         @set-order-status="updateSelectedOrder"
@@ -31,8 +32,8 @@ export default {
   },
   data: () => ({
     polling: null,
-    cars: null,
-    selectedCar: undefined,
+    cars: [],
+    selectedCarId: undefined,
     CarStateFormated,
   }),
   computed: {
@@ -40,16 +41,8 @@ export default {
       roles: GetterNames.GetRoles,
       isAdmin: GetterNames.isAdmin,
     }),
-  },
-  watch: {
-    cars: {
-      handler(value) {
-        if (value && this.selectedCar?.id) {
-          this.selectedCar = value.find((car) => car.id === this.selectedCar.id);
-        }
-      },
-      deep: true,
-      immediate: true,
+    selectedCar() {
+      return this.cars.find((car) => car.id === this.selectedCarId);
     },
   },
   async mounted() {
@@ -58,10 +51,9 @@ export default {
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
       if (settings?.selectedCar) {
-        this.selectedCar =
-          this.cars.find((car) => car.id === Number(settings.selectedCar)) ?? this.cars[0];
+        this.selectedCarId = Number(settings.selectedCar) ?? this.cars[0]?.id ?? undefined;
       } else {
-        [this.selectedCar] = this.cars;
+        this.selectedCarId = this.cars[0]?.id;
       }
     } catch (e) {
       console.error(e);
@@ -85,7 +77,7 @@ export default {
 
     async updateSelectedOrder(obj) {
       const dto = {
-        car: obj.selectedCar.id,
+        car: obj.car.id,
         id: obj.order.id,
         priority: obj.order.priority,
         status: obj.status,
@@ -141,7 +133,7 @@ export default {
       }, DOWNLOAD_INTERVAL);
     },
     handleClickCar(car) {
-      this.selectedCar = car;
+      this.selectedCarId = car.id;
     },
     handleClickStation() {
       this.$router.push({ name: allRoutes.Settings });
