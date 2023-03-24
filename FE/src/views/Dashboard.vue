@@ -2,7 +2,7 @@
   <div class="dashboard">
     <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickStation" />
     <v-fade-transition>
-      <CarCard :car="selectedCar" class="dashboard__card" @get-cars="getAllCars()" />
+      <CarCard :car="selectedCar" :cars="cars" class="dashboard__card" @get-cars="getAllCars()" />
     </v-fade-transition>
   </div>
 </template>
@@ -22,19 +22,13 @@ export default {
   },
   data: () => ({
     polling: null,
-    cars: null,
-    selectedCar: undefined,
+    cars: [],
+    selectedCarId: undefined,
     stations: null,
   }),
-  watch: {
-    cars: {
-      handler(value) {
-        if (value && this.selectedCar?.id) {
-          this.selectedCar = value.find((car) => car.id === this.selectedCar.id);
-        }
-      },
-      deep: true,
-      immediate: true,
+  computed: {
+    selectedCar() {
+      return this.cars.find((car) => car.id === this.selectedCarId);
     },
   },
   async mounted() {
@@ -43,10 +37,9 @@ export default {
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
       if (settings?.selectedCar) {
-        this.selectedCar =
-          this.cars.find((car) => car.id === Number(settings.selectedCar)) ?? this.cars[0];
+        this.selectedCarId = Number(settings.selectedCar) ?? this.cars[0]?.id ?? undefined;
       } else {
-        [this.selectedCar] = this.cars;
+        this.selectedCarId = this.cars[0]?.id;
       }
     } catch (e) {
       this.$notify({
@@ -77,7 +70,7 @@ export default {
       }, DOWNLOAD_INTERVAL);
     },
     handleClickCar(car) {
-      this.selectedCar = car;
+      this.selectedCarId = car.id;
     },
     handleClickStation(station) {
       this.$router.push({ name: allRoutes.NewOrder, params: { stationTo: station.id } });
