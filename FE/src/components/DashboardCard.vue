@@ -1,8 +1,8 @@
 <template>
   <div class="dash-card">
-    <template v-if="selectedCar">
+    <template v-if="car">
       <v-select
-        v-model="selectedCar"
+        v-model="car"
         :label="$t('newOrder.car')"
         :items="cars"
         item-text="name"
@@ -11,13 +11,11 @@
       />
       <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p>-->
       <div class="d-flex justify-center align-center text-caption mb-1">
-        <span v-if="selectedCar.fuel" class="mr-2">
-          <v-icon>{{
-            getCarBatteryIcon(selectedCar.fuel.toFixed(4) || car.fuel.toFixed(4))
-          }}</v-icon>
-          {{ selectedCar.fuel.toFixed(4) * 100 || car.fuel.toFixed(4) * 100 }}%
+        <span v-if="car.fuel" class="mr-2">
+          <v-icon>{{ getCarBatteryIcon(car.fuel.toFixed(4) || car.fuel.toFixed(4)) }}</v-icon>
+          {{ car.fuel.toFixed(4) * 100 || car.fuel.toFixed(4) * 100 }}%
         </span>
-        <span>{{ getLastUpdate(selectedCar) }}</span>
+        <span>{{ getLastUpdate(car) }}</span>
       </div>
       <v-btn
         v-if="!isUser"
@@ -36,15 +34,15 @@
           :aria-disabled="isUser"
           @click="showOrder = !showOrder"
         >
-          {{ selectedCar.orders.nodes.length }}
+          {{ car.orders.nodes.length }}
         </p>
         <!-- button for create a single order
-        <v-btn :disabled="selectedCar.underTest" color="primary" icon @click="handleNewOrder">
+        <v-btn :disabled="car.underTest" color="primary" icon @click="handleNewOrder">
            <v-icon> mdi-plus-circle-outline</v-icon>
          </v-btn> -->
         <v-btn
           v-if="!isUser"
-          :disabled="selectedCar.underTest"
+          :disabled="car.underTest"
           color="primary"
           icon
           @click="handleNewMultipleOrder"
@@ -52,17 +50,17 @@
           <v-icon> mdi-plus-circle-multiple-outline</v-icon>
         </v-btn>
       </v-row>
-      <template v-for="(order, key) in selectedCar.orders.nodes.slice(0, 3)">
+      <template v-for="(order, key) in car.orders.nodes.slice(0, 3)">
         <p :key="order.id" class="text-caption mb-0">{{ key + 1 }}. {{ orderListing(order) }}</p>
       </template>
-      <p v-if="selectedCar.orders.nodes.length > 3" class="text-caption mb-0">...</p>
+      <p v-if="car.orders.nodes.length > 3" class="text-caption mb-0">...</p>
       <v-dialog v-model="showOrder" width="1000">
         <v-card>
           <v-card-title class="headline primary white--text">
             {{ $t("general.orders") }}
           </v-card-title>
           <v-card-text class="mt-2">
-            <div v-if="selectedCar.orders.nodes === undefined">
+            <div v-if="car.orders.nodes === undefined">
               {{ $t("general.noOrders") }}
             </div>
             <v-data-table
@@ -139,12 +137,14 @@ export default {
     car: {
       type: Object,
     },
+    cars: {
+      type: Array,
+    },
   },
   data() {
     return {
       CarStateFormated,
       orders: [],
-      cars: [],
       showOrder: false,
       allRoutes,
       headers: [
@@ -166,7 +166,6 @@ export default {
     ...mapGetters({
       getMe: GetterNames.GetMe,
       roles: GetterNames.GetRoles,
-      getSelectCar: GetterNames.GetSelectCar,
       isRole: GetterNames.isRole,
     }),
     isUser() {
@@ -181,18 +180,10 @@ export default {
         return trans;
       };
     },
-    selectedCar: {
-      get() {
-        return this.cars.find((car) => car.id === this.getSelectCar) || this.cars[0] || this.car;
-      },
-      set(val) {
-        this.setCarId(val);
-      },
-    },
     getFilteredOrders() {
-      return this.selectedCar.orders.nodes.map((order) => {
+      return this.car.orders.nodes.map((order) => {
         const { trans } = getOrderState(order.status);
-        return { ...order, trans, name: this.selectedCar.name };
+        return { ...order, trans, name: this.car.name };
       });
     },
   },
@@ -231,7 +222,7 @@ export default {
       this.$router.push({
         name: allRoutes.NewOrder,
         params: {
-          carId: this.selectedCar.id,
+          carId: this.car.id,
         },
       });
     },
@@ -239,7 +230,7 @@ export default {
       this.$router.push({
         name: allRoutes.NewMultipleOrder,
         params: {
-          carId: this.selectedCar.id,
+          carId: this.car.id,
         },
       });
     },
