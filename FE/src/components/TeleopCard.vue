@@ -147,7 +147,7 @@ import { mapGetters } from "vuex";
 import { CarStateFormated, getCarState } from "../code/enums/carEnums";
 import { getPriorityEnum } from "../code/enums/prioEnum";
 import { OrderStateFormated } from "../code/enums/orderEnums";
-import { orderApi, carApi } from "../code/api";
+import { orderApi } from "../code/api";
 import { orderListing } from "../code/helpers/orderHelpers";
 import { getTime, getLastUpdate } from "../code/helpers/timeHelpers";
 import { getCarBatteryIcon } from "../code/helpers/carHelpers";
@@ -193,6 +193,9 @@ export default {
     companies() {
       return this.$data;
     },
+    filteredCars() {
+      return this.cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
+    },
     sortOrders() {
       const filtered = this.car.orders.nodes;
       return filtered.sort((a, b) => {
@@ -206,10 +209,6 @@ export default {
     },
   },
   methods: {
-    async fetchOrders() {
-      const cars = await carApi.getCarsWithOrders();
-      this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
-    },
     getPriorityEnum,
     getCarState,
     orderListing,
@@ -222,7 +221,6 @@ export default {
     async removeOrder(id) {
       try {
         await orderApi.deleteOrder(id);
-        // await this.fetchOrders();
         this.$emit("get-cars");
         this.$notify({
           group: "global",

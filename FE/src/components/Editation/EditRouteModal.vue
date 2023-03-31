@@ -27,13 +27,13 @@
         <v-col cols="12" md="12">
           <v-row>
             <v-col cols="12" md="6">
-              <v-color-picker
+              <!-- <v-color-picker
                 v-if="hover"
                 v-model="color"
                 elevation="0"
                 hide-inputs
                 hide-mode-switch
-              />
+              /> -->
               <v-col cols="6" md="8">
                 <v-btn justify="center" @click="isHidden = !isHidden">
                   {{ $t("routes.coordinates") }}

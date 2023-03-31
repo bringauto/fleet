@@ -203,20 +203,8 @@ export default {
       this.cars = cars.filter((car) => (car.underTest && this.isAdmin) || !car.underTest);
     },
 
-    async initForm() {
-      await this.fetchOrders();
-      this.handleSelectedParams();
-    },
     handleEditOrder(item) {
       this.$router.push({ name: allRoutes.EditOrder, params: { id: item.id } });
-    },
-    handleSelectedParams() {
-      if (this.$route.params.carId) {
-        this.setCarId(this.$route.params.carId);
-      }
-      if (!this.getSelectCar) {
-        this.setCarId(this.cars[0]);
-      }
     },
     handleNewOrder() {
       this.$router.push({
