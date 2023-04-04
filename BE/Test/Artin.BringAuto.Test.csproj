@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,7 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.10.0" />
+    <PackageReference Include="GenFu" Version="1.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.15" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.15" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageReference Include="Moq" Version="4.18.4" />
+    <PackageReference Include="Npgsql" Version="5.0.16" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,6 +32,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Artin.BringAuto.DAL\Artin.BringAuto.DAL.csproj" />
+    <ProjectReference Include="..\Artin.BringAuto.Mappings\Artin.BringAuto.Mappings.csproj" />
+    <ProjectReference Include="..\Artin.BringAuto.MQTTClient\Artin.BringAuto.MQTTClient.csproj" />
+    <ProjectReference Include="..\Artin.BringAuto.MQTT\Artin.BringAuto.MQTT.Api.csproj" />
+    <ProjectReference Include="..\Artin.BringAuto.Shared\Artin.BringAuto.Shared.csproj" />
     <ProjectReference Include="..\Artin.BringAuto\Artin.BringAuto.csproj" />
   </ItemGroup>
 

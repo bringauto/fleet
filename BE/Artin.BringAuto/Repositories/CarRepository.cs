@@ -55,8 +55,10 @@ namespace BringAuto.Server.Repositories
         }
 
         public Task<bool> IsKnownCar(string companyName, string carName)
-            => dbContext.Cars.IgnoreQueryFilters().AnyAsync(x => EF.Functions.Collate(x.CompanyName, "SQL_Latin1_General_CP1_CS_AS") == companyName
-            && EF.Functions.Collate(x.Name, "SQL_Latin1_General_CP1_CS_AS") == carName);
+            /*=> dbContext.Cars.IgnoreQueryFilters().AnyAsync(x => EF.Functions.Collate(x.CompanyName, "SQL_Latin1_General_CP1_CS_AS") == companyName
+            && EF.Functions.Collate(x.Name, "SQL_Latin1_General_CP1_CS_AS") == carName);*/
+            => dbContext.Cars.IgnoreQueryFilters().AnyAsync(x => x.CompanyName == companyName
+            && x.Name == carName);
 
         public async Task NormalizeButtonAsync(int timeoutSec)
         {

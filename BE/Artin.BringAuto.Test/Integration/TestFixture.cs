@@ -1,25 +1,33 @@
-﻿using Artin.BringAuto.DAL;
-using Artin.BringAuto.DAL.Models;
-
-using GenFu;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Hosting;
-using Moq;
 using Microsoft.AspNetCore.TestHost;
+//using JsonApiDotNetCore.Repositories;
+using Movies.Data.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using WebApplication18;
 using Helpers.Extensions.Tests.Helpers.Extensions;
+using Movies.Data.Models;
+using Moq;
+using GenFu;
 
-namespace Artin.BringAuto.Test
+namespace Movies.Api.Test.Integration
 {
     public class TestFixture : IDisposable
     {
         private readonly IServiceProvider ServiceProvider;
 
         public HttpClient HttpClient { get; set; }
-        public IMock<BringAutoDbContext> DbContext { get; private set; }
-        
+        public IMock<MoviesDbContext> DbContext { get; private set; }
+
         public TestFixture()
         {
             var hostBuilder = new HostBuilder()
@@ -39,7 +47,7 @@ namespace Artin.BringAuto.Test
                     {
                         // register the test one specifically
                         //services.SwapService<IMySimpleGithubClient, MockSimpleGithubClient>(ServiceLifetime.Scoped);
-                        services.SwapSqLiteDbContext<BringAutoDbContext>();
+                        services.SwapSqLiteDbContext<MoviesDbContext>();
                         SetServices(services);
                     });
                 });
@@ -49,31 +57,38 @@ namespace Artin.BringAuto.Test
             HttpClient = host.GetTestClient();
             DbContext = CreateDbContext();
         }
-        
-        public static IEnumerable<Car> GetFakeDataCars()
+
+        public static IEnumerable<Person> GetFakeDataPersons()
         {
             var i = 1;
-            var persons = A.ListOf<Car>(26);
+            var persons = A.ListOf<Person>(26);
             persons.ForEach(x => x.Id = i++);
             return persons.Select(_ => _);
         }
 
-        private static Mock<BringAutoDbContext> CreateDbContext()
+        private static IEnumerable<Genre> GetFakeDataGenres()
         {
-            var cars = GetFakeDataCars().AsQueryable();
+            var i = 1;
+            var genres = A.ListOf<Genre>(26);
+            genres.ForEach(x => x.Id = i++);
+            return genres.Select(_ => _);
+        }
+        private static Mock<MoviesDbContext> CreateDbContext()
+        {
+            var persons = GetFakeDataPersons().AsQueryable();
 
-            var dbSet = new Mock<DbSet<Car>>();
-            dbSet.As<IQueryable<Car>>().Setup(m => m.Provider).Returns(cars.Provider);
-            dbSet.As<IQueryable<Car>>().Setup(m => m.Expression).Returns(cars.Expression);
-            dbSet.As<IQueryable<Car>>().Setup(m => m.ElementType).Returns(cars.ElementType);
-            dbSet.As<IQueryable<Car>>().Setup(m => m.GetEnumerator()).Returns(cars.GetEnumerator());
+            var dbSet = new Mock<DbSet<Person>>();
+            dbSet.As<IQueryable<Person>>().Setup(m => m.Provider).Returns(persons.Provider);
+            dbSet.As<IQueryable<Person>>().Setup(m => m.Expression).Returns(persons.Expression);
+            dbSet.As<IQueryable<Person>>().Setup(m => m.ElementType).Returns(persons.ElementType);
+            dbSet.As<IQueryable<Person>>().Setup(m => m.GetEnumerator()).Returns(persons.GetEnumerator());
 
-            var context = new Mock<BringAutoDbContext>();
-            context.Setup(c => c.Cars).Returns(dbSet.Object);
+            var context = new Mock<MoviesDbContext>();
+            context.Setup(c => c.Persons).Returns(dbSet.Object);
             return context;
         }
         public void ReloadContext()
-            => DbContext = new Mock<BringAutoDbContext>(GetService<DbContextOptions<BringAutoDbContext>>());
+            => DbContext = new Mock<MoviesDbContext>(GetService<DbContextOptions<MoviesDbContext>>());
 
         public T GetService<T>()
             => (T)ServiceProvider.GetService(typeof(T));
@@ -85,5 +100,4 @@ namespace Artin.BringAuto.Test
             HttpClient.Dispose();
         }
     }
-
 }

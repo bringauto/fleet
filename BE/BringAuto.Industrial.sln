@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.MQTTClient"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.MQTT.Api", "Artin.BringAuto.MQTT\Artin.BringAuto.MQTT.Api.csproj", "{0A1F2D30-7270-42D2-8D53-DFC226F46621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artin.BringAuto.Test", "Test\Artin.BringAuto.Test.csproj", "{76DA92F9-2CD9-454A-9C38-C88355A5043D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.Test", "Test\Artin.BringAuto.Test.csproj", "{76DA92F9-2CD9-454A-9C38-C88355A5043D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

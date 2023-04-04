@@ -3,15 +3,17 @@ using System;
 using Artin.BringAuto.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Artin.BringAuto.DAL.Migrations
 {
     [DbContext(typeof(BringAutoDbContext))]
-    partial class BringAutoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230404044426_initPostgreSQL")]
+    partial class initPostgreSQL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
