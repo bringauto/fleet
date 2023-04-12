@@ -2,7 +2,13 @@
   <div class="dashboard">
     <Map :cars="cars" @car-clicked="handleClickCar" @station-clicked="handleClickStation" />
     <v-fade-transition>
-      <CarCard :car="selectedCar" :cars="cars" class="dashboard__card" @get-cars="getAllCars()" />
+      <CarCard
+        :car="selectedCar"
+        :cars="cars"
+        class="dashboard__card"
+        @get-cars="getAllCars()"
+        @setCar="handleSetCar"
+      />
     </v-fade-transition>
   </div>
 </template>
@@ -53,6 +59,11 @@ export default {
     clearInterval(this.polling);
   },
   methods: {
+    handleSetCar(carId) {
+      if (carId !== this.selectedCarId) {
+        this.selectedCarId = carId;
+      }
+    },
     async getAllCars() {
       try {
         this.cars = await carApi.getCarsWithOrders();

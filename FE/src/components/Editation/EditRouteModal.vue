@@ -18,10 +18,8 @@
             v-model="color"
             :background-color="color"
             :value="route.color"
-            append-icon="mdi-invert-colors"
             hide-details
             outlined
-            @click:append="hover = !hover"
           />
         </v-col>
         <v-col cols="12" md="12">

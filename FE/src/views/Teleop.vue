@@ -9,6 +9,7 @@
         @set-car-status="updateSelectedCar"
         @set-order-status="updateSelectedOrder"
         @get-cars="getAllCars()"
+        @setCar="handleSetCar"
       />
     </v-fade-transition>
   </div>
@@ -63,6 +64,11 @@ export default {
     clearInterval(this.polling);
   },
   methods: {
+    handleSetCar(carId) {
+      if (carId !== this.selectedCarId) {
+        this.selectedCarId = carId;
+      }
+    },
     async getAllCars() {
       try {
         this.cars = await carApi.getCarsWithOrders();

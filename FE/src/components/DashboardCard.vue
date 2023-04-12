@@ -2,18 +2,19 @@
   <div class="dash-card">
     <template v-if="car">
       <v-select
-        v-model="car"
+        :value="car"
         :label="$t('newOrder.car')"
         :items="cars"
         item-text="name"
         item-value="id"
         required
+        @change="$emit('setCar', $event)"
       />
       <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p>-->
       <div class="d-flex justify-center align-center text-caption mb-1">
         <span v-if="car.fuel" class="mr-2">
           <v-icon>{{ getCarBatteryIcon(car.fuel.toFixed(4) || car.fuel.toFixed(4)) }}</v-icon>
-          {{ car.fuel.toFixed(4) * 100 || car.fuel.toFixed(4) * 100 }}%
+          {{ car.fuel.toFixed(4) * 100 }}%
         </span>
         <span>{{ getLastUpdate(car) }}</span>
       </div>

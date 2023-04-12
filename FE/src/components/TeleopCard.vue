@@ -2,12 +2,13 @@
   <div class="teleop-card">
     <template v-if="car">
       <v-select
-        v-model="car"
+        :value="car"
         :label="$t('newOrder.car')"
         :items="cars"
         item-text="name"
         item-value="id"
         required
+        @change="$emit('setCar', $event)"
       />
       <!--<p class="text-center text-h6 mb-0">{{ car.name }}</p> -->
       <div class="d-flex justify-center align-center text-caption mb-1">
