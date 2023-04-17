@@ -3,6 +3,7 @@ const translations = {
     general: {
       appName: "BringAuto Fleet",
       order: "Objednat",
+      companies: "Společnost",
       showOrders: "Zobrazit objednávky",
       orders: "Objednávky",
       noOrders: "Žádné objednávky",
@@ -172,6 +173,7 @@ const translations = {
     general: {
       appName: "BringAuto Fleet",
       order: "Order",
+      companies: "Companies",
       showOrders: "View orders",
       orders: "Orders",
       noOrders: "No orders",
