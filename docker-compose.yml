@@ -19,10 +19,11 @@ services:
     
 
   database:
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: postgres:12.15
+    restart: always
     environment:
-        - SA_PASSWORD=ArtinTheBest123!
-        - ACCEPT_EULA=Y
+        - POSTGRES_PASSWORD=ArtinTheBest123!
+        - POSTGRES_USER=fleet
     networks:
       - bring-emulator
         
