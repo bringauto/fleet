@@ -32,7 +32,7 @@
         hide-details
         item-text="name"
         item-value="id"
-        label="companies"
+        :label="$t('general.companies')"
         outlined
         return-object
       />
