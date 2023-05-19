@@ -22,7 +22,7 @@ services:
     image: postgres:12.15
     restart: always
     environment:
-        - POSTGRES_PASSWORD=ArtinTheBest123!
+        - POSTGRES_PASSWORD=ArtinTheBest2021!
         - POSTGRES_USER=fleet
     networks:
       - bring-emulator
