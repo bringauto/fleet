@@ -18,7 +18,6 @@
             :label="$t('cars.hwId')"
             :value="car.hwId"
             @input="$emit('update:car', { ...car, hwId: $event })"
-            @keydown="justNumber"
           />
         </v-col>
         <v-col cols="12" md="6">
@@ -87,7 +86,7 @@ import { OrderState } from "../../code/enums/orderEnums";
 import { justNumber } from "../../code/helpers/positionHelpers";
 
 export default {
-  name: "EditStationModal",
+  name: "EditCarModal",
   components: {
     ValidationProvider,
   },
