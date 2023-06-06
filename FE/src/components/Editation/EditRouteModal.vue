@@ -87,7 +87,7 @@
                       :value="positionValue(stop)"
                       hide-details
                       @input="handleChangeStopVal(index, getLatLong($event))"
-                      @keydown="justNumber"
+                      @keypress="justNumber"
                     >
                       <template #append>
                         <v-tooltip top>

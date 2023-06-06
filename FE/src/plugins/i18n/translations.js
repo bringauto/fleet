@@ -28,7 +28,7 @@ const translations = {
       companyName: "Jméno společnosti",
       underTest: "Testovací",
       hwId: "Hardware id",
-      carAdminPhone: "Admin telefon",
+      carAdminPhone: "Telefon admina",
       carName: "Jméno auta",
     },
     settings: {
@@ -103,9 +103,9 @@ const translations = {
       count: "Počet objednávek",
       new: "Nová objednávka",
       none: "Žádná objednávka",
-      to: "Do",
+      to: "Do stanice",
       in: "v",
-      asap: "Co nejdříve",
+      asap: "co nejdříve",
     },
     notifications: {
       order: {

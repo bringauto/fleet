@@ -19,7 +19,7 @@
             :label="$t('stations.position')"
             :value="positionValue"
             @input="$emit('update:station', { ...station, ...getLatLong($event) })"
-            @keydown="justNumber"
+            @keypress="justNumber"
           >
             <!-- <template v-slot:prepend>
               <v-tooltip top>

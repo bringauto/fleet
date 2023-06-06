@@ -34,7 +34,7 @@
             :label="$t('cars.carAdminPhone')"
             :value="car.carAdminPhone"
             @input="$emit('update:car', { ...car, carAdminPhone: $event })"
-            @keydown="justNumber"
+            @keypress="justNumber"
           />
         </v-col>
         <v-col cols="12" md="6">
