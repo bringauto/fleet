@@ -13,23 +13,18 @@
             />
           </ValidationProvider>
         </v-col>
-
         <v-col cols="12" md="12">
+          <!--ValidationProvider v-slot="{ errors }" rules="required" :name="$t('general.name')"-->
           <v-text-field
+            v-model="value"
             :label="$t('stations.position')"
+            required
             :value="positionValue"
+            :error-messages="errors"
             @input="$emit('update:station', { ...station, ...getLatLong($event) })"
             @keypress="justNumber"
-          >
-            <!-- <template v-slot:prepend>
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <v-icon small v-on="on">mdi-information-outline</v-icon>
-                </template>
-                <span>49.836409, 18.233729 nebo 49.8369683N, 18.2297383E </span>
-              </v-tooltip>
-            </template> -->
-          </v-text-field>
+          />
+          <!--/ValidationProvider-->
         </v-col>
       </v-row>
     </v-container>
@@ -45,6 +40,7 @@ export default {
   components: {
     ValidationProvider,
   },
+
   props: {
     station: {
       type: Object,
