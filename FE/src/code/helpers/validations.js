@@ -14,3 +14,11 @@ extend("station_not_equal", {
   },
   message: i18n.tc("validations.station_not_equal"),
 });
+
+extend("coordinates_validation", {
+  validate: (value) => {
+    const regex = /^[+-]?\d+([.]\d+)?,\s*[+-]?\d+([.]\d+)?$/;
+    return regex.test(value);
+  },
+  message: i18n.tc("validations.coordinates_format"),
+});
