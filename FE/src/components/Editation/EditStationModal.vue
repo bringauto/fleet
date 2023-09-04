@@ -4,7 +4,7 @@
       {{ station }}
       <v-row>
         <v-col cols="12" md="12">
-          <ValidationProvider v-slot="{ errors }" rules="required" :name="$t('general.name')">
+          <ValidationProvider v-slot="{ errors }" rules="required">
             <v-text-field
               :label="$t('general.name')"
               required
@@ -51,7 +51,6 @@ export default {
       return getPositionValue(this.station);
     },
   },
-
   methods: {
     getLatLong,
     justNumber,

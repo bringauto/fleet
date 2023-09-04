@@ -1,5 +1,6 @@
 <template>
   <div :class="{ small }" class="map">
+    {{ center }}
     <l-map
       ref="map"
       :center="center"
@@ -88,7 +89,7 @@ export default {
   },
   data: () => ({
     zoom: 15,
-    center: latLng(49.8401525, 18.2302432),
+    center: undefined,
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     selectedCar: null,
     stationIcon: icon({
@@ -131,8 +132,6 @@ export default {
     },
   },
   async mounted() {
-    // const { longitude, latitude } = this.getFirstStation;
-
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
       if (settings) {
@@ -143,12 +142,14 @@ export default {
     } catch (e) {
       console.error(e);
     }
-    this.stations = await stationApi.getStations();
-    this.routes = await routeApi.getRoutes(true);
-    this.center = latLng(
-      this.stations[0].latitude ?? 47.09713,
-      this.stations[0].longitude ?? 37.54337
-    );
+
+    try {
+      this.stations = await stationApi.getStations();
+      this.routes = await routeApi.getRoutes(true);
+      this.center = latLng(this.stations[0].latitude, this.stations[0].longitude);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   },
 
   methods: {

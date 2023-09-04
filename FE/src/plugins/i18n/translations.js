@@ -165,7 +165,7 @@ const translations = {
     },
     validations: {
       required: "Toto pole je povinné",
-      coordinates_format:
+      coordinates_incorrect_format:
         "Toto pole je ve špatném formátu, požadovaný formát je zeměpisná šířka,zeměpisná délka",
       station_not_equal: "Stanice 'z' nemůže být stejná jako 'do'",
     },
@@ -337,7 +337,7 @@ const translations = {
     },
     validations: {
       required: "This field is required",
-      coordinates_format:
+      coordinates_incorrect_format:
         "Input is in incorrect format, it should be in format: latitude,longitude ",
       station_not_equal: "Station from can't be same as station to",
     },

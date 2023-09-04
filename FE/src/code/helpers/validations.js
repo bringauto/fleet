@@ -17,8 +17,33 @@ extend("station_not_equal", {
 
 extend("coordinates_validation", {
   validate: (value) => {
-    const regex = /^[+-]?\d+([.]\d+)?,\s*[+-]?\d+([.]\d+)?$/;
-    return regex.test(value);
+    console.log(value);
+    const coordinates = value.split(/\s?[,]\s?/g);
+    console.log("split coordinates: ", coordinates);
+
+    if (coordinates.length !== 2) {
+      console.log("coordinates.length !== 2, returning FALSE");
+      return false;
+    }
+
+    const trimmedCoordinates = coordinates.map((coord) => coord.trim());
+    console.log("trimmed coordinates: ", trimmedCoordinates);
+
+    const isValidCoordinate = (coord) => {
+      const floatCoord = parseFloat(coord);
+      console.log("is valid: ", !Number.isNaN(floatCoord));
+      return !Number.isNaN(floatCoord);
+    };
+
+    return (
+      trimmedCoordinates.every(isValidCoordinate) &&
+      !trimmedCoordinates.some((coord) => coord === "")
+    );
+
+    /* Another variant of the validation
+    const regex = /^\d+(\.\d+)?,\s*\d+(\.\d+)?$/;
+    console.log("regex result: ", regex.test(value));
+    return regex.test(value); */
   },
-  message: i18n.tc("validations.coordinates_format"),
+  message: i18n.tc("validations.coordinates_incorrect_format"),
 });
