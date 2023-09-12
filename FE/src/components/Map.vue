@@ -1,6 +1,5 @@
 <template>
   <div :class="{ small }" class="map">
-    {{ center }}
     <l-map
       ref="map"
       :center="center"
@@ -59,6 +58,9 @@
           <!-- <l-tooltip>{{ route.name }}</l-tooltip> -->
         </l-polyline>
       </template>
+      <v-btn class="recenter-button mr-2" size="small" @click="recenterMap">
+        <v-icon color="primary">mdi-crosshairs-gps</v-icon>
+      </v-btn>
     </l-map>
   </div>
 </template>
@@ -167,6 +169,9 @@ export default {
       this.setLocalSettings({ zoom });
       this.zoom = zoom;
     },
+    recenterMap() {
+      this.center = latLng(this.stations[0].latitude, this.stations[0].longitude);
+    },
     setLocalSettings(settings) {
       const oldSettings = JSON.parse(localStorage.getItem("mapSettings"));
       localStorage.setItem(
@@ -229,6 +234,18 @@ export default {
       background-size: cover;
       background-position: center !important;
     }
+  }
+  .recenter-button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    padding: 5px;
+    width: 50px;
+    height: 5000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
