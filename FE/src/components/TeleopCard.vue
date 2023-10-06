@@ -163,6 +163,7 @@ export default {
     car: {
       type: Object,
     },
+    // eslint-disable-next-line vue/require-default-prop
     cars: {
       type: Array,
     },

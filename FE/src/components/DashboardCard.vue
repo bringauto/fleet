@@ -135,9 +135,11 @@ import { RoleEnum } from "../code/enums/roleEnums";
 export default {
   name: "DashCard",
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     car: {
       type: Object,
     },
+    // eslint-disable-next-line vue/require-default-prop
     cars: {
       type: Array,
     },
