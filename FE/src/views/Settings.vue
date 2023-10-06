@@ -23,9 +23,36 @@
             >
               <v-icon small> mdi-pencil</v-icon>
             </v-btn>
-            <v-btn small color="error" icon @click="handleRemoveStation(item.id)">
+            <v-btn small color="error" icon @click="stationDeleteConfirmation = true">
               <v-icon small> mdi-delete</v-icon>
             </v-btn>
+
+            <v-row v-if="stationDeleteConfirmation" justify="center">
+              <v-dialog v-model="stationDeleteConfirmation" width="33%" height="33%">
+                <v-card color>
+                  <v-card-title class="text-h5 primary headline white--text">
+                    {{ $t("confirmations.stationTitle") }} "{{ item.name }}" ?
+                  </v-card-title>
+                  <v-card-text>{{ $t("confirmations.stationDescription") }}</v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="error"
+                      variant="text"
+                      @click="
+                        stationDeleteConfirmation = false;
+                        handleRemoveStation(item.id);
+                      "
+                    >
+                      {{ $t("confirmations.yes") }}
+                    </v-btn>
+                    <v-btn color="succes" variant="text" @click="stationDeleteConfirmation = false">
+                      {{ $t("confirmations.no") }}
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-row>
           </template>
         </v-data-table>
       </template>
@@ -55,9 +82,36 @@
             <v-btn small color="primary" class="mr-2" icon @click="handleEditModal('Route', item)">
               <v-icon small> mdi-pencil</v-icon>
             </v-btn>
-            <v-btn small color="error" icon @click="handleRemoveRoute(item.id)">
+            <v-btn small color="error" icon @click="routeDeleteConfirmation = true">
               <v-icon small> mdi-delete</v-icon>
             </v-btn>
+
+            <v-row v-if="routeDeleteConfirmation" justify="center">
+              <v-dialog v-model="routeDeleteConfirmation" width="33%" height="33%">
+                <v-card color>
+                  <v-card-title class="text-h5 primary headline white--text">
+                    {{ $t("confirmations.routeTitle") }} "{{ item.name }}" ?
+                  </v-card-title>
+                  <v-card-text>{{ $t("confirmations.routeDescription") }}</v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="error"
+                      variant="text"
+                      @click="
+                        routeDeleteConfirmation = false;
+                        handleRemoveRoute(item.id);
+                      "
+                    >
+                      {{ $t("confirmations.yes") }}
+                    </v-btn>
+                    <v-btn color="succes" variant="text" @click="routeDeleteConfirmation = false">
+                      {{ $t("confirmations.no") }}
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-row>
           </template>
         </v-data-table>
       </template>
@@ -81,9 +135,36 @@
             <v-btn small color="primary" class="mr-2" icon @click="handleEditModal('Car', item)">
               <v-icon small> mdi-pencil</v-icon>
             </v-btn>
-            <v-btn small color="error" icon @click="handleRemoveCar(item.id)">
+            <v-btn small color="error" icon @click="carDeleteConfirmation = true">
               <v-icon small> mdi-delete</v-icon>
             </v-btn>
+
+            <v-row v-if="carDeleteConfirmation" content-class="elevation-0">
+              <v-dialog v-model="carDeleteConfirmation" width="33%">
+                <v-card color>
+                  <v-card-title class="text-h5 primary headline white--text">
+                    {{ $t("confirmations.carTitle") }} "{{ item.name }}" ?
+                  </v-card-title>
+                  <v-card-text>{{ $t("confirmations.carDescription") }}</v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="error"
+                      variant="text"
+                      @click="
+                        carDeleteConfirmation = false;
+                        handleRemoveCar(item.id);
+                      "
+                    >
+                      {{ $t("confirmations.yes") }}
+                    </v-btn>
+                    <v-btn color="succes" variant="text" @click="carDeleteConfirmation = false">
+                      {{ $t("confirmations.no") }}
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-row>
           </template>
         </v-data-table>
 
@@ -163,6 +244,9 @@ export default {
       editation: false,
       modal: undefined,
       entity: undefined,
+      stationDeleteConfirmation: false,
+      routeDeleteConfirmation: false,
+      carDeleteConfirmation: false,
       headers: [
         {
           text: this.$i18n.tc("tables.name"),

@@ -55,6 +55,16 @@ const translations = {
       editCar: "Editace auta",
       somethingWrong: "Něco se nepodařilo",
     },
+    confirmations: {
+      stationTitle: "Opravdu chcete smazat stanici",
+      stationDescription: "Opravdu chcete trvale smazat tuto stanici? Tuto akci nelze vrátit zpět",
+      routeTitle: "Opravdu chcete smazat trasu",
+      routeDescription: "Opravdu chcete trvale smazat tuto trasu? Tuto akci nelze vrátit zpět",
+      carTitle: "Opravdu chcete smazat auto",
+      carDescription: "Opravdu chcete trvale smazat toto auto? Tuto akci nelze vrátit zpět",
+      yes: "Ano",
+      no: "Ne",
+    },
     stations: {
       latitude: "Zeměpisná šířka",
       longitude: "Zeměpisná délka",
@@ -226,6 +236,19 @@ const translations = {
       createCar: "Create car",
       editCar: "Edit car",
       somethingWrong: "Something went wrong",
+    },
+    confirmations: {
+      stationTitle: "Are you sure to delete station",
+      stationDescription:
+        "Do you really want to permanently delete this station? This action cannot be undone",
+      routeTitle: "Are you sure to delete route",
+      routeDescription:
+        "Do you really want to permanently delete this route? This action cannot be undone",
+      carTitle: "Are you sure to delete car",
+      carDescription:
+        "Do you really want to permanently delete this route? This action cannot be undone",
+      yes: "Yes",
+      no: "No",
     },
     stations: {
       latitude: "Latitude",
