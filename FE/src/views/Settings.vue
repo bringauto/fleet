@@ -28,12 +28,15 @@
             </v-btn>
 
             <v-row v-if="stationDeleteConfirmation" justify="center">
-              <v-dialog v-model="stationDeleteConfirmation" width="33%" height="33%">
+              <v-dialog v-model="stationDeleteConfirmation" width="40%" height="40%">
                 <v-card color>
                   <v-card-title class="text-h5 primary headline white--text">
                     {{ $t("confirmations.stationTitle") }} "{{ item.name }}" ?
                   </v-card-title>
-                  <v-card-text>{{ $t("confirmations.stationDescription") }}</v-card-text>
+                  <br />
+                  <v-card-text class="editation-description">{{
+                    $t("confirmations.stationDescription")
+                  }}</v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
@@ -87,12 +90,15 @@
             </v-btn>
 
             <v-row v-if="routeDeleteConfirmation" justify="center">
-              <v-dialog v-model="routeDeleteConfirmation" width="33%" height="33%">
+              <v-dialog v-model="routeDeleteConfirmation" width="40%" height="40%">
                 <v-card color>
                   <v-card-title class="text-h5 primary headline white--text">
                     {{ $t("confirmations.routeTitle") }} "{{ item.name }}" ?
                   </v-card-title>
-                  <v-card-text>{{ $t("confirmations.routeDescription") }}</v-card-text>
+                  <br />
+                  <v-card-text class="editation-description">{{
+                    $t("confirmations.routeDescription")
+                  }}</v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
@@ -140,12 +146,15 @@
             </v-btn>
 
             <v-row v-if="carDeleteConfirmation" content-class="elevation-0">
-              <v-dialog v-model="carDeleteConfirmation" width="33%">
+              <v-dialog v-model="carDeleteConfirmation" width="40%" height="40%">
                 <v-card color>
                   <v-card-title class="text-h5 primary headline white--text">
                     {{ $t("confirmations.carTitle") }} "{{ item.name }}" ?
                   </v-card-title>
-                  <v-card-text>{{ $t("confirmations.carDescription") }}</v-card-text>
+                  <br />
+                  <v-card-text class="editation-description">{{
+                    $t("confirmations.carDescription")
+                  }}</v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
@@ -544,5 +553,8 @@ export default {
   height: 20px;
   border-radius: 100%;
   display: block;
+}
+.editation-description {
+  padding: 50px;
 }
 </style>

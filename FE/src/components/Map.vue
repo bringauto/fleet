@@ -55,7 +55,6 @@
           :lat-lngs="route.stops"
           @click="$emit('route-clicked', route)"
         >
-          <!-- <l-tooltip>{{ route.name }}</l-tooltip> -->
         </l-polyline>
       </template>
       <v-btn class="recenter-button mr-2" fab depressed tile @click="recenterMap">
@@ -242,11 +241,10 @@ export default {
     z-index: 999;
     width: 30px;
     height: 30px;
-    line-height: 30px;
-    font-size: 22px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-color: #e7e7e7;
   }
 }
 </style>
