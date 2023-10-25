@@ -17,21 +17,15 @@ extend("station_not_equal", {
 
 extend("coordinates_validation", {
   validate: (value) => {
-    console.log(value);
     const coordinates = value.split(/\s?[,]\s?/g);
-    console.log("split coordinates: ", coordinates);
 
     if (coordinates.length !== 2) {
-      console.log("coordinates.length !== 2, returning FALSE");
       return false;
     }
 
     const trimmedCoordinates = coordinates.map((coord) => coord.trim());
-    console.log("trimmed coordinates: ", trimmedCoordinates);
-
     const isValidCoordinate = (coord) => {
       const floatCoord = parseFloat(coord);
-      console.log("is valid: ", !Number.isNaN(floatCoord));
       return !Number.isNaN(floatCoord);
     };
 

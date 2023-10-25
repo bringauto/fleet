@@ -6,6 +6,9 @@ export function getLatLong(position) {
   if (!latLong[1] && latLong[0]) {
     return { latitude: Number(latLong[0]), longitude: 0 };
   }
+  if (!latLong[0] && latLong[1]) {
+    return { latitude: 0, longitude: Number(latLong[1]) };
+  }
   return { latitude: 0, longitude: 0 };
 }
 
