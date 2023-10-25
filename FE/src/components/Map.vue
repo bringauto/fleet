@@ -4,6 +4,7 @@
       ref="map"
       :center="center"
       :zoom="zoom"
+      :options="{ attributionControl: false }"
       class="map__container"
       @update:center="centerUpdated"
       @update:zoom="zoomUpdated"

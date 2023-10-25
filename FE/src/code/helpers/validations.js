@@ -39,11 +39,6 @@ extend("coordinates_validation", {
       trimmedCoordinates.every(isValidCoordinate) &&
       !trimmedCoordinates.some((coord) => coord === "")
     );
-
-    /* Another variant of the validation
-    const regex = /^\d+(\.\d+)?,\s*\d+(\.\d+)?$/;
-    console.log("regex result: ", regex.test(value));
-    return regex.test(value); */
   },
   message: i18n.tc("validations.coordinates_incorrect_format"),
 });
