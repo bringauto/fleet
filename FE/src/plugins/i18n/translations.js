@@ -60,13 +60,14 @@ const translations = {
       longitude: "Zeměpisná délka",
       position: "Zeměpisná poloha",
     },
-    satuses: {
+    statuses: {
       waiting: "Čekání",
       acceptionOrder: "Příjmání objednávky",
       driving: "V jízdě",
       waitingForLoad: "Čekaní na naložení",
       outOfService: "Mimo provoz",
       charging: "Nabíjení",
+      stoppedByPhone: "Zastaveno telefonem",
       accepted: "Přijato",
       inProgress: "Probíhá",
       done: "Hotovo",
@@ -230,13 +231,14 @@ const translations = {
       longitude: "Longitude",
       position: "Geographical location",
     },
-    satuses: {
+    statuses: {
       waiting: "Waiting",
       acceptionOrder: "Accepting an order",
       driving: "In ride",
       waitingForLoad: "Waiting for load",
       outOfService: "Inoperative",
       charging: "Charging",
+      stoppedByPhone: "Stopped by phone",
       accepted: "Accepted",
       inProgress: "In progress",
       done: "Done",

@@ -43,6 +43,12 @@ namespace BringAuto.Server.Repositories
                 .Select(x => x.SessionId)
                 .FirstOrDefaultAsync();
 
+        public Task<CarStatus> GetCarStatus(string companyName, string carName)
+            => dbContext.Cars.Where(x => x.CompanyName == companyName && x.Name == carName)
+                .Where(x => x.SessionLogged > DateTime.UtcNow.AddMinutes(-4))
+                .Select(x => x.Status)
+                .FirstOrDefaultAsync();
+
         public async Task SetSessionId(string companyName, string carName, string sessionId)
         {
             var car = await dbContext.Cars.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.CompanyName == companyName && x.Name == carName);

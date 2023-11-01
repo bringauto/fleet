@@ -1,9 +1,11 @@
 ﻿using Artin.BringAuto.Shared.Butons;
+using Artin.BringAuto.Shared.Enums;
 using Artin.BringAuto.Shared.Routes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace Artin.BringAuto.Shared.Cars
@@ -19,6 +21,7 @@ namespace Artin.BringAuto.Shared.Cars
         Task<bool> IsKnownCar(string companyName, string carName);
 
         Task<string> GetSessionId(string companyName, string carName);
+        Task<CarStatus> GetCarStatus(string companyName, string carName);
         Task<List<int>> GetCarStationOrder(string companyName, string carName);
         Task<bool> IsLoggedInAsync(string company, string car, string sessionId);
         Task<CarTrack> GetCarTrack(string company, string car);

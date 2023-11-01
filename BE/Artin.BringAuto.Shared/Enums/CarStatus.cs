@@ -13,6 +13,7 @@ namespace Artin.BringAuto.Shared.Enums
         Driving,
         WaitForLoad,
         OutOfService,
-        Charging
+        Charging,
+        StoppedByPhone
     }
 }

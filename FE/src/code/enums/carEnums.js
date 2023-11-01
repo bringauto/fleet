@@ -7,33 +7,38 @@ export const CarState = Object.freeze({
   WAITFORLOAD: "WAITFORLOAD",
   OUTOFSERVICE: "OUTOFSERVICE",
   CHARGING: "CHARGING",
+  STOPPEDBYPHONE: "STOPPEDBYPHONE",
 });
 
 export const CarStateFormated = [
   {
     status: CarState.WAITING,
-    trans: i18n.tc("satuses.waiting"),
+    trans: i18n.tc("statuses.waiting"),
   },
   {
     status: CarState.ACCEPTIONORDER,
-    trans: i18n.tc("satuses.acceptionOrder"),
+    trans: i18n.tc("statuses.acceptionOrder"),
   },
   {
     status: CarState.DRIVING,
-    trans: i18n.tc("satuses.driving"),
+    trans: i18n.tc("statuses.driving"),
   },
   {
     status: CarState.WAITFORLOAD,
-    trans: i18n.tc("satuses.waitingForLoad"),
+    trans: i18n.tc("statuses.waitingForLoad"),
   },
   {
     status: CarState.OUTOFSERVICE,
-    trans: i18n.tc("satuses.outOfService"),
+    trans: i18n.tc("statuses.outOfService"),
   },
   {
     status: CarState.CHARGING,
-    trans: i18n.tc("satuses.charging"),
+    trans: i18n.tc("statuses.charging"),
   },
+  {
+    status: CarState.STOPPEDBYPHONE,
+    trans: i18n.tc("statuses.stoppedByPhone"),
+  }
 ];
 
 export const getCarState = (status) => {

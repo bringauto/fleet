@@ -35,6 +35,12 @@ namespace Artin.BringAuto.MQTTClient
                 var route = await orderRepository.GetRouteForCar(company, car);
                 var sessionId = await carRepository.GetSessionId(company, car);
 
+                var action = CarCommand.Types.Action.Start;
+                if (route.Any())
+                {
+                    action = await DetermineCarAction(company, car);
+                }
+
                 if (!String.IsNullOrEmpty(sessionId))
                 {
                     var msg = new MessageIndustrialPortal
@@ -44,7 +50,7 @@ namespace Artin.BringAuto.MQTTClient
                             SessionId = sessionId,
                             CarCommand = new CarCommand
                             {
-                                Action = CarCommand.Types.Action.Start
+                                Action = action
                             }
                         }
                     };
@@ -85,6 +91,18 @@ namespace Artin.BringAuto.MQTTClient
             {
                 await SendCarRoute(car.CompanyName, car.Name);
             }
+        }
+
+        public async Task<CarCommand.Types.Action> DetermineCarAction(string company, string car)
+        {
+            var carStatus = await carRepository.GetCarStatus(company, car);
+
+            if (carStatus == Shared.Enums.CarStatus.StoppedByPhone)
+            {
+                return CarCommand.Types.Action.Stop;
+            } 
+
+            return CarCommand.Types.Action.Start;
         }
     }
 }

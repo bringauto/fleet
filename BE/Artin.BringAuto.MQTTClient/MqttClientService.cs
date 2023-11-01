@@ -51,7 +51,7 @@ namespace Artin.BringAuto.MQTTClient
 
         private async void SendNotification(object state)
         {
-            if (await semaphoreSlim.WaitAsync(10))
+            if (await semaphoreSlim.WaitAsync(5))
             {
                 try
                 {
