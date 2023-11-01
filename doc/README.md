@@ -6,7 +6,7 @@ Fleet is divided into two main parts
 - Frontend (FE)
 - Backend (BE)
 
-Frontend is standard user interface written in vue.js.
+Frontend is standard user interface written in vue.js (Vue 2).
 
 Backend stores and process data from an autonomous platform and serves these
 data to FE in simple form ([GraphQL] API)

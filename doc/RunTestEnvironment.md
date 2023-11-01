@@ -27,7 +27,7 @@ Prerequisites
 - `git clone https://github.com/bringauto/fleet-init.git`
 - `cd fleet-init`
 - `pip3 install -r requirements.txt`
-- `python3 main.py`
+- `python main.py`
 
 ## Connect to BringAuto Fleet
 - Log into Fleet on http://127.0.0.1:8011 using default account and password (Admin, Admin1)
