@@ -159,11 +159,9 @@ import { GetterNames } from "../store/enums/vuexEnums";
 export default {
   name: "CarCard",
   props: {
-    // eslint-disable-next-line vue/require-default-prop
     car: {
       type: Object,
     },
-    // eslint-disable-next-line vue/require-default-prop
     cars: {
       type: Array,
     },
