@@ -17,7 +17,7 @@ extend("station_not_equal", {
 
 extend("coordinates_validation", {
   validate: (value) => {
-    const coordinates = value.split(/\s?[,]\s?/g);
+    const coordinates = value.split(/\s?,\s?/g);
 
     if (coordinates.length !== 2) {
       return false;
