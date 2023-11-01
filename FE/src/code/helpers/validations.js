@@ -14,3 +14,25 @@ extend("station_not_equal", {
   },
   message: i18n.tc("validations.station_not_equal"),
 });
+
+extend("coordinates_validation", {
+  validate: (value) => {
+    const coordinates = value.split(/\s?,\s?/g);
+
+    if (coordinates.length !== 2) {
+      return false;
+    }
+
+    const trimmedCoordinates = coordinates.map((coord) => coord.trim());
+    const isValidCoordinate = (coord) => {
+      const floatCoord = parseFloat(coord);
+      return !Number.isNaN(floatCoord);
+    };
+
+    return (
+      trimmedCoordinates.every(isValidCoordinate) &&
+      !trimmedCoordinates.some((coord) => coord === "")
+    );
+  },
+  message: i18n.tc("validations.coordinates_incorrect_format"),
+});

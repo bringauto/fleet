@@ -4,6 +4,7 @@
       ref="map"
       :center="center"
       :zoom="zoom"
+      :options="{ attributionControl: false }"
       class="map__container"
       @update:center="centerUpdated"
       @update:zoom="zoomUpdated"
@@ -55,9 +56,11 @@
           :lat-lngs="route.stops"
           @click="$emit('route-clicked', route)"
         >
-          <!-- <l-tooltip>{{ route.name }}</l-tooltip> -->
         </l-polyline>
       </template>
+      <v-btn class="recenter-button mr-2" fab depressed tile @click="recenterMap">
+        <v-icon color="primary">mdi-crosshairs-gps</v-icon>
+      </v-btn>
     </l-map>
   </div>
 </template>
@@ -88,7 +91,7 @@ export default {
   },
   data: () => ({
     zoom: 15,
-    center: latLng(49.8401525, 18.2302432),
+    center: undefined,
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     selectedCar: null,
     stationIcon: icon({
@@ -131,8 +134,6 @@ export default {
     },
   },
   async mounted() {
-    // const { longitude, latitude } = this.getFirstStation;
-
     try {
       const settings = JSON.parse(localStorage.getItem("mapSettings"));
       if (settings) {
@@ -143,12 +144,14 @@ export default {
     } catch (e) {
       console.error(e);
     }
-    this.stations = await stationApi.getStations();
-    this.routes = await routeApi.getRoutes(true);
-    this.center = latLng(
-      this.stations[0].latitude ?? 47.09713,
-      this.stations[0].longitude ?? 37.54337
-    );
+
+    try {
+      this.stations = await stationApi.getStations();
+      this.routes = await routeApi.getRoutes(true);
+      this.center = latLng(this.stations[0].latitude, this.stations[0].longitude);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   },
 
   methods: {
@@ -165,6 +168,9 @@ export default {
     zoomUpdated(zoom) {
       this.setLocalSettings({ zoom });
       this.zoom = zoom;
+    },
+    recenterMap() {
+      this.center = latLng(this.stations[0].latitude, this.stations[0].longitude);
     },
     setLocalSettings(settings) {
       const oldSettings = JSON.parse(localStorage.getItem("mapSettings"));
@@ -228,6 +234,18 @@ export default {
       background-size: cover;
       background-position: center !important;
     }
+  }
+  .recenter-button {
+    position: absolute;
+    top: 80px;
+    left: 12px;
+    z-index: 999;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-color: #e7e7e7;
   }
 }
 </style>

@@ -28,7 +28,7 @@ const translations = {
       companyName: "Jméno společnosti",
       underTest: "Testovací",
       hwId: "Hardware id",
-      carAdminPhone: "Admin telefon",
+      carAdminPhone: "Telefon admina",
       carName: "Jméno auta",
     },
     settings: {
@@ -54,6 +54,16 @@ const translations = {
       createCar: "Vytvořit auto",
       editCar: "Editace auta",
       somethingWrong: "Něco se nepodařilo",
+    },
+    confirmations: {
+      stationTitle: "Opravdu chcete smazat stanici",
+      stationDescription: "Opravdu chcete trvale smazat tuto stanici? Tuto akci nelze vrátit zpět",
+      routeTitle: "Opravdu chcete smazat trasu",
+      routeDescription: "Opravdu chcete trvale smazat tuto trasu? Tuto akci nelze vrátit zpět",
+      carTitle: "Opravdu chcete smazat auto",
+      carDescription: "Opravdu chcete trvale smazat toto auto? Tuto akci nelze vrátit zpět",
+      yes: "Ano",
+      no: "Ne",
     },
     stations: {
       latitude: "Zeměpisná šířka",
@@ -103,9 +113,9 @@ const translations = {
       count: "Počet objednávek",
       new: "Nová objednávka",
       none: "Žádná objednávka",
-      to: "Do",
+      to: "Do stanice",
       in: "v",
-      asap: "Co nejdříve",
+      asap: "co nejdříve",
     },
     notifications: {
       order: {
@@ -165,6 +175,8 @@ const translations = {
     },
     validations: {
       required: "Toto pole je povinné",
+      coordinates_incorrect_format:
+        "Toto pole je ve špatném formátu, požadovaný formát je zeměpisná šířka,zeměpisná délka",
       station_not_equal: "Stanice 'z' nemůže být stejná jako 'do'",
     },
   },
@@ -224,6 +236,19 @@ const translations = {
       createCar: "Create car",
       editCar: "Edit car",
       somethingWrong: "Something went wrong",
+    },
+    confirmations: {
+      stationTitle: "Are you sure to delete station",
+      stationDescription:
+        "Do you really want to permanently delete this station? This action cannot be undone",
+      routeTitle: "Are you sure to delete route",
+      routeDescription:
+        "Do you really want to permanently delete this route? This action cannot be undone",
+      carTitle: "Are you sure to delete car",
+      carDescription:
+        "Do you really want to permanently delete this route? This action cannot be undone",
+      yes: "Yes",
+      no: "No",
     },
     stations: {
       latitude: "Latitude",
@@ -335,6 +360,8 @@ const translations = {
     },
     validations: {
       required: "This field is required",
+      coordinates_incorrect_format:
+        "Input is in incorrect format, it should be in format: latitude,longitude ",
       station_not_equal: "Station from can't be same as station to",
     },
   },
