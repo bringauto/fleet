@@ -8,7 +8,7 @@ RUN dotnet restore
 RUN dotnet build -c Release -o out
 RUN dotnet dev-certs https -ep /https/httpscert.pfx -p pass
 
-FROM node:16 AS build-env-FE
+FROM node:20 AS build-env-FE
 WORKDIR /app
 
 COPY ./FE ./
