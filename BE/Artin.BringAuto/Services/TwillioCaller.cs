@@ -62,21 +62,28 @@ namespace Artin.BringAuto.Services
 
         private static bool WaitForCallPickup(String sid)
         {
-            var callInfo = CallResource.Fetch(sid);
+            //queued - twilio received request to create call
+            //initiated - number is dialed
+            //ringing - phone is ringing
+            //in-progress - call picked up
+            //completed - picked up call disconnected
+            //busy - received busy response (phone already in call?)
+            //no-answer - call not picked up for 60s
+            //cancelled - call cancelled by rest api
+            //failed - number unreachable
+            var callStatus = CallResource.Fetch(sid).Status.ToString();
 
-            while (callInfo.Status == CallResource.StatusEnum.Ringing)
+            while (callStatus == "queued" || callStatus == "ringing" || callStatus == "initiated")
             {
                 Thread.Sleep(2000);
-                callInfo = CallResource.Fetch(sid);
+                callStatus = CallResource.Fetch(sid).Status.ToString();
             }
 
-            return callInfo.Status.ToString() switch
+            return callStatus switch
             {
-                "in-progress" => true,
-                "cancelled" => true,
-                "completed" => true,
-                // busy(received busy signal)? no-answer(not picked up or hung up)? failed(number might not exist)?
-                _ => false,
+                "busy" => false,
+                "no-answer" => false,
+                _ => true,
             };
         }
     }
