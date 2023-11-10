@@ -63,7 +63,7 @@ namespace Artin.BringAuto.Services
         private static bool WaitForCallPickup(String sid)
         {
             //queued - twilio received request to create call
-            //initiated - number is dialed
+            //initiated - number is dialed (NOT MENTIONED IN CallResource !!)
             //ringing - phone is ringing
             //in-progress - call picked up
             //completed - picked up call disconnected
@@ -73,7 +73,12 @@ namespace Artin.BringAuto.Services
             //failed - number unreachable
             var callStatus = CallResource.Fetch(sid).Status.ToString();
 
-            while (callStatus == "queued" || callStatus == "ringing" || callStatus == "initiated")
+            while (callStatus != "in-progress" || 
+                   callStatus != "completed" || 
+                   callStatus != "busy" ||
+                   callStatus != "no-answer" ||
+                   callStatus != "cancelled" ||
+                   callStatus != "failed")
             {
                 Thread.Sleep(2000);
                 callStatus = CallResource.Fetch(sid).Status.ToString();
