@@ -26,7 +26,7 @@ namespace Artin.BringAuto.Services
             this.options = options;
             this.logger = logger;
         }
-        public Task Call(string number, string messageUri)
+        public async Task<Task> Call(string number, string messageUri)
         {
             if (String.IsNullOrWhiteSpace(options.Value.SID)
                 || String.IsNullOrWhiteSpace(options.Value.Token))
@@ -46,7 +46,7 @@ namespace Artin.BringAuto.Services
 
                         Console.WriteLine(call.Sid);
                         
-                        if (WaitForCallPickup(call.Sid))
+                        if (await WaitForCallPickup(call.Sid))
                         {
                             break;
                         }
@@ -60,7 +60,7 @@ namespace Artin.BringAuto.Services
             return Task.CompletedTask;
         }
 
-        private static bool WaitForCallPickup(String sid)
+        private /*static*/ async Task<bool> WaitForCallPickup(String sid)
         {
             //queued - twilio received request to create call
             //initiated - number is dialed (NOT MENTIONED IN CallResource !!)
@@ -71,22 +71,29 @@ namespace Artin.BringAuto.Services
             //no-answer - call not picked up for 60s
             //cancelled - call cancelled by rest api
             //failed - number unreachable
-            var callStatus = CallResource.Fetch(sid).Status.ToString();
+            var callStatus = (await CallResource.FetchAsync(sid)).Status.ToString();
+            logger.LogInformation($"-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-   callStatus: {callStatus}");
+            int timeoutCount = 0;
 
-            while (callStatus != "in-progress" || 
-                   callStatus != "completed" || 
-                   callStatus != "busy" ||
-                   callStatus != "no-answer" ||
-                   callStatus != "cancelled" ||
+            while (callStatus != "in-progress" &&
+                   callStatus != "completed" &&
+                   callStatus != "busy" &&
+                   callStatus != "no-answer" &&
+                   callStatus != "cancelled" &&
                    callStatus != "failed")
             {
-                Thread.Sleep(2000);
-                callStatus = CallResource.Fetch(sid).Status.ToString();
+                Task.Delay(2000).Wait();
+                callStatus = (await CallResource.FetchAsync(sid)).Status.ToString();
+                logger.LogInformation($"-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-   callStatus: {callStatus}");
+                timeoutCount++;
+
+                // Endpoint in case twilio behaves differently
+                if (timeoutCount >= 60)
+                    return true;
             }
 
             return callStatus switch
             {
-                "busy" => false,
                 "no-answer" => false,
                 _ => true,
             };

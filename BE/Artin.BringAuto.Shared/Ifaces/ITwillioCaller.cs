@@ -8,6 +8,6 @@ namespace Artin.BringAuto.Shared.Ifaces
 {
     public interface ITwillioCaller
     {
-        public Task Call(string number, string messageUri);
+        public Task<Task> Call(string number, string messageUri);
     }
 }
