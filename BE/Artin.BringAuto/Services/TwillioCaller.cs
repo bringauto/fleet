@@ -60,7 +60,7 @@ namespace Artin.BringAuto.Services
             return Task.CompletedTask;
         }
 
-        private /*static*/ async Task<bool> WaitForCallPickup(String sid)
+        private static async Task<bool> WaitForCallPickup(String sid)
         {
             //queued - twilio received request to create call
             //initiated - number is dialed (NOT MENTIONED IN CallResource !!)
@@ -72,7 +72,6 @@ namespace Artin.BringAuto.Services
             //cancelled - call cancelled by rest api
             //failed - number unreachable
             var callStatus = (await CallResource.FetchAsync(sid)).Status.ToString();
-            logger.LogInformation($"-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-   callStatus: {callStatus}");
             int timeoutCount = 0;
 
             while (callStatus != "in-progress" &&
@@ -84,7 +83,6 @@ namespace Artin.BringAuto.Services
             {
                 Task.Delay(2000).Wait();
                 callStatus = (await CallResource.FetchAsync(sid)).Status.ToString();
-                logger.LogInformation($"-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-   callStatus: {callStatus}");
                 timeoutCount++;
 
                 // Endpoint in case twilio behaves differently
