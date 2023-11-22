@@ -121,11 +121,6 @@
                 </v-row>
               </template>
             </v-row>
-            <!--
-            <v-row justify="center">
-              <v-btn color="success" text @click="handleNewOrder">{{ $t("orders.new") }} </v-btn>
-            </v-row>
-            -->
           </v-card-text>
 
           <v-divider></v-divider>
@@ -161,9 +156,11 @@ export default {
   props: {
     car: {
       type: Object,
+      default: null,
     },
     cars: {
       type: Array,
+      default: () => [],
     },
   },
   data: () => ({
