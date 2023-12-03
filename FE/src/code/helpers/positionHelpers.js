@@ -10,11 +10,7 @@ export function getLatLong(position) {
 export function getPositionValue(station) {
   const { latitude, longitude } = station;
 
-  if (latitude && longitude) {
-    return `${latitude}, ${longitude}`;
-  }
-
-  return `${latitude || 0}, ${longitude || 0}`;
+  return `${Number(latitude || 0)}, ${Number(longitude || 0)}`;
 }
 
 export function justNumber(event, keys = []) {

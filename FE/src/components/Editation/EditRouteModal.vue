@@ -33,7 +33,7 @@
             </v-col>
             <v-col cols="12" md="6">
               <v-card class="overflow-y-auto overflow-x-hidden" max-height="370">
-                <v-row v-for="(stop, index) in route.stops" :key="index" align="center">
+                <v-row v-for="(stop, index) in namedStops" :key="index" align="center">
                   <v-col
                     :color="color"
                     class="d-flex align-center"
@@ -153,6 +153,9 @@ export default {
       set(val) {
         this.$emit("update:route", { ...this.route, color: val });
       },
+    },
+    namedStops() {
+      return this.route.stops.filter((stop) => stop.station && stop.station.name);
     },
   },
   methods: {
