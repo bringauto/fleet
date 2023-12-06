@@ -148,7 +148,10 @@ export default {
     try {
       this.stations = await stationApi.getStations();
       this.routes = await routeApi.getRoutes(true);
-      this.center = latLng(this.stations[0].latitude, this.stations[0].longitude);
+      this.center = latLng(
+        this.selectedCar.latitude || this.stations[0].latitude || 0,
+        this.selectedCar.longitude || this.stations[0].longitude || 0
+      );
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -170,7 +173,10 @@ export default {
       this.zoom = zoom;
     },
     recenterMap() {
-      this.center = latLng(this.stations[0].latitude, this.stations[0].longitude);
+      this.center = latLng(
+        this.selectedCar.latitude || this.stations[0].latitude || 0,
+        this.selectedCar.longitude || this.stations[0].longitude || 0
+      );
     },
     setLocalSettings(settings) {
       const oldSettings = JSON.parse(localStorage.getItem("mapSettings"));

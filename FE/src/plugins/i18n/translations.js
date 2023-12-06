@@ -298,7 +298,7 @@ const translations = {
       title: "Orders",
       count: "Number of orders",
       new: "New order",
-      none: "No order",
+      none: "No orders",
       to: "To",
       in: "in",
       asap: "As soon as possible",
