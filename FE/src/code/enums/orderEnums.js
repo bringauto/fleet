@@ -11,23 +11,23 @@ export const OrderState = Object.freeze({
 export const OrderStateFormated = [
   {
     status: OrderState.TOACCEPT,
-    trans: i18n.tc("satuses.toAccept"),
+    trans: i18n.tc("statuses.toAccept"),
   },
   {
     status: OrderState.ACCEPTED,
-    trans: i18n.tc("satuses.accepted"),
+    trans: i18n.tc("statuses.accepted"),
   },
   {
     status: OrderState.INPROGRESS,
-    trans: i18n.tc("satuses.inProgress"),
+    trans: i18n.tc("statuses.inProgress"),
   },
   {
     status: OrderState.DONE,
-    trans: i18n.tc("satuses.done"),
+    trans: i18n.tc("statuses.done"),
   },
   {
     status: OrderState.CANCELED,
-    trans: i18n.tc("satuses.canceled"),
+    trans: i18n.tc("statuses.canceled"),
   },
 ];
 

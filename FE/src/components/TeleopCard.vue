@@ -65,7 +65,7 @@
           </v-card-title>
 
           <v-card-text class="pt-10">
-            <v-row class="align-baseline box-wrapper mb-5" no-gutters>
+            <v-row class="align-baseline box-wrapper mb-4" no-gutters>
               <template v-if="sortOrders && sortOrders.length > 0">
                 <template v-for="order in sortOrders">
                   <v-col :key="order.id" cols="12">
@@ -82,13 +82,13 @@
                           </span>
                         </p>
                       </v-col>
-                      <v-col cols="12" sm="4">
+                      <v-col align="left" cols="12" sm="4">
                         <v-select
                           :append-icon="isAdmin ? '$dropdown' : ''"
-                          :disabled="!isAdmin"
                           :items="OrderStateFormated"
                           :label="$t('general.status')"
                           :value="order.status"
+                          disabled
                           class="mb-2"
                           dense
                           hide-details
@@ -97,6 +97,14 @@
                           outlined
                           @input="$emit('set-order-status', { status: $event, order, car })"
                         />
+                      </v-col>
+                      <v-col align="center" cols="12" sm="3">
+                        <v-btn
+                          color="error"
+                          @click="$emit('set-order-status', { status: 'Canceled', order, car })"
+                        >
+                          {{ $t("orders.cancel") }}
+                        </v-btn>
                       </v-col>
                       <v-col align="center" cols="12" sm="1">
                         <v-btn

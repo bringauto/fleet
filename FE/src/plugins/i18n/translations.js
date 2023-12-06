@@ -70,7 +70,7 @@ const translations = {
       longitude: "Zeměpisná délka",
       position: "Zeměpisná poloha",
     },
-    satuses: {
+    statuses: {
       waiting: "Čekání",
       acceptionOrder: "Příjmání objednávky",
       driving: "V jízdě",
@@ -116,6 +116,7 @@ const translations = {
       to: "Do stanice",
       in: "v",
       asap: "co nejdříve",
+      cancel: "Zrušit objednávku",
     },
     notifications: {
       order: {
@@ -255,7 +256,7 @@ const translations = {
       longitude: "Longitude",
       position: "Geographical location",
     },
-    satuses: {
+    statuses: {
       waiting: "Waiting",
       acceptionOrder: "Accepting an order",
       driving: "In ride",
@@ -301,6 +302,7 @@ const translations = {
       to: "To",
       in: "in",
       asap: "As soon as possible",
+      cancel: "Cancel order",
     },
     notifications: {
       order: {

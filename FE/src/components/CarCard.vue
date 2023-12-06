@@ -13,7 +13,7 @@
             <v-btn class="mb-2" color="success" large @click="$router.push('new-order')"
               >{{ $t("general.order") }}
             </v-btn>
-            <v-dialog v-model="showOrder" width="800">
+            <v-dialog v-model="showOrder" width="1000">
               <template #activator="{}">
                 <v-btn color="primary" large text @click="showOrder = !showOrder"
                   >{{ $t("general.showOrders") }}
