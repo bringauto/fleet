@@ -60,7 +60,7 @@
                   <v-btn
                     :icon="!$vuetify.breakpoint.mobile"
                     color="success"
-                    @click="handleAddPoint()"
+                    @click="handleAddPointWithName()"
                   >
                     <v-icon> mdi-plus-circle-outline</v-icon>
                   </v-btn>
@@ -196,6 +196,20 @@ export default {
         return prev > current.order ? prev : current.order;
       }, 0);
       stops.push({ longitude: 0, latitude: 0, order: max + 1, station: { id: this.nextId } });
+      this.nextId += 1;
+      this.$emit("update:route", { ...this.route, stops });
+    },
+    handleAddPointWithName() {
+      const { stops } = this.route;
+      const max = stops.reduce((prev, current) => {
+        return prev > current.order ? prev : current.order;
+      }, 0);
+      stops.push({
+        longitude: 0,
+        latitude: 0,
+        order: max + 1,
+        station: { id: this.nextId, name: `Choose station ${max + 1}` }, // Set name here
+      });
       this.nextId += 1;
       this.$emit("update:route", { ...this.route, stops });
     },
