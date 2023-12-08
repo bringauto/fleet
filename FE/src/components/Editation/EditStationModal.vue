@@ -2,7 +2,6 @@
   <v-form>
     <v-container>
       <v-row>
-        {{ station }}
         <v-col cols="12" md="12">
           <ValidationProvider v-slot="{ errors }" rules="required">
             <v-text-field
