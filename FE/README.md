@@ -25,7 +25,7 @@ npm run build
 yarn test:unit
 ```
 
-### Lints and fixes files
+### Lint file fixes
 ```
 npm run lint
 ```

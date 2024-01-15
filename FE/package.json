@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
-    "@notum-cz/eslint-config-notum-vue": "^1.2.0",
+    "@notum-cz/eslint-config-notum-vue": "github:bringauto/eslint-config-notum-vue",
     "@sentry/browser": "^5.30.0",
     "@sentry/integrations": "^5.30.0",
     "@types/eslint": "^8.4.3",
