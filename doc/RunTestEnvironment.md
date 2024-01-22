@@ -9,7 +9,7 @@ Prerequisites
 - pip3
 - git (for Windows link [here](https://git-scm.com/download/win) - during installation, configure line ending conversions **checkout as-is, commit as-is**)
 
-## Run BringAuto Etna (1.2.1)
+## Run BringAuto Etna (v1.2.1)
 
 - `git clone https://github.com/bringauto/etna.git`
 - `cd etna`
