@@ -33,7 +33,7 @@
             </v-col>
             <v-col cols="12" md="6">
               <v-card class="overflow-y-auto overflow-x-hidden" max-height="370">
-                <v-row v-for="(stop, index) in route.stops" :key="index" align="center">
+                <v-row v-for="(stop, index) in namedStops" :key="index" align="center">
                   <v-col
                     :color="color"
                     class="d-flex align-center"
@@ -60,7 +60,7 @@
                   <v-btn
                     :icon="!$vuetify.breakpoint.mobile"
                     color="success"
-                    @click="handleAddPoint()"
+                    @click="handleAddPointWithName()"
                   >
                     <v-icon> mdi-plus-circle-outline</v-icon>
                   </v-btn>
@@ -154,6 +154,9 @@ export default {
         this.$emit("update:route", { ...this.route, color: val });
       },
     },
+    namedStops() {
+      return this.route.stops.filter((stop) => stop.station && stop.station.name);
+    },
   },
   methods: {
     getStation,
@@ -193,6 +196,20 @@ export default {
         return prev > current.order ? prev : current.order;
       }, 0);
       stops.push({ longitude: 0, latitude: 0, order: max + 1, station: { id: this.nextId } });
+      this.nextId += 1;
+      this.$emit("update:route", { ...this.route, stops });
+    },
+    handleAddPointWithName() {
+      const { stops } = this.route;
+      const max = stops.reduce((prev, current) => {
+        return prev > current.order ? prev : current.order;
+      }, 0);
+      stops.push({
+        longitude: 0,
+        latitude: 0,
+        order: max + 1,
+        station: { id: this.nextId, name: `Choose station ${max + 1}` }, // Set name here
+      });
       this.nextId += 1;
       this.$emit("update:route", { ...this.route, stops });
     },

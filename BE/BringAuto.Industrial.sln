@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30503.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto", "Artin.BringAuto\Artin.BringAuto.csproj", "{73C1C8A1-8F0C-496B-9BDE-B6DC4907F2F1}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.MQTTClient", "Artin.BringAuto.MQTTClient\Artin.BringAuto.MQTTClient.csproj", "{D7D99A57-D51F-4961-B528-03E1E97D3167}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.MQTT.Api", "Artin.BringAuto.MQTT\Artin.BringAuto.MQTT.Api.csproj", "{0A1F2D30-7270-42D2-8D53-DFC226F46621}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artin.BringAuto.Test", "Test\Artin.BringAuto.Test.csproj", "{76DA92F9-2CD9-454A-9C38-C88355A5043D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{0A1F2D30-7270-42D2-8D53-DFC226F46621}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A1F2D30-7270-42D2-8D53-DFC226F46621}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A1F2D30-7270-42D2-8D53-DFC226F46621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76DA92F9-2CD9-454A-9C38-C88355A5043D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76DA92F9-2CD9-454A-9C38-C88355A5043D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76DA92F9-2CD9-454A-9C38-C88355A5043D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76DA92F9-2CD9-454A-9C38-C88355A5043D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

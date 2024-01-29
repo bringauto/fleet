@@ -140,7 +140,7 @@ namespace Artin.BringAuto.MQTTClient
             {
                 logger.LogError(exc, "Cannot connect MQTT broker");
             }
-            timer = new Timer(SendNotification, null, new TimeSpan(0, 0, 10), new TimeSpan(0, 0, 10));
+            timer = new Timer(SendNotification, null, new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

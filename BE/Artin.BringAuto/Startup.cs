@@ -67,7 +67,8 @@ namespace Artin.BringAuto
 
             services.AddDbContext<DAL.BringAutoDbContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:BringAuto"));
+                //opt.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:BringAuto"));
+                opt.UseNpgsql(Configuration.GetValue<string>("ConnectionStrings:PostgresConnection"));
                 opt.EnableSensitiveDataLogging();
             }, ServiceLifetime.Transient);
             services.AddAutoMapper(typeof(Artin.BringAuto.Mappings.CarMap).Assembly);
@@ -187,11 +188,13 @@ namespace Artin.BringAuto
             services.AddSpaStaticFiles(opt => { opt.RootPath = "App"; });
 
             services.AddMqtt(Configuration);
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var ctx = scope.ServiceProvider.GetRequiredService<BringAutoDbContext>();

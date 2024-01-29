@@ -3,6 +3,7 @@ using Artin.BringAuto.Shared.Orders;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Artin.BringAuto.Services
@@ -50,7 +51,11 @@ namespace Artin.BringAuto.Services
         {
             logger.LogDebug($"CallTo to `{phone ?? "not defined"}` with twiml {twiml}");
             if (!string.IsNullOrEmpty(phone))
-                await twillioCaller.Call(phone, twiml);
+                new Thread(async () =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+                    await twillioCaller.Call(phone, twiml);
+                }).Start();
         }
     }
 }

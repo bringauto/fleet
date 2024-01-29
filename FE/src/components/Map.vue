@@ -134,24 +134,8 @@ export default {
     },
   },
   async mounted() {
-    try {
-      const settings = JSON.parse(localStorage.getItem("mapSettings"));
-      if (settings) {
-        Object.keys(settings).forEach((setting) => {
-          this[setting] = settings[setting];
-        });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-
-    try {
-      this.stations = await stationApi.getStations();
-      this.routes = await routeApi.getRoutes(true);
-      this.center = latLng(this.stations[0].latitude, this.stations[0].longitude);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    await this.loadSettings();
+    await this.loadData();
   },
 
   methods: {
@@ -170,7 +154,10 @@ export default {
       this.zoom = zoom;
     },
     recenterMap() {
-      this.center = latLng(this.stations[0].latitude, this.stations[0].longitude);
+      this.center = latLng(
+        this.selectedCar.latitude || this.stations[0].latitude || 0,
+        this.selectedCar.longitude || this.stations[0].longitude || 0
+      );
     },
     setLocalSettings(settings) {
       const oldSettings = JSON.parse(localStorage.getItem("mapSettings"));
@@ -189,6 +176,44 @@ export default {
         return history;
       }
       return points.slice(1, 3);
+    },
+    async loadSettings() {
+      try {
+        const settings = JSON.parse(localStorage.getItem("mapSettings"));
+        if (settings) {
+          Object.keys(settings).forEach((setting) => {
+            this[setting] = settings[setting];
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async loadStations() {
+      try {
+        this.stations = await stationApi.getStations();
+      } catch (error) {
+        console.error("Error fetching stations:", error);
+      }
+    },
+
+    async loadRoutes() {
+      try {
+        this.routes = await routeApi.getRoutes(true);
+      } catch (error) {
+        console.error("Error fetching routes:", error);
+      }
+    },
+    setCenter() {
+      this.center = latLng(
+        this.selectedCar.latitude || this.stations[0].latitude || 0,
+        this.selectedCar.longitude || this.stations[0].longitude || 0
+      );
+    },
+    async loadData() {
+      await this.loadStations();
+      await this.loadRoutes();
+      this.setCenter();
     },
   },
 };
