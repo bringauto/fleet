@@ -1,6 +1,8 @@
 
 # BringAuto Fleet
 
+> Project is archived. Next Generation of Fleet is part of [Fleet Protocol].
+
 BringAuto Fleet is a system that connects autonomous platforms with the end-user!
 
 Users can add orders, monitor the state of the autonomous fleet, receive notifications about order fulfil, ... - has a complete overview about all platforms in the fleet.
@@ -60,6 +62,7 @@ If you need help please consider the use of [GitHub Discussion]
 - Analysis of captured data
 - Complete Integration Workflow and Tools for platform providers
 
+[Fleet Protocol]: https://github.com/bringauto/fleet-protocol
 [Etna]: https://github.com/bringauto/etna
 [Run Test Environment]: ./doc/RunTestEnvironment.md
 [GitHub Issue tracker]: https://github.com/bringauto/fleet/issues
